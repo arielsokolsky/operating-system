@@ -1,11 +1,14 @@
 #include "../include/string.h"
 #include "../include/types.h"
 #include "../include/screen.h"
+#include "../include/input.h"
 
 int main()
 {
     printWelcomeScreen();
-    
+
+    string str = readString();
+    print(str);
     
     return 0;
 }
