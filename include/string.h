@@ -3,7 +3,7 @@
 #include "./types.h"
 
 //return the length of a string
-unsigned_int16 strlen(string str);
+int strlen(string str);
 
 //return if string the same
 bool strcmp(string str1, string str2);
