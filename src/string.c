@@ -34,3 +34,31 @@ bool strcmp(string str1, string str2)
 
     return equel;
 }
+
+
+
+/*
+the function revers string
+param: string
+return: the string reversed
+*/
+string strrev(string str)
+{
+    string reversedString = "";
+    int len = strlen(str);
+    int end = len - 1;
+    int i = 0;
+
+    for (i = 0; i < len; i++) 
+    {
+        reversedString[i] = str[end];
+        end--;
+    }
+
+    reversedString[i] = '\0';
+
+
+    return reversedString;
+}
+
+
