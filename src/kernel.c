@@ -1,14 +1,20 @@
 #include "../include/string.h"
 #include "../include/types.h"
+#include "../include/screen.h"
 
 int main()
 {
-    string a = "sadf";
+    printWelcomeScreen();
     
-  
-    *((int*)0xb8000 ) = 0x07690748;
-    *((int*)(0xb8000 + 1))= 3;
     
-
     return 0;
+}
+
+
+void printWelcomeScreen()
+{
+    clearScreen();
+    changeTextColor(White);
+    print("welcome to our os \n");
+    print("the os is very effective with memory\n\n\n");
 }
