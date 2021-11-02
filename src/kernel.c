@@ -6,7 +6,7 @@ int main()
 {
     string a = "sadf";
     
-    printch('a');
+    print(a);
     
 
     return 0;

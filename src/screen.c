@@ -37,3 +37,19 @@ void printch(char ch)
         curY++;
     }
 }
+
+/*
+the fuction print a string
+param: string
+return: none
+*/
+void print(string str)
+{
+    unsigned_int16 length = strlen(str);
+    for (unsigned_int16 i = 0; i < length; i++)
+    {
+        printch(str[i]);
+    }
+}
+
+
