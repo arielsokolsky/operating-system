@@ -4,10 +4,17 @@
 
 int main()
 {
-    string a = "sadf";
+    printWelcomeScreen();
     
-    print(a);
     
-
     return 0;
+}
+
+
+void printWelcomeScreen()
+{
+    clearScreen();
+    changeTextColor(White);
+    print("welcome to our os \n");
+    print("the os is very effective with memory\n\n\n");
 }
