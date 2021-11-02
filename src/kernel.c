@@ -6,7 +6,9 @@
 int main()
 {
     printWelcomeScreen();
-    
+
+    string str = readString();
+    print(str);
     
     return 0;
 }
