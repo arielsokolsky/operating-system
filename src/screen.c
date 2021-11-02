@@ -52,4 +52,28 @@ void print(string str)
     }
 }
 
+/*
+the fuction change text color
+param: the number of the color
+return: none 
+*/
+void changeTextColor(int colorNum)
+{
+    currentColor = colorNum;
+}
+
+/*
+the fuction clear the screen
+param: none
+return: none
+*/
+void clearScreen()
+{
+    for(int i = 0; i < NUM_OF_RAWS * NUM_OF_LINES; i++)
+    {
+        printch(' ');
+    }
+    curX = 0;
+    curY = 0;
+}
 
