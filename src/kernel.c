@@ -7,13 +7,17 @@
 int main()
 {
     printWelcomeScreen();
-
+    readString();
 
     
     return 0;
 }
 
-
+/*
+the function print the welcome screen
+param: none
+return: none
+*/
 void printWelcomeScreen()
 {
     clearScreen();

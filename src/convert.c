@@ -1,6 +1,11 @@
 #include "../include/system.h"
 #include "../include/screen.h"
 
+/*
+the function convert string to int
+param: the string
+return: the string as int
+*/
 int stringToInt(string str)
 {
 	int i = 0, sum = 0;
@@ -20,6 +25,11 @@ int stringToInt(string str)
 	return sum;
 }
 
+/*
+the function convert int to string
+param: the number
+return: the number as string
+*/
 string intToString(int num)
 {
 	string str;
