@@ -35,12 +35,13 @@ string intToString(int num)
 	string str;
 	int count = 0;
 
-	while(num > 0)
+	do
 	{
 		str[count] = (num % 10) | '0' ;
 		num /= 10;
 		count++;
-	}
+	} while (num > 0);
+	
 	str[count] = 0;
 
 	return strrev(str);

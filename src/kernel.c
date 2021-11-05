@@ -8,16 +8,7 @@
 int main()
 {
     printWelcomeScreen();
-    /*
-    string str;
-    while (1)
-    {
-        str = readString();
-        print("\n");
-        printInt(fibonacci(stringToInt(str)));
-        print("\n");
-    }*/
-    
+
 
 
     return 0;

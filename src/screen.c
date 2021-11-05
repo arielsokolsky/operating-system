@@ -94,14 +94,13 @@ the function print array of int
 param: array of int
 return: none
 */
-void printArr(int* arr)
+void printArr(int* arr, int len)
 {
-    int size = sizeof(arr);
-    for(int i = 0; i < size; i++)
+    for(int i = 0; i < len; i++)
     {
         printInt(arr[i]);
         //check that not last line
-        if(i != size -1)
+        if(i != len - 1)
         {
             print(", ");
         }
