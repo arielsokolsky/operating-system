@@ -91,7 +91,7 @@ void printInt(int num)
 
 /*
 the function print array of int
-param: array of int
+param: array of int and it length
 return: none
 */
 void printArr(int* arr, int len)

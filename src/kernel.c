@@ -9,8 +9,6 @@ int main()
 {
     printWelcomeScreen();
 
-
-
     return 0;
 }
 

@@ -16,7 +16,7 @@ int fibonacci(int num)
 
 /*
 the function sort array of ints
-param: the array
+param: the array and it length
 return: none(the param change because he is pointer)
 */
 void sort(int* array, int len)
@@ -37,4 +37,26 @@ void sort(int* array, int len)
     }
 
     return array;
+}
+
+
+int add(int* array, int len)
+{
+    int sum = 0;
+    for (int i = 0; i < len; i++)
+    {
+        sum += array[i];
+    }
+    return sum;
+    
+}
+
+int sub(int* array, int len)
+{
+    int sum = 0;
+    for (int i = 0; i < len; i++)
+    {
+        sum -= array[i];
+    }
+    return sum;
 }
