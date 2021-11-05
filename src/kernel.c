@@ -7,8 +7,15 @@
 
 int main()
 {
-    printWelcomeScreen();
-    runTerminal();
+    clearScreen();//printWelcomeScreen();
+
+    for (int i = 0; i <= 25; i++)
+    {
+        print("sa\n");
+    }
+    readString();
+    
+    //runTerminal();
     return 0;
 }
 

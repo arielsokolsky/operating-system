@@ -77,6 +77,9 @@ string readString()
                         buffstr[i] = '=';
                         i++;
                         break;
+                case 14:
+                        backSpace();
+                        break;
                 //cases 16-27 are the second row, without tab since we have no use for it (at least for now)
                 case 16:
                         printch('q');

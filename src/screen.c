@@ -11,6 +11,10 @@ return: none
 void printch(char ch)
 {
     string video_memory = (string) VIDEO_ADDRESS;
+    if(curY >= NUM_OF_LINES)
+    {
+        clearScreen();
+    }
     switch(ch)
     {
         case(0x08): //when the user clicks backspace, make the the last chacter in screen blank
@@ -69,6 +73,8 @@ return: none
 */
 void clearScreen()
 {
+    curX = 0;
+    curY = 0;
     for(int i = 0; i < NUM_OF_RAWS * NUM_OF_LINES; i++)
     {
         printch(' ');
@@ -107,3 +113,32 @@ void printArr(int* arr, int len)
         
     }
 }
+
+
+/*
+the function delete the last letter
+param: none
+return: none
+*/
+void backSpace()
+{
+    //check that not the start
+    if (curX == 0)
+    {
+        return;
+    }
+    //go back
+    curX--;
+    printch(' ');
+    curX--;
+
+}
+
+
+
+
+
+
+
+
+
