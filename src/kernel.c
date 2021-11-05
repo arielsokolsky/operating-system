@@ -7,9 +7,10 @@
 
 int main()
 {
+    int a[4] = {2, 4, 5, 5};
     printWelcomeScreen();
-    readString();
-    printInt(5234);
+    //readString();
+    printArr(a);
     
     return 0;
 }

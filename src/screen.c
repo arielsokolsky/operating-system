@@ -83,9 +83,28 @@ the function print a int
 param: int
 return: none
 */
-
 void printInt(int num)
 {
     string str = intToString(num);
     print(str);
+}
+
+/*
+the function print array of int
+param: array of int
+return: none
+*/
+void printArr(int* arr)
+{
+    int size = sizeof(arr);
+    for(int i = 0; i < size; i++)
+    {
+        printInt(arr[i]);
+        //check that not last line
+        if(i != size -1)
+        {
+            print(", ");
+        }
+        
+    }
 }
