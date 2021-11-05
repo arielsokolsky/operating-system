@@ -3,13 +3,12 @@
 #include "../include/screen.h"
 #include "../include/input.h"
 #include "../include/convert.h"
-
+#include "../include/calculator.h"
 
 int main()
 {
     printWelcomeScreen();
-    readString();
-    
+
     return 0;
 }
 
