@@ -4,11 +4,13 @@
 #include "../include/input.h"
 #include "../include/convert.h"
 
+
 int main()
 {
+    int a[4] = {2, 4, 5, 5};
     printWelcomeScreen();
-    readString();
-
+    //readString();
+    printArr(a);
     
     return 0;
 }
@@ -18,6 +20,7 @@ the function print the welcome screen
 param: none
 return: none
 */
+
 void printWelcomeScreen()
 {
     clearScreen();

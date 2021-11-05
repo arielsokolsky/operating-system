@@ -2,6 +2,7 @@
 #define SCREEN_H
 
 #include "string.h"
+#include "convert.h"
 
 #define VIDEO_ADDRESS 0xb8000
 #define NUM_OF_LINES 25
@@ -14,5 +15,7 @@ void printch(char ch);
 void print(string str);
 void changeTextColor(int);
 void clearScreen();
+void printInt(int num);
+void printArr(int* arr);
 
 #endif
