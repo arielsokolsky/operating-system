@@ -12,9 +12,9 @@ string readString()
     bool is_reading = true; // if the system is reading input, it is 1, and if it stops, its 0
     while (is_reading)
     {
-        if(inputPort(0x64) & 0x1) //checks if there is an input from the user
+        if(inputPort(CHECK_PORT) & 0x1) //checks if there is an input from the user
         {
-            switch(inputPort(0x60))
+            switch(inputPort(READ_PORT))
             {
                 case 2:
                         
