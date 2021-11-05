@@ -3,13 +3,23 @@
 #include "../include/screen.h"
 #include "../include/input.h"
 #include "../include/convert.h"
-
+#include "../include/calculator.h"
 
 int main()
 {
     printWelcomeScreen();
-    readString();
+    /*
+    string str;
+    while (1)
+    {
+        str = readString();
+        print("\n");
+        printInt(fibonacci(stringToInt(str)));
+        print("\n");
+    }*/
     
+
+
     return 0;
 }
 
