@@ -77,3 +77,15 @@ void clearScreen()
     curY = 0;
 }
 
+
+/*
+the function print a int
+param: int
+return: none
+*/
+
+void printInt(int num)
+{
+    string str = intToString(num);
+    print(str);
+}

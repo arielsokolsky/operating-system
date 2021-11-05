@@ -9,6 +9,7 @@ int main()
 {
     printWelcomeScreen();
     readString();
+    printInt(5234);
     
     return 0;
 }
