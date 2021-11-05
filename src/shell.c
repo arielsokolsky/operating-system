@@ -23,11 +23,29 @@ void runTerminal()
             print("\n");
             print(input);    
         }
-        //else if (strcmp(command, "sum"))
-        //{
+        else if (strcmp(command, "sum"))
+        {
             
-        //}
-        
+        }
+        else if (strcmp(command, "sub"))
+        {
+            
+        }
+        else if (strcmp(command, "exit"))
+        {   
+            return;
+        }
+        else if (strcmp(command, "text-color"))
+        {
+            printColors();
+            print("enter color number: ");
+            input = readString();
+            changeTextColor(stringToInt(input) - 1);
+        }
+        else if (strcmp(command, "fibonacci"))
+        {
+            
+        }
         else
         {
             print("command doesn't exist");
@@ -46,6 +64,27 @@ void help()
     print("sum - add n of numbers\n");
     print("sub - substruct n of numbers\n");
     print("exit - stop running\n");
-    print("change text color\n");
-    print("fibonacci\n");
+    print("text-color - change text color\n");
+    print("fibonacci - find n number entery in the fibonacci serious\n");
 }
+
+void printColors()
+{
+    print("1.Black\n"); 
+    print("2.Blue\n");
+    print("3.Green\n");
+    print("4.Cyan\n");
+    print("5.Red\n");
+    print("6.Purple\n");
+    print("7.Brown\n");
+    print("8.Gray\n");
+    print("9.Dark_gray\n");
+    print("10.Light_blue\n");
+    print("11.light_green\n");
+    print("12.Light_cyan\n");
+    print("13.Light_Red\n");
+    print("14.light_purple\n");
+    print("15.Yellow \n");
+    print("16.White\n");
+}
+

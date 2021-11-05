@@ -78,6 +78,8 @@ string readString()
                         i++;
                         break;
                 case 14:
+                        i--;
+                        buffstr[i] = 0;
                         backSpace();
                         break;
                 //cases 16-27 are the second row, without tab since we have no use for it (at least for now)

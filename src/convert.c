@@ -62,7 +62,7 @@ string intToString(int num)
 		str[count] = (num % 10) | '0' ;
 		num /= 10;
 		count++;
-	} while (num > 0);
+	} while (num != 0);
 	
 	//if negative add '-'
 	if (nagtive)

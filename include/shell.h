@@ -6,5 +6,6 @@
 
 void runTerminal();
 void help();
+void printColors();
 
 #endif
