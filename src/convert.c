@@ -16,7 +16,7 @@ int stringToInt(string str)
 		i++;
 	}
 	
-	while(str[i]!='\0')
+	while(str[i])
 	{
 		//check that letter can be convert to int 
 		if(str[i]< 48 || str[i] > 57)
@@ -46,7 +46,8 @@ return: the number as string
 */
 string intToString(int num)
 {
-	string str;
+	char str[20];
+
 	int count = 0;
 	bool nagtive = false;
 
@@ -62,7 +63,7 @@ string intToString(int num)
 		str[count] = (num % 10) | '0' ;
 		num /= 10;
 		count++;
-	} while (num > 0);
+	} while (num != 0);
 	
 	//if negative add '-'
 	if (nagtive)

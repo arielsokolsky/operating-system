@@ -7,13 +7,15 @@ return: the user input
 */
 string readString()
 {
-    string buffstr;  
+    char buffstr[200];  
+    //string buffstr;
     int i = 0; //the last place in the string
     bool is_reading = true; // if the system is reading input, it is 1, and if it stops, its 0
     while (is_reading)
     {
         if(inputPort(CHECK_PORT) & 0x1) //checks if there is an input from the user
         {
+                
             switch(inputPort(READ_PORT))
             {
                 case 2:
@@ -76,6 +78,11 @@ string readString()
                         printch('=');
                         buffstr[i] = '=';
                         i++;
+                        break;
+                case 14:
+                        i--;
+                        buffstr[i] = 0;
+                        backSpace();
                         break;
                 //cases 16-27 are the second row, without tab since we have no use for it (at least for now)
                 case 16:
@@ -269,5 +276,7 @@ string readString()
         }
     }
     buffstr[i-1] = 0;
-    return buffstr;
+    string str = (string)buffstr;
+
+    return str;
 }
