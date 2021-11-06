@@ -6,15 +6,25 @@ return: none
 */
 void runTerminal()
 {
+    string input = "", command = "";
+    int result = 0, len = 0;
+    int array[20];
+    
+
     while (true)
     {
-        string input = "";
+        input = "";
         print(">> ");
         string command = readString();
         print("\n");
+
         if (strcmp(command, "help"))
         {
             help();
+        }
+        else if (strcmp(command, "clear"))
+        {
+            clearScreen();
         }
         else if (strcmp(command, "echo"))
         {
@@ -23,18 +33,71 @@ void runTerminal()
             print("\n");
             print(input);    
         }
+        else if (strcmp(command, "string-reverse"))
+        {
+            print("enter string: ");
+            input = readString();
+            print("the string reversed: ");
+            print(strrev(input));
+        }
+        else if (strcmp(command, "sort"))
+        {   
+            print("enter number of numbers: ");
+            len = stringToInt(readString());
+            print("\n");
+            for (int i = 0; i < len; i++)
+            {
+                print("enter number: ");
+                array[i] = stringToInt(readString());
+                print("\n");
+            }
+            sort(array, len);   
+            printArr(array, len);
+
+        }   
         else if (strcmp(command, "sum"))
         {
-            
+            print("enter how many number: ");
+            input = readString();
+            len = stringToInt(input);
+            print("\n");
+
+            for (int i = 0; i < len; i++)
+            {
+                print("enter number: ");
+                input = readString();
+                print("\n");
+                array[i] = stringToInt(input);
+            }
+            result = sum(array, len);
+            printInt(result);
         }
         else if (strcmp(command, "sub"))
         {
-            
+            print("enter how many number: ");
+            input = readString();
+            len = stringToInt(input);
+            print("\n");
+
+            for (int i = 0; i < len; i++)
+            {
+                print("enter number: ");
+                input = readString();
+                print("\n");
+                array[i] = stringToInt(input);
+            }
+            result = sub(array, len);
+            printInt(result);
         }
-        else if (strcmp(command, "exit"))
-        {   
-            return;
-        }
+        else if (strcmp(command, "fibonacci"))
+        {
+            print("enter fibonacci entery: ");
+            input = readString();
+            print("\n");
+
+            result = fibonacci(stringToInt(input));   
+            print(intToString(result));  
+        } 
         else if (strcmp(command, "text-color"))
         {
             printColors();
@@ -42,13 +105,13 @@ void runTerminal()
             input = readString();
             changeTextColor(stringToInt(input) - 1);
         }
-        else if (strcmp(command, "fibonacci"))
-        {
-            
-        }
+        else if (strcmp(command, "exit"))
+        {   
+            return;
+        }  
         else
         {
-            print("command doesn't exist");
+            print("error: command not found");
         }
         
         print("\n");
@@ -60,12 +123,15 @@ void help()
 {
     print("command list:\n");
     print("help - get all command");
+    print("clear - clear screen");
     print("echo - print to screen \n");
+    print("string-reverse - reverse a string\n");
+    print("sort - sort array of numbers");
     print("sum - add n of numbers\n");
     print("sub - substruct n of numbers\n");
-    print("exit - stop running\n");
-    print("text-color - change text color\n");
     print("fibonacci - find n number entery in the fibonacci serious\n");
+    print("text-color - change text color\n");
+    print("exit - stop running\n");
 }
 
 void printColors()

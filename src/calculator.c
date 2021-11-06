@@ -40,7 +40,7 @@ void sort(int* array, int len)
 }
 
 
-int add(int* array, int len)
+int sum(int* array, int len)
 {
     int sum = 0;
     for (int i = 0; i < len; i++)
@@ -53,8 +53,8 @@ int add(int* array, int len)
 
 int sub(int* array, int len)
 {
-    int sum = 0;
-    for (int i = 0; i < len; i++)
+    int sum = array[0];
+    for (int i = 1; i < len; i++)
     {
         sum -= array[i];
     }

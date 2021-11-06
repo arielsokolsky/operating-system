@@ -91,7 +91,8 @@ return: none
 */
 void printInt(int num)
 {
-    string str = intToString(num);
+    int a = num;
+    string str = intToString(a);
     print(str);
 }
 
@@ -104,6 +105,17 @@ void printArr(int* arr, int len)
 {
     for(int i = 0; i < len; i++)
     {
+        if (arr[i] == 1)
+        {
+            print("ok");
+        }
+        else
+        {
+            print("work");
+        }
+        
+        //string str = intToString(arr[i]);
+        //print(str);
         printInt(arr[i]);
         //check that not last line
         if(i != len - 1)
@@ -122,7 +134,7 @@ return: none
 */
 void backSpace()
 {
-    //check that not the start
+    //check that not the start of a line
     if (curX == 0)
     {
         return;
