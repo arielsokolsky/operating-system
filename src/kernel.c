@@ -4,11 +4,13 @@
 #include "../include/input.h"
 #include "../include/convert.h"
 #include "../include/shell.h"
+#include "../include/idt.h"
 
 int main()
 {
+    setupIdt();
     printWelcomeScreen();
-    runTerminal();
+    //runTerminal();
 
 
     return 0;
