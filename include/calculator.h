@@ -3,7 +3,7 @@
 #include "screen.h"
 
 int fibonacci(int num);
-void sort(int* array, int len);
+int* sort(int* array, int len);
 int sum(int* array, int len);
 int sub(int* array, int len);
 

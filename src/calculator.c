@@ -19,7 +19,7 @@ the function sort array of ints
 param: the array and it length
 return: none(the param change because he is pointer)
 */
-void sort(int* array, int len)
+int* sort(int* array, int len)
 {
     int temp = 0;
     
