@@ -8,10 +8,9 @@
 
 int main()
 {
-    setupIdt();
     printWelcomeScreen();
-    //runTerminal();
-
+    setupIdt();
+    runTerminal();
 
     return 0;
 }
