@@ -17,7 +17,7 @@ typedef _Bool bool;
 
 typedef char* string;
 
-#define low_16(address) (uint16)((address) & 0xFFFF)            
-#define high_16(address) (uint16)(((address) >> 16) & 0xFFFF)
+#define low_16(address) (unsigned_int16)((address) & 0xFFFF)            
+#define high_16(address) (unsigned_int16)(((address) >> 16) & 0xFFFF)
 
 #endif
