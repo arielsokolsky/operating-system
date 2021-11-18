@@ -31,6 +31,9 @@ void install_gdt()
     set_gdt_gate(1 ,0 , 0xFFFFFFFF, 0x9A, 0x8F);
     //data segment
     set_gdt_gate(2 ,0 , 0xFFFFFFFF, 0x92, 0x8F);
-
+    //User mode code segmenא
+    set_gdt_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); 
+    //User mode data segment
+    set_gdt_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); 
     _gdt_flush();
 }
