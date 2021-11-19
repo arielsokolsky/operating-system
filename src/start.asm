@@ -12,8 +12,12 @@ extern main ;main function in kernel.c
 global start ;entery point
 start:
     cli ;disalbe interrupt
+    mov esp, stack_end
     call main
     hlt;stop
 
 
-
+section .bss
+stack_start:
+	resb 8*1024
+stack_end:

@@ -37,6 +37,7 @@ void runTerminal()
         {
             print("enter string: ");
             input = readString();
+            print("\n");
             print("the string reversed: ");
             print(strrev(input));
         }
