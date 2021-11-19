@@ -4,10 +4,15 @@
 #include "../include/input.h"
 #include "../include/convert.h"
 #include "../include/shell.h"
+#include "../include/idt.h"
+#include "../include/gdt.h"
 
 int main()
 {
+
     printWelcomeScreen();
+    setupIdt();
+    install_gdt();
     runTerminal();
 
 

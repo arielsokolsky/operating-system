@@ -30,8 +30,8 @@ clear:
 	@rm -f obj/kernel/*.bin
 
 create_img:
-	@rm -f obj/kernel/kernel.iso
+	@rm -f $(ISO_OUTPUT)
 	@echo "create img"
 	@cp $(OUTPUT) boot/kernel.bin
-	@grub-mkrescue -o obj/kernel/kernel.iso obj/kernel
+	@grub-mkrescue -o $(ISO_OUTPUT) obj/kernel
 	@rm -f boot/kernel.bin

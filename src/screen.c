@@ -105,19 +105,8 @@ void printArr(int* arr, int len)
 {
     for(int i = 0; i < len; i++)
     {
-        if (arr[i] == 1)
-        {
-            print("ok");
-        }
-        else
-        {
-            print("work");
-        }
-        
-        //string str = intToString(arr[i]);
-        //print(str);
+
         printInt(arr[i]);
-        //check that not last line
         if(i != len - 1)
         {
             print(", ");
