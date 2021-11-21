@@ -4,6 +4,7 @@
 #include "types.h"
 #include "screen.h"
 #define KERNEL_CS 0x08
+#define NUM_OF_IDT_ENTRIES 256
 
 /*
 offestTop - the first part of the address
@@ -35,9 +36,7 @@ typedef struct idtPointer
 } __attribute__((packed)) idtPointer;
 
 
-
-#define NUM_OF_IDT_NETRIES 256
-idtEntery idt[NUM_OF_IDT_NETRIES];
+idtEntery idt[NUM_OF_IDT_ENTRIES];
 idtPointer _lidt;
 
 //the function setupt the idtPionter and clear entries
@@ -46,7 +45,5 @@ void setupIdt();
 extern void idt_load();
 //the function change entery
 void changeIdtEntry(int num, unsigned_int32 address);
-//the defult isr
-void defult_handler();
 
 #endif
