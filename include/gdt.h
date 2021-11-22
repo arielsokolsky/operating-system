@@ -13,13 +13,14 @@ struct gdt_entry{
 } __attribute__((packed));
 
 
+
 //the poiter for the gdt table
 struct gdt_ptr {
     unsigned_int16 limit;
     unsigned_int32 base;
 }__attribute__((packed));
 
-struct gdt_entry gdt[3];
+struct gdt_entry gdt[5];
 struct gdt_ptr gp;
 
 //this function is in the start.asm file

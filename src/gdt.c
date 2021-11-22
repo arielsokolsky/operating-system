@@ -22,18 +22,19 @@ void set_gdt_gate(unsigned_int8 entry_num, unsigned_int32 base, unsigned_int32 l
 //first 3 segments in the gdt table
 //and then flushes the segments
 void install_gdt()
-{
-    gp.limit = (sizeof(struct gdt_entry) * 3) - 1;
+{   
+    gp.limit = (sizeof(struct gdt_entry) * 5) - 1;
     gp.base = (unsigned_int32) &gdt;
 
     set_gdt_gate(0, 0 ,0, 0, 0);
     //code segment
-    set_gdt_gate(1 ,0 , 0xFFFFFFFF, 0x9A, 0x8F);
+    set_gdt_gate(1 ,0 , 0xFFFFFFFF, 0x9A, 0xCF);
     //data segment
-    set_gdt_gate(2 ,0 , 0xFFFFFFFF, 0x92, 0x8F);
-    //User mode code segmenא
+    set_gdt_gate(2 ,0 , 0xFFFFFFFF, 0x92, 0xCF);
+    //User mode code segment
     set_gdt_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); 
     //User mode data segment
     set_gdt_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); 
+
     _gdt_flush();
 }
