@@ -17,6 +17,7 @@ void setupIdt()
     _lidt.limit = NUM_OF_IDT_NETRIES * sizeof(idtEntery) - 1;
     changeIdtEntry(0, defult_handler);
     idt_load();
+    print("idt is setup\n");
 }
 
 

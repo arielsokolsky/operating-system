@@ -6,15 +6,21 @@
 #include "../include/shell.h"
 #include "../include/idt.h"
 #include "../include/gdt.h"
+#include "../include/multi_boot.h"
 
-int main()
-{
-
+int main(multiboot_info* info)
+{  
     printWelcomeScreen();
     setupIdt();
     install_gdt();
-    runTerminal();
+    print("\n");
+    
+    printMultiBootInfo(info);
+    readString();
+    clearScreen();
 
+    runTerminal();
+    
 
     return 0;
 }
