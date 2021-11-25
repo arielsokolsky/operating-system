@@ -1,5 +1,6 @@
 #ifndef GDT_H
 #define GDT_H
+#include "types.h"
 
 //the entry struct in the gdt table
 //the struct is packed so the complier will won't try to "optimize" the struct in the memory
