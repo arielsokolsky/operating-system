@@ -3,15 +3,20 @@
 #include "../include/screen.h"
 #include "../include/input.h"
 #include "../include/convert.h"
+#include "../include/shell.h"
+#include "../include/idt.h"
+#include "../include/gdt.h"
 
 
 int main()
 {
-    int a[4] = {2, 4, 5, 5};
+
     printWelcomeScreen();
-    //readString();
-    printArr(a);
-    
+    setupIdt();
+    install_gdt();
+    runTerminal();
+
+
     return 0;
 }
 

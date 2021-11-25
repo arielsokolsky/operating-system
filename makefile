@@ -1,31 +1,20 @@
-COMPILER = gcc
-C_FLAGS = -m32 -c -ffreestanding
+include makefile.cfg
 
-LINKER = ld
-L_FLAGS = -m elf_i386 -T linker.ld
-
-ASSEMBLER = nasm
-A_FLAGS = -f elf32
-
-EMULATOR = qemu-system-i386
-EMULATOR_FLAGS = -kernel
-
-OUTPUT = obj/kernel/kernel.bin
-SRC = src
-OBJ = obj
-
-all: build link run clear
+all: build link run create_img clear
 .PHONEY = all
 
-OBJECTS = $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(wildcard $(SRC)/*.c))
+OBJECTS_C = $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(wildcard $(SRC)/*.c))
+OBJECTS_ASM  = $(patsubst $(SRC)/%.asm, $(OBJ)/%.o, $(wildcard $(SRC)/*.asm))
+
 
 $(OBJ)/%.o: $(SRC)/%.c
 	@$(COMPILER) $(C_FLAGS) $< -o $@
-	
-build:$(OBJECTS)
-	@echo "build"
-	@$(ASSEMBLER) $(A_FLAGS) -o obj/start.o src/start.asm 
 
+$(OBJ)/%.o: $(SRC)/%.asm
+	@$(ASSEMBLER) $(A_FLAGS) $< -o $@
+	
+build:$(OBJECTS_C) $(OBJECTS_ASM)
+	@echo "build"
 
 link:
 	@echo "link"
@@ -39,3 +28,10 @@ clear:
 	@echo "clear"
 	@rm -f obj/*.o
 	@rm -f obj/kernel/*.bin
+
+create_img:
+	@rm -f $(ISO_OUTPUT)
+	@echo "create img"
+	@cp $(OUTPUT) boot/kernel.bin
+	@grub-mkrescue -o $(ISO_OUTPUT) obj/kernel
+	@rm -f boot/kernel.bin

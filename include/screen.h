@@ -16,6 +16,7 @@ void print(string str);
 void changeTextColor(int);
 void clearScreen();
 void printInt(int num);
-void printArr(int* arr);
+void printArr(int* arr, int len);
+void backSpace();
 
 #endif
