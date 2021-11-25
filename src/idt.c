@@ -26,6 +26,5 @@ void setupIdt()
 
 void defult_handler()
 {
-    print("work");
     asm("hlt");
 }
