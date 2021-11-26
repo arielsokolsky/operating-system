@@ -277,6 +277,6 @@ string readString()
     }
     buffstr[i-1] = 0;
     string str = (string)buffstr;
-
+    print("\n");
     return str;
 }
