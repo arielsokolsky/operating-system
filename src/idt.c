@@ -14,15 +14,11 @@ void changeIdtEntry(int num, unsigned_int32 handler)
 void setupIdt()
 {
     _lidt.base = (unsigned_int32) &idt;
-    _lidt.limit = NUM_OF_IDT_NETRIES * sizeof(idtEntery) - 1;
-    changeIdtEntry(0, defult_handler);
+    _lidt.limit = NUM_OF_IDT_ENTRIES * sizeof(idtEntery) - 1;
+
+    install_idt_entries();
+    
     idt_load();
     print("idt is setup\n");
 }
 
-
-void defult_handler()
-{
-    print("work");
-    asm("hlt");
-}
