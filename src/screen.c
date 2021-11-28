@@ -57,6 +57,17 @@ void print(string str)
 }
 
 /*
+the function print a string and a new line at the end
+param: string
+return: none
+*/
+void println(string str)
+{
+    print(str);
+    print("\n");
+}
+
+/*
 the fuction change text color
 param: the number of the color
 return: none 
@@ -93,7 +104,7 @@ void printInt(int num)
 {
     int a = num;
     string str = intToString(a);
-    print(str);
+    println(str);
 }
 
 /*
