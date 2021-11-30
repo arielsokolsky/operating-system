@@ -34,4 +34,5 @@ void install_gdt()
     set_gdt_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); 
     
     _gdt_flush();
+    print("gdt is setup\n");
 }

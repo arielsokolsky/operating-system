@@ -13,6 +13,7 @@ global start ;entery point
 start:
     cli ;disalbe interrupt
     mov esp, stack_end
+    push ebx
     call main
     hlt;stop
 

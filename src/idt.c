@@ -19,5 +19,6 @@ void setupIdt()
     install_idt_entries();
     
     idt_load();
+    print("idt is setup\n");
 }
 
