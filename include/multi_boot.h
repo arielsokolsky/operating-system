@@ -52,7 +52,7 @@ struct multiboot_mmap_entry
 } __attribute__((packed));
 typedef struct multiboot_mmap_entry multiboot_memory_map_t;
 
-void printMultiBootInfo(multiboot_info*);
+int printMultiBootInfo(multiboot_info*);
 
 #endif
 
