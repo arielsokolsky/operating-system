@@ -6,16 +6,17 @@
 #include "../include/shell.h"
 #include "../include/idt.h"
 #include "../include/gdt.h"
-#include "../include/multi_boot.h"
+#include "../include/malloc.h"
 
 int main(multiboot_info* info)
 {  
+    uint32* pointer = 1;
     printWelcomeScreen();
     setupIdt();
     install_gdt();
     print("\n");
-    
-    int numFrames = printMultiBootInfo(info);
+
+    printMultiBootInfo(info);
     readString();
     clearScreen();
 
