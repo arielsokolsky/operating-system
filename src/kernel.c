@@ -15,7 +15,7 @@ int main(multiboot_info* info)
     install_gdt();
     print("\n");
     
-    printMultiBootInfo(info);
+    int numFrames = printMultiBootInfo(info);
     readString();
     clearScreen();
 
