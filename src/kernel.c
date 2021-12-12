@@ -10,13 +10,13 @@
 
 int main(multiboot_info* info)
 {  
-    uint32* pointer = 1;
+    int numFrames;
     printWelcomeScreen();
     setupIdt();
     install_gdt();
     print("\n");
 
-    printMultiBootInfo(info);
+    numFrames = printMultiBootInfo(info);
     readString();
     clearScreen();
 
