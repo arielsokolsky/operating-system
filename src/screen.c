@@ -116,14 +116,14 @@ void printArr(int* arr, int len)
 {
     for(int i = 0; i < len; i++)
     {
-
-        printInt(arr[i]);
+        print(intToString(arr[i]));
         if(i != len - 1)
         {
             print(", ");
         }
         
     }
+    println("");
 }
 
 
