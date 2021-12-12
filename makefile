@@ -1,6 +1,6 @@
 include makefile.cfg
 
-all: build link run create_img clear
+all: build link run create_img clean
 .PHONEY = all
 
 OBJECTS_C = $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(wildcard $(SRC)/*.c))
@@ -24,8 +24,8 @@ run:
 	@echo "run"
 	@$(EMULATOR) $(EMULATOR_FLAGS) $(OUTPUT)
 
-clear:
-	@echo "clear"
+clean:
+	@echo "clean"
 	@rm -f obj/*.o
 	@rm -f obj/kernel/*.bin
 

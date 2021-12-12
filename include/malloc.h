@@ -15,4 +15,9 @@ static uint32 currentAddress = &end_of_kernel;
 uint32 mallocBasic (uint32 size, bool aligened, uint32* phys);
 uint32 stopMalloc();
 
+uint32 malloc_a(uint32 size);
+uint32 malloc_p(uint32 size, uint32* phys);
+uint32 malloc_ap(uint32 size, uint32* phys);
+uint32 malloc(uint32 size);
+
 #endif

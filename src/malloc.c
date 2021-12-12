@@ -58,3 +58,19 @@ uint32 stopMalloc()
 }
 
 
+uint32 malloc_a(uint32 size) 
+{
+    mallocBasic(size, true, 0);
+}
+uint32 malloc_p(uint32 size, uint32* phys)
+{
+    mallocBasic(size, false, phys);
+}
+uint32 malloc_ap(uint32 size, uint32* phys)
+{
+    mallocBasic(size, true, phys);
+}
+uint32 malloc(uint32 size)
+{
+    mallocBasic(size, false, 0);
+}
