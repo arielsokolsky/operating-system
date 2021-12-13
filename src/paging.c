@@ -4,6 +4,18 @@ struct page_directory *kernel_directory;
 struct page_directory *current_directory;
 
 
+void switch_page_directory(struct page_directory *dir)
+{
+    current_directory = dir;
+    asm volatile("mov %0, %%cr3":: "r"(&dir->tablesPhysicalAdrs));
+    unsigned_int32 cr0;
+    asm volatile("mov %%cr0, %0": "=r"(cr0));
+    cr0 |= 0x80000000; // Enable paging!
+    asm volatile("mov %0, %%cr0":: "r"(cr0));
+}
+
+
+
 void initialize_paging() {
 
     current_directory = kernel_directory;
@@ -12,8 +24,11 @@ void initialize_paging() {
     // This is wasteful, but a lot easier than figuring out how to build
     // a kernel page allocator.
     unsigned_int32 i = 0;
+    //switch_page_directory(kernel_directory);
+    _physicalAddr = &kernel_directory->physicalAddress;
+
     enablePaging();
-    loadPageDirectory(kernel_directory);
+    loadPageDirectory(_physicalAddr);
 
 }
 

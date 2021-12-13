@@ -19,8 +19,10 @@ struct page {
     unsigned_int32 frameAddress : 20;  
 };
 
+unsigned_int32 _physicalAddr;
+
 extern void enablePaging();
-extern void loadPageDirectory(unsigned int*);
+extern void loadPageDirectory(unsigned_int32);
 
 struct page_table
 {
@@ -35,6 +37,6 @@ struct page_directory
 
     unsigned_int32 physicalAddress;
 };
-
+void initialize_paging();
 struct page *get_page(unsigned_int32 address, int makeNew, struct page_directory *dir);
 #endif

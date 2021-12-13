@@ -6,6 +6,7 @@
 #include "../include/shell.h"
 #include "../include/idt.h"
 #include "../include/gdt.h"
+#include "../include/paging.h"
 
 int main()
 {
@@ -13,6 +14,7 @@ int main()
     printWelcomeScreen();
     setupIdt();
     install_gdt();
+    initialize_paging();
     runTerminal();
 
 
