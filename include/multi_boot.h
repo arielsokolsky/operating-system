@@ -35,22 +35,13 @@ typedef struct multiboot_info
     unsigned_int32 mmap_addr;
 }multiboot_info;
 
-
-struct multiboot_mmap_entry
+typedef struct multiboot_memory_map
 {
-  unsigned_int32 size;
-  unsigned_int32 addr_low;
-  unsigned_int32 addr_high;
-  unsigned_int32 len_low;
-  unsigned_int32 len_high;
-#define MULTIBOOT_MEMORY_AVAILABLE              1
-#define MULTIBOOT_MEMORY_RESERVED               2
-#define MULTIBOOT_MEMORY_ACPI_RECLAIMABLE       3
-#define MULTIBOOT_MEMORY_NVS                    4
-#define MULTIBOOT_MEMORY_BADRAM                 5
-  unsigned_int32 type;
-} __attribute__((packed));
-typedef struct multiboot_mmap_entry multiboot_memory_map_t;
+	uint8 size;
+	uint64 base_addr;
+	uint64 length;
+	uint8 type;
+} multiboot_memory_map;
 
 int printMultiBootInfo(multiboot_info*);
 
