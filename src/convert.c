@@ -76,3 +76,36 @@ string intToString(int num)
 
 	return strrev(str);
 }
+
+/*
+the function set a section to var
+dst: address to change
+value: the value to change to
+len: what length to change
+ret: the address that was changed
+*/
+void* memset(void* dst, int value, int unsigned len)
+{
+    int unsigned i = 0;
+    for ( i = 0; i < len; i++)
+    {
+        ((int*)dst)[i] = value;
+    }
+    return dst;
+}
+
+/*
+the function copy memory
+src: the src memory
+dst: the destion memory
+len: how much to copy
+ret: destion address 
+*/
+void* memcpy(const void* src, void* dst, int unsigned len)
+{
+    for (unsigned int i = 0; i < len; i++)
+    {
+        ((int*)dst)[i] = ((int*)src)[i];
+    }
+    return dst;
+}
