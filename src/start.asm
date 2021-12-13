@@ -13,6 +13,7 @@ global start ;entery point
 start:
     cli ;disalbe interrupt
     mov esp, stack_end
+    push ebx
     call main
     hlt;stop
 
@@ -21,3 +22,6 @@ section .bss
 stack_start:
 	resb 8*1024
 stack_end:
+
+global end_of_kernel
+end_of_kernel:
