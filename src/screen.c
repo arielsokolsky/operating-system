@@ -57,6 +57,17 @@ void print(string str)
 }
 
 /*
+the function print a string and a new line at the end
+param: string
+return: none
+*/
+void println(string str)
+{
+    print(str);
+    print("\n");
+}
+
+/*
 the fuction change text color
 param: the number of the color
 return: none 
@@ -93,7 +104,7 @@ void printInt(int num)
 {
     int a = num;
     string str = intToString(a);
-    print(str);
+    println(str);
 }
 
 /*
@@ -105,14 +116,14 @@ void printArr(int* arr, int len)
 {
     for(int i = 0; i < len; i++)
     {
-
-        printInt(arr[i]);
+        print(intToString(arr[i]));
         if(i != len - 1)
         {
             print(", ");
         }
         
     }
+    println("");
 }
 
 
