@@ -24,19 +24,19 @@ unsigned_int32 _physicalAddr;
 extern void enablePaging();
 extern void loadPageDirectory(unsigned_int32);
 
-struct page_table
+typedef struct page_table
 {
     struct page pages[1024];
-};
+}page_table;
 
 struct page_directory
 {
-    struct page_table *tables[1024];
+    page_table *tables[1024];
 
     unsigned_int32 tablesPhysicalAdrs[1024];
 
     unsigned_int32 physicalAddress;
 };
 void initialize_paging();
-struct page *get_page(unsigned_int32 address, int makeNew, struct page_directory *dir);
+struct page *get_page(unsigned_int32 address, struct page_directory *dir);
 #endif
