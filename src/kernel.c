@@ -6,6 +6,7 @@
 #include "../include/shell.h"
 #include "../include/idt.h"
 #include "../include/gdt.h"
+#include "../include/paging.h"
 #include "../include/malloc.h"
 
 int main(multiboot_info* info)
@@ -14,8 +15,9 @@ int main(multiboot_info* info)
     printWelcomeScreen();
     setupIdt();
     install_gdt();
-    print("\n");
+    initialize_paging();
 
+    print("\n");
     numFrames = printMultiBootInfo(info);
     readString();
     clearScreen();
