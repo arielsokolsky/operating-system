@@ -1,10 +1,13 @@
 #include "../include/paging.h"
+#include "../include/frame.h"
+#include "../include/convert.h"
+
 #define OFFSET_LEN 0x1000
 
 struct page_directory *kernel_directory;
 struct page_directory *current_directory;
 
-
+bool initialized;
 
 /*
 the function sets up the paging in the memory
@@ -14,6 +17,10 @@ ret: none
 
 void initialize_paging(unsigned_int32 total_frames) {
 
+    intialize_frame_allocator(total_frames);
+
+    kernel_directory = (struct page_directory *) malloc_a(sizeof(struct page_directory));
+    memset(kernel_directory, 0, sizeof (struct page_directory));
     current_directory = kernel_directory;
     
     // Go ahead and allocate all the page tables for the kernel.
@@ -48,5 +55,14 @@ struct page *get_page(unsigned_int32 address, struct page_directory *dir)
     else
     {
         return 0;
+    }
+}
+
+
+void clear_page(uint32 address)
+{
+    struct page *p = get_page(address, kernel_directory);
+    if(p) {
+        free_frame(p);
     }
 }
