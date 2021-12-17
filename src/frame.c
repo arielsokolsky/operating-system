@@ -49,7 +49,7 @@ uint32 allocateFrame(page* myPage, bool isWritable, bool isKernel)
     }
     
     //set frame as occupied
-    freeFrames[numOfAllocatedFrames] = 1;
+    freeFrames[myPage->frameAddress] = 1;
 
     //set the page
     myPage->present = 1;
