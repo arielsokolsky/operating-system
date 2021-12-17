@@ -88,15 +88,3 @@ void freeFrame(page* myPage)
     myPage->frameAddress = 0;
 }
 
-/*
-the function get a frame by his address
-param freeAddress: the address of the frame
-param myPage: the page that we want to get
-return: none
-
-void getPageWithFrameAddress(uint32 frameAddress, page* myPage)
-{
-    myPage = get_page(frameAddress * OFFSET_LEN, my);
-    myPage = get_page(frameAddress, );
-}
-*/
