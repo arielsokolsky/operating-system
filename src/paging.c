@@ -1,9 +1,5 @@
 #include "../include/paging.h"
 
-
-page_directory *kernel_directory;
-page_directory *current_directory;
-
 /*
 the function sets up the paging in the memory
 total_frames: gets the total amount of frames (using the bootloader)

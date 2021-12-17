@@ -40,6 +40,10 @@ typedef struct page_directory
     unsigned_int32 physicalAddress;
 }page_directory;
 
+page_directory *kernel_directory;
+page_directory *current_directory;
+
+
 void initialize_paging();
 page *get_page(unsigned_int32 address, page_directory *dir);
 #endif
