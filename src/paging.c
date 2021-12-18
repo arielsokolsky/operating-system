@@ -43,3 +43,36 @@ page *get_page(unsigned_int32 address, page_directory *dir)
         return 0;
     }
 }
+
+/*
+the function get a frame by his address
+param freeAddress: the address of the frame
+param myPage: the page that we want to get
+return: the page
+*/
+page* getPageByFrame(uint32 frameAddress)
+{
+    return get_page(frameAddress , current_directory);
+}
+
+
+/*
+the function map page
+param: the address of the page we want to map
+return: the allocated page
+*/
+page* mapPage(uint32 address)
+{
+    bool isKernel = current_directory->physicalAddress == kernel_directory->physicalAddress;
+    page *myPage = getPageByFrame(address);
+    if(myPage == 0)
+    {
+        print("error: page not found\n");
+        return;
+    }
+    //allocate page
+    allocateFrame(myPage, true, isKernel); 
+    return myPage;
+}
+
+

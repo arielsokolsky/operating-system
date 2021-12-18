@@ -1,6 +1,7 @@
 #ifndef PAGING_H
 #define PAGING_H
 #include "types.h"
+#include "screen.h"
 #define OFFSET_LEN 0x1000
 #define ENTERY_SIZE 0x400
 
@@ -44,6 +45,9 @@ page_directory *kernel_directory;
 page_directory *current_directory;
 
 
-void initialize_paging();
+void initialize_paging(uint32);
 page *get_page(unsigned_int32 address, page_directory *dir);
+page* getPageByFrame(uint32 frameAddress);
+page* mapPage(uint32 address);
+
 #endif

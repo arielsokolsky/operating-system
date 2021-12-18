@@ -6,6 +6,6 @@
 
 void initFrameAllocator(int NumOfFrames);
 uint32 allocateFrame(page* myPage, bool isWritable, bool isKernel);
-page* getPage(uint32 frameAddress);
+void freeFrame(page* myPage);
 
 #endif
