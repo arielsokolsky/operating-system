@@ -2,9 +2,18 @@
 #define PAGING_H
 #include "types.h"
 #include "malloc.h"
+#include "screen.h"
+#include "frame.h"
+#define OFFSET_LEN 0x1000
+#define ENTERY_SIZE 0x400
+
+struct page_directory *kernel_directory;
+struct page_directory *current_directory;
+
+bool initialized;
 
 
-struct page {
+typedef struct page {
     //checks if the file exists
     _Bool present; 
     // if the bit is clear then the file is read only, if the bit is one then it read and write
@@ -19,7 +28,7 @@ struct page {
     unsigned_int8 unusedBits : 7;   
     // Frame address
     unsigned_int32 frameAddress : 20;  
-};
+}page;
 
 unsigned_int32 _physicalAddr;
 
@@ -31,15 +40,24 @@ typedef struct page_table
     struct page pages[1024];
 }page_table;
 
-struct page_directory
+typedef struct page_directory
 {
     page_table *tables[1024];
 
     unsigned_int32 tablesPhysicalAdrs[1024];
 
     unsigned_int32 physicalAddress;
-};
-void initialize_paging();
+}page_directory;
+
+page_directory *kernel_directory;
+page_directory *current_directory;
+
+
 void switch_page_directory(struct page_directory * addr);
-struct page *get_page(unsigned_int32 address, bool make, struct page_directory *dir);
+void initialize_paging(uint32);
+page *get_page(unsigned_int32 address, page_directory *dir);
+page* getPageByFrame(uint32 frameAddress);
+page* mapPage(uint32 address);
+
+
 #endif

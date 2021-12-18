@@ -1,34 +1,91 @@
 #include "../include/frame.h"
 
 
-unsigned_int32 stack_count = 0;
-unsigned_int32* free_frames = 0;
-int32 top_of_stack = -1;
-
-unsigned_int32 end_of_memory = 0;
-unsigned_int32 allocated_frames = 0;
-unsigned_int32 total_frames;
+//array that contains the frames is used
+unsigned_int32* freeFrames = 0;
+unsigned_int32 numOfAllocatedFrames = 0;
+unsigned_int32 numOfFrames = 0;
 
 
-void intialize_frame_allocator(uint32 system_frames)
+
+/*
+the function initialize the frames
+param _numOfFrames: the number of frames
+return: none
+*/
+void initFrameAllocator(int _numOfFrames)
 {
-    //changes the amount of total frame to the amount that the boot loader gave
-    total_frames = system_frames;
-    //if the free_frame wasn't alloctated before, the it will 
-    //allocate the pointer in the memory for the right amount of frames
-    if (free_frames == 0)
+    //if already allocated exit function
+    if(freeFrames)
     {
-        free_frames = (uint32*) malloc(system_frames * sizeof(uint32));
-        stack_count = system_frames;
+        print("error: already allocated");
+        return;
     }
+    numOfFrames = _numOfFrames; 
+    freeFrames = (uint32* )malloc(sizeof(uint32) * numOfFrames);
 }
-void free_frame(struct page *page)
-{
-    //increases the last slot in free frames to an empty one
-    top_of_stack++;
 
-    //puts the frameAddress in the top of free_frames so it could be used later
-    free_frames[top_of_stack] = page->frameAddress;
-    page->frameAddress = 0;
-    allocated_frames--;
+/*
+the function allocate a frame
+param myPage: the page that we want to allocate
+param isWritable: if the page is writable
+param isKernel: if the page is kernel page
+return: the frame number
+*/
+uint32 allocateFrame(page* myPage, bool isWritable, bool isKernel)
+{
+    //check if already allocated
+    if(freeFrames[myPage->frameAddress] != 0)
+    {
+        print("error: frame already allocated\n");
+        return;
+    }
+
+    //check that there is a free frame
+    if(numOfAllocatedFrames == numOfFrames)
+    {
+        print("error: cannot allocate more frames\n");
+        return;
+    }
+    
+    //set frame as occupied
+    freeFrames[myPage->frameAddress] = 1;
+
+    //set the page
+    myPage->present = 1;
+    myPage->user = isKernel ? 0 : 1;
+    myPage->readwrite = isWritable ? 1 : 0;
+    myPage->frameAddress = numOfAllocatedFrames;
+
+    numOfAllocatedFrames++;
+    return numOfAllocatedFrames - 1;
 }
+
+/*
+the function free a frame
+param myPage: the page that we want to free
+return: none
+*/
+void freeFrame(page* myPage)
+{
+    uint32 index = myPage->frameAddress;
+
+    //check if not allocated
+    if(!freeFrames[index])
+    {
+        return;
+    }
+
+    //set frame as free
+    freeFrames[index] = 0;
+
+    numOfAllocatedFrames--;
+
+    //set page as not present
+    myPage->present = 0;
+    myPage->user = 0;
+    myPage->readwrite = 0;
+    myPage->frameAddress = 0;
+}
+
+

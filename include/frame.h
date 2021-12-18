@@ -1,9 +1,11 @@
 #ifndef FRAME_H
 #define FRAME_H
 #include "paging.h"
+#include "screen.h"
 
-void intialize_frame_allocator(uint32 system_frames);
-void free_frame(struct page *page);
+void initFrameAllocator(int NumOfFrames);
+uint32 allocateFrame(page* myPage, bool isWritable, bool isKernel);
+void freeFrame(page* myPage);
 
 
 #endif
