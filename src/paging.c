@@ -1,6 +1,7 @@
 #include "../include/paging.h"
 #include "../include/frame.h"
 #include "../include/convert.h"
+#include "../include/malloc.h"
 
 #define OFFSET_LEN 0x1000
 
@@ -29,11 +30,16 @@ void initialize_paging(unsigned_int32 total_frames) {
     unsigned_int32 i = 0;
     _physicalAddr = &kernel_directory->physicalAddress;
 
-    enablePaging();
-    loadPageDirectory(_physicalAddr);
+    switch_page_directory(_physicalAddr);
 
 }
 
+
+void switch_page_directory(struct page_directory * addr)
+{
+    loadPageDirectory(addr);
+    enablePaging();
+}
 /*
 the function gives tou the page using the address
 address: the address of the page you want to get
@@ -41,7 +47,7 @@ dir: where the page table is in
 ret: the page that the address belonged to
 */
 
-struct page *get_page(unsigned_int32 address, struct page_directory *dir)
+struct page *get_page(unsigned_int32 address, bool make, struct page_directory *dir)
 {
     // removes the files offset from the address by shifting the address using division of the necessery amount of bits
     address /= OFFSET_LEN;
@@ -52,16 +58,31 @@ struct page *get_page(unsigned_int32 address, struct page_directory *dir)
         //returns the page in the correct table and page
         return &dir->tables[table_idx]->pages[address % 1024];
     }
+    else if (make)
+    {
+        return make_page(address, dir);
+
+    }
     else
     {
         return 0;
     }
 }
 
+struct page *make_page(unsigned_int32 address, struct page_directory *dir)
+{
+    uint32 newAddr;
+    //allocate the page in the table
+    dir->tables[address / 1024] = (struct page_table *)malloc_ap(sizeof(struct page_table), &newAddr);
+    //memset the number of frames in table times the number of bits in frame address
+    memset(dir->tables[address / 1024], 0, 1024 * 4 );
+    dir->tablesPhysicalAdrs[address / 1024] = newAddr | 0x7;
+    return &dir->tables[address / 1024]->pages[address%1024];
+}
 
 void clear_page(uint32 address)
 {
-    struct page *p = get_page(address, kernel_directory);
+    struct page *p = get_page(address, false, kernel_directory);
     if(p) {
         free_frame(p);
     }
