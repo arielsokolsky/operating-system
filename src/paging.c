@@ -1,5 +1,6 @@
 #include "../include/paging.h"
 
+
 /*
 the function sets up the paging in the memory
 total_frames: gets the total amount of frames (using the bootloader)
@@ -37,7 +38,8 @@ dir: where the page table is in
 ret: the page that the address belonged to
 */
 
-page *get_page(unsigned_int32 address, page_directory *dir)
+
+page *get_page(unsigned_int32 address, bool make, struct page_directory *dir)
 {
     // removes the files offset from the address by shifting the address using division of the necessery amount of bits
     address /= OFFSET_LEN;
@@ -53,12 +55,16 @@ page *get_page(unsigned_int32 address, page_directory *dir)
         return make_page(address, dir);
 
     }
+    else if (make)
+    {
+        return make_page(address, dir);
+
+    }
     else
     {
         return 0;
     }
 }
-
 
 /*
 the function get a frame by his address
@@ -93,6 +99,7 @@ page* mapPage(uint32 address)
 
 
 
+
 struct page *make_page(unsigned_int32 address, struct page_directory *dir)
 {
     uint32 newAddr;
@@ -111,4 +118,3 @@ void clear_page(uint32 address)
         free_frame(p);
     }
 }
-

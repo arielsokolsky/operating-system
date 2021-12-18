@@ -7,13 +7,15 @@
 #define OFFSET_LEN 0x1000
 #define ENTERY_SIZE 0x400
 
+
 struct page_directory *kernel_directory;
 struct page_directory *current_directory;
 
 bool initialized;
 
 
-typedef struct page {
+typedef struct page 
+{
     //checks if the file exists
     _Bool present; 
     // if the bit is clear then the file is read only, if the bit is one then it read and write
@@ -52,12 +54,10 @@ typedef struct page_directory
 page_directory *kernel_directory;
 page_directory *current_directory;
 
-
 void switch_page_directory(struct page_directory * addr);
 void initialize_paging(uint32);
-page *get_page(unsigned_int32 address, page_directory *dir);
+page *get_page(unsigned_int32 address, bool make, struct page_directory *dir);
 page* getPageByFrame(uint32 frameAddress);
 page* mapPage(uint32 address);
-
 
 #endif
