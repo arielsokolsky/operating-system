@@ -1,22 +1,13 @@
 #include "../include/paging.h"
-#include "../include/frame.h"
-#include "../include/convert.h"
-#include "../include/malloc.h"
 
-#define OFFSET_LEN 0x1000
-
-struct page_directory *kernel_directory;
-struct page_directory *current_directory;
-
-bool initialized;
 
 /*
 the function sets up the paging in the memory
 total_frames: gets the total amount of frames (using the bootloader)
 ret: none
 */
-
-void initialize_paging(unsigned_int32 total_frames) {
+void initialize_paging(unsigned_int32 total_frames) 
+{
 
     intialize_frame_allocator(total_frames);
 
@@ -47,16 +38,22 @@ dir: where the page table is in
 ret: the page that the address belonged to
 */
 
-struct page *get_page(unsigned_int32 address, bool make, struct page_directory *dir)
+
+page *get_page(unsigned_int32 address, bool make, struct page_directory *dir)
 {
     // removes the files offset from the address by shifting the address using division of the necessery amount of bits
     address /= OFFSET_LEN;
     // Find the page table containing this address
-    unsigned_int32 table_idx = address / 1024;
+    unsigned_int32 table_idx = address / ENTERY_SIZE;
     if (dir->tables[table_idx] != 0) // If this table is already assigned in the table
     {
         //returns the page in the correct table and page
-        return &dir->tables[table_idx]->pages[address % 1024];
+        return &dir->tables[table_idx]->pages[address % ENTERY_SIZE];
+    }
+    else if (make)
+    {
+        return make_page(address, dir);
+
     }
     else if (make)
     {
@@ -68,6 +65,40 @@ struct page *get_page(unsigned_int32 address, bool make, struct page_directory *
         return 0;
     }
 }
+
+/*
+the function get a frame by his address
+param freeAddress: the address of the frame
+param myPage: the page that we want to get
+return: the page
+*/
+page* getPageByFrame(uint32 frameAddress)
+{
+    return get_page(frameAddress , current_directory);
+}
+
+
+/*
+the function map page
+param: the address of the page we want to map
+return: the allocated page
+*/
+page* mapPage(uint32 address)
+{
+    bool isKernel = current_directory->physicalAddress == kernel_directory->physicalAddress;
+    page *myPage = getPageByFrame(address);
+    if(myPage == 0)
+    {
+        print("error: page not found\n");
+        return;
+    }
+    //allocate page
+    allocateFrame(myPage, true, isKernel); 
+    return myPage;
+}
+
+
+
 
 struct page *make_page(unsigned_int32 address, struct page_directory *dir)
 {
