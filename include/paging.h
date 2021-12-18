@@ -6,13 +6,13 @@
 #include "frame.h"
 #define OFFSET_LEN 0x1000
 #define ENTERY_SIZE 0x400
-
+#define MAX_ADDRESS OFFSET_LEN * ENTERY_SIZE * ENTERY_SIZE
 
 struct page_directory *kernel_directory;
 struct page_directory *current_directory;
 
 bool initialized;
-
+extern uint32 currentAddress;
 
 typedef struct page 
 {
@@ -34,8 +34,6 @@ typedef struct page
 
 unsigned_int32 _physicalAddr;
 
-extern void enablePaging();
-extern void loadPageDirectory(unsigned_int32);
 
 typedef struct page_table
 {
@@ -59,5 +57,9 @@ void initialize_paging(uint32);
 page *get_page(unsigned_int32 address, bool make, struct page_directory *dir);
 page* getPageByFrame(uint32 frameAddress);
 page* mapPage(uint32 address);
+page *make_page(unsigned_int32 address, page_directory *dir);
+void clear_page(uint32 address);
+extern void enablePaging();
+extern void loadPageDirectory(unsigned_int32);
 
 #endif

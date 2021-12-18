@@ -8,25 +8,44 @@ ret: none
 */
 void initialize_paging(unsigned_int32 total_frames) 
 {
+    uint32 _address = 0;
+    uint32 i = 0;
+    initFrameAllocator(total_frames);
 
-    intialize_frame_allocator(total_frames);
-
-    kernel_directory = (struct page_directory *) malloc_a(sizeof(struct page_directory));
-    memset(kernel_directory, 0, sizeof (struct page_directory));
+    kernel_directory = (page_directory *) malloc_a(sizeof(page_directory));
+    memset(kernel_directory, 0, sizeof (page_directory));
     current_directory = kernel_directory;
     
-    // Go ahead and allocate all the page tables for the kernel.
-    // This is wasteful, but a lot easier than figuring out how to build
-    // a kernel page allocator.
-    unsigned_int32 i = 0;
+    // making the kernel pages
+    for(i = 0; i < 0xFFFFFFFF;) 
+    {
+        get_page(i, 1, kernel_directory);
+        i += 0x1000 * 1024;
+        if(i == 0) {
+            break;
+        }
+    }
+
+    printInt(currentAddress);
+    // allocating the kernel frames
+    i = 0;
+    while(i < currentAddress)
+    {
+        printInt(i);
+        // Kernel code is readable but not writeable from userspace.
+        allocateFrame( get_page(i, true, kernel_directory), 0, 0);
+        i += 0x1000;
+    }
+
     _physicalAddr = &kernel_directory->physicalAddress;
 
     switch_page_directory(_physicalAddr);
+    initialized = true;
 
 }
 
 
-void switch_page_directory(struct page_directory * addr)
+void switch_page_directory(page_directory * addr)
 {
     loadPageDirectory(addr);
     enablePaging();
@@ -39,7 +58,7 @@ ret: the page that the address belonged to
 */
 
 
-page *get_page(unsigned_int32 address, bool make, struct page_directory *dir)
+page *get_page(unsigned_int32 address, bool make, page_directory *dir)
 {
     // removes the files offset from the address by shifting the address using division of the necessery amount of bits
     address /= OFFSET_LEN;
@@ -74,7 +93,7 @@ return: the page
 */
 page* getPageByFrame(uint32 frameAddress)
 {
-    return get_page(frameAddress , current_directory);
+    return get_page(frameAddress, false, current_directory);
 }
 
 
@@ -97,24 +116,21 @@ page* mapPage(uint32 address)
     return myPage;
 }
 
-
-
-
-struct page *make_page(unsigned_int32 address, struct page_directory *dir)
+page *make_page(unsigned_int32 address, page_directory *dir)
 {
     uint32 newAddr;
     //allocate the page in the table
-    dir->tables[address / 1024] = (struct page_table *)malloc_ap(sizeof(struct page_table), &newAddr);
+    dir->tables[address / ENTERY_SIZE] = (page_table *)malloc_ap(sizeof(page_table), &newAddr);
     //memset the number of frames in table times the number of bits in frame address
-    memset(dir->tables[address / 1024], 0, 1024 * 4 );
-    dir->tablesPhysicalAdrs[address / 1024] = newAddr | 0x7;
-    return &dir->tables[address / 1024]->pages[address%1024];
+    memset(dir->tables[address / ENTERY_SIZE], 0, ENTERY_SIZE * 4 );
+    dir->tablesPhysicalAdrs[address / ENTERY_SIZE] = newAddr | 0x7;
+    return &dir->tables[address / ENTERY_SIZE]->pages[address % ENTERY_SIZE];
 }
 
 void clear_page(uint32 address)
 {
-    struct page *p = get_page(address, false, kernel_directory);
+    page *p = get_page(address, false, kernel_directory);
     if(p) {
-        free_frame(p);
+        freeFrame(p);
     }
 }

@@ -4,8 +4,7 @@
 #include "screen.h"
 
 void initFrameAllocator(int NumOfFrames);
-uint32 allocateFrame(page* myPage, bool isWritable, bool isKernel);
-void freeFrame(page* myPage);
-
+void allocateFrame(struct page* myPage, bool isWritable, bool isKernel);
+void freeFrame(struct page* myPage);
 
 #endif

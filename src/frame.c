@@ -30,14 +30,16 @@ the function allocate a frame
 param myPage: the page that we want to allocate
 param isWritable: if the page is writable
 param isKernel: if the page is kernel page
-return: the frame number
+return: none
 */
-uint32 allocateFrame(page* myPage, bool isWritable, bool isKernel)
+void allocateFrame(page* myPage, bool isWritable, bool isKernel)
 {
     //check if already allocated
-    if(freeFrames[myPage->frameAddress] != 0)
+    if(myPage->frameAddress != 0)
     {
-        print("error: frame already allocated\n");
+        println("error: frame already allocated\n");
+        printInt(myPage->frameAddress);
+        asm("hlt");
         return;
     }
 
@@ -58,7 +60,6 @@ uint32 allocateFrame(page* myPage, bool isWritable, bool isKernel)
     myPage->frameAddress = numOfAllocatedFrames;
 
     numOfAllocatedFrames++;
-    return numOfAllocatedFrames - 1;
 }
 
 /*
