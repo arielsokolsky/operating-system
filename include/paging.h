@@ -1,6 +1,8 @@
 #ifndef PAGING_H
 #define PAGING_H
 #include "types.h"
+#include "malloc.h"
+
 
 struct page {
     //checks if the file exists
@@ -38,5 +40,6 @@ struct page_directory
     unsigned_int32 physicalAddress;
 };
 void initialize_paging();
-struct page *get_page(unsigned_int32 address, struct page_directory *dir);
+void switch_page_directory(struct page_directory * addr);
+struct page *get_page(unsigned_int32 address, bool make, struct page_directory *dir);
 #endif
