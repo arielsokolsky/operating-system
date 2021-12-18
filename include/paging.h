@@ -1,9 +1,17 @@
 #ifndef PAGING_H
 #define PAGING_H
 #include "types.h"
+#include "malloc.h"
 #include "screen.h"
+#include "frame.h"
 #define OFFSET_LEN 0x1000
 #define ENTERY_SIZE 0x400
+
+struct page_directory *kernel_directory;
+struct page_directory *current_directory;
+
+bool initialized;
+
 
 typedef struct page {
     //checks if the file exists
@@ -45,9 +53,11 @@ page_directory *kernel_directory;
 page_directory *current_directory;
 
 
+void switch_page_directory(struct page_directory * addr);
 void initialize_paging(uint32);
 page *get_page(unsigned_int32 address, page_directory *dir);
 page* getPageByFrame(uint32 frameAddress);
 page* mapPage(uint32 address);
+
 
 #endif

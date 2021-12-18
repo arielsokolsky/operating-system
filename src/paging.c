@@ -8,6 +8,10 @@ ret: none
 void initialize_paging(unsigned_int32 total_frames) 
 {
 
+    intialize_frame_allocator(total_frames);
+
+    kernel_directory = (struct page_directory *) malloc_a(sizeof(struct page_directory));
+    memset(kernel_directory, 0, sizeof (struct page_directory));
     current_directory = kernel_directory;
     
     // Go ahead and allocate all the page tables for the kernel.
@@ -16,17 +20,23 @@ void initialize_paging(unsigned_int32 total_frames)
     unsigned_int32 i = 0;
     _physicalAddr = &kernel_directory->physicalAddress;
 
-    enablePaging();
-    loadPageDirectory(_physicalAddr);
+    switch_page_directory(_physicalAddr);
 
 }
 
+
+void switch_page_directory(struct page_directory * addr)
+{
+    loadPageDirectory(addr);
+    enablePaging();
+}
 /*
 the function gives tou the page using the address
 address: the address of the page you want to get
 dir: where the page table is in
 ret: the page that the address belonged to
 */
+
 page *get_page(unsigned_int32 address, page_directory *dir)
 {
     // removes the files offset from the address by shifting the address using division of the necessery amount of bits
@@ -38,11 +48,17 @@ page *get_page(unsigned_int32 address, page_directory *dir)
         //returns the page in the correct table and page
         return &dir->tables[table_idx]->pages[address % ENTERY_SIZE];
     }
+    else if (make)
+    {
+        return make_page(address, dir);
+
+    }
     else
     {
         return 0;
     }
 }
+
 
 /*
 the function get a frame by his address
@@ -75,4 +91,24 @@ page* mapPage(uint32 address)
     return myPage;
 }
 
+
+
+struct page *make_page(unsigned_int32 address, struct page_directory *dir)
+{
+    uint32 newAddr;
+    //allocate the page in the table
+    dir->tables[address / 1024] = (struct page_table *)malloc_ap(sizeof(struct page_table), &newAddr);
+    //memset the number of frames in table times the number of bits in frame address
+    memset(dir->tables[address / 1024], 0, 1024 * 4 );
+    dir->tablesPhysicalAdrs[address / 1024] = newAddr | 0x7;
+    return &dir->tables[address / 1024]->pages[address%1024];
+}
+
+void clear_page(uint32 address)
+{
+    struct page *p = get_page(address, false, kernel_directory);
+    if(p) {
+        free_frame(p);
+    }
+}
 
