@@ -8,81 +8,116 @@ ret: none
 */
 void initialize_paging(unsigned_int32 total_frames) 
 {
+    page* myPage; 
     uint32 _address = 0;
-    uint32 i = 0;
+    unsigned int i = 0;
     initFrameAllocator(total_frames);
 
     kernel_directory = (page_directory *) malloc_a(sizeof(page_directory));
     memset(kernel_directory, 0, sizeof (page_directory));
+    kernel_directory->physicalAddress = (uint32)kernel_directory->tablesPhysicalAdrs;
+
     current_directory = kernel_directory;
-    
-    // making the kernel pages
-    for(i = 0; i < 0xFFFFFFFF;) 
+
+    // allocate the page tables
+    //for(i = 0; i < 0xFFFFFFFF;) 
+    //{
+    //    get_page(i, 1, kernel_directory);
+    //    i += 0x1000 * 1024;
+    //    if(i == 0) 
+    //    {
+    //        break;
+    //    } 
+    //}
+    myPage = get_page(0, 1, kernel_directory);
+
+    if((myPage + 1)->present ==0)
     {
-        get_page(i, 1, kernel_directory);
-        i += 0x1000 * 1024;
-        if(i == 0) {
-            break;
-        }
+        print("intersting1");
     }
 
-    printInt(currentAddress);
+    get_page(0x1000 * 1024, 1, kernel_directory);
+    if((myPage + 1)->present == 0)
+    {
+        print("intersting2");
+    }
+
+
+    asm("hlt");
+    for (uint32 i = 0; i < 1024; i++)
+    {
+        if(kernel_directory->tables[0]->pages[i].present == 1)
+        {
+            print("error ");
+            printInt(i);
+            asm("hlt");
+        }
+    }
+    print("working");
+
+
     // allocating the kernel frames
     i = 0;
     while(i < currentAddress)
     {
-        printInt(i);
+        myPage = get_page(i, 0, kernel_directory);    
+        readString();
+        printInt(myPage->present);
         // Kernel code is readable but not writeable from userspace.
-        allocateFrame( get_page(i, true, kernel_directory), 0, 0);
+        allocateFrame(myPage, 0, 0);
         i += 0x1000;
     }
 
+    
     _physicalAddr = &kernel_directory->physicalAddress;
+    print("switch page\n");
+    switch_page_directory(kernel_directory);
 
-    switch_page_directory(_physicalAddr);
     initialized = true;
+    print("the end of initialize_paging");
+    return;
 
 }
 
 
 void switch_page_directory(page_directory * addr)
 {
-    loadPageDirectory(addr);
+    loadPageDirectory(&addr->physicalAddress);
+    print("load");
     enablePaging();
 }
+
 /*
 the function gives tou the page using the address
 address: the address of the page you want to get
 dir: where the page table is in
 ret: the page that the address belonged to
 */
-
-
 page *get_page(unsigned_int32 address, bool make, page_directory *dir)
 {
     // removes the files offset from the address by shifting the address using division of the necessery amount of bits
     address /= OFFSET_LEN;
     // Find the page table containing this address
     unsigned_int32 table_idx = address / ENTERY_SIZE;
-    if (dir->tables[table_idx] != 0) // If this table is already assigned in the table
-    {
+
+    if (dir->tables[table_idx] != 0) // If this table is already assigned
+    {        
         //returns the page in the correct table and page
         return &dir->tables[table_idx]->pages[address % ENTERY_SIZE];
     }
     else if (make)
     {
         return make_page(address, dir);
-
-    }
-    else if (make)
-    {
-        return make_page(address, dir);
-
     }
     else
     {
-        return 0;
+        print("error page table not exists :(\n");
+        asm("hlt");
     }
+
+
+    return 0;
+    
 }
 
 /*
@@ -118,14 +153,24 @@ page* mapPage(uint32 address)
 
 page *make_page(unsigned_int32 address, page_directory *dir)
 {
+    page* myPage;
     uint32 newAddr;
-    //allocate the page in the table
+    
     dir->tables[address / ENTERY_SIZE] = (page_table *)malloc_ap(sizeof(page_table), &newAddr);
-    //memset the number of frames in table times the number of bits in frame address
-    memset(dir->tables[address / ENTERY_SIZE], 0, ENTERY_SIZE * 4 );
+    memset(dir->tables[address / ENTERY_SIZE], 0, OFFSET_LEN);
     dir->tablesPhysicalAdrs[address / ENTERY_SIZE] = newAddr | 0x7;
-    return &dir->tables[address / ENTERY_SIZE]->pages[address % ENTERY_SIZE];
+
+    myPage = &dir->tables[address / ENTERY_SIZE]->pages[address % ENTERY_SIZE];
+    
+    for (uint32 i = 0; i < 1024; i++)
+    {
+        dir->tables[address / ENTERY_SIZE]->pages[i].present = 0;
+    }
+    
+
+    return myPage;
 }
+
 
 void clear_page(uint32 address)
 {
@@ -134,3 +179,5 @@ void clear_page(uint32 address)
         freeFrame(p);
     }
 }
+
+

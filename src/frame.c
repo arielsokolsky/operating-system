@@ -35,11 +35,9 @@ return: none
 void allocateFrame(page* myPage, bool isWritable, bool isKernel)
 {
     //check if already allocated
-    if(myPage->frameAddress != 0)
+    if(myPage->present)
     {
-        println("error: frame already allocated\n");
-        printInt(myPage->frameAddress);
-        asm("hlt");
+        print("error: frame already allocated\n");
         return;
     }
 
