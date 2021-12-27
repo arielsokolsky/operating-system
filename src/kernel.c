@@ -20,7 +20,7 @@ int main(multiboot_info* info)
     print("\n");
     numFrames = printMultiBootInfo(info);
 
-    initialize_paging(numFrames);
+    //initialize_paging(numFrames);
     
     readString();
     clearScreen();

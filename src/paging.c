@@ -38,7 +38,7 @@ void initialize_paging(unsigned_int32 total_frames)
     }
 
     _physicalAddr = &kernel_directory->physicalAddress;
-
+    print("working");
     switch_page_directory(_physicalAddr);
     initialized = true;
 
