@@ -59,6 +59,6 @@ page* mapPage(uint32 address);
 page *make_page(uint32 address, page_directory *dir);
 void clear_page(uint32 address);
 extern void enablePaging();
-extern void loadPageDirectory(uint32);
+extern void loadPageDirectory(uint32* );
 
 #endif
