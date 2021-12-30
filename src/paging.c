@@ -1,6 +1,5 @@
 #include "../include/paging.h"
 
-
 /*
 the function sets up the paging in the memory
 total_frames: gets the total amount of frames (using the bootloader)
@@ -14,46 +13,21 @@ void initialize_paging(unsigned_int32 total_frames)
     initFrameAllocator(total_frames);
 
     kernel_directory = (page_directory *) malloc_a(sizeof(page_directory));
-    memset(kernel_directory, 0, sizeof (page_directory));
+    memset(kernel_directory, 0, sizeof(page_directory));
     kernel_directory->physicalAddress = (uint32)kernel_directory->tablesPhysicalAdrs;
 
     current_directory = kernel_directory;
 
     // allocate the page tables
-    //for(i = 0; i < 0xFFFFFFFF;) 
-    //{
-    //    get_page(i, 1, kernel_directory);
-    //    i += 0x1000 * 1024;
-    //    if(i == 0) 
-    //    {
-    //        break;
-    //    } 
-    //}
-    myPage = get_page(0, 1, kernel_directory);
-
-    if((myPage + 1)->present ==0)
+    for(i = 0; i < 0xFFFFFFFF;) 
     {
-        print("intersting1");
-    }
-
-    get_page(0x1000 * 1024, 1, kernel_directory);
-    if((myPage + 1)->present == 0)
-    {
-        print("intersting2");
-    }
-
-
-    asm("hlt");
-    for (uint32 i = 0; i < 1024; i++)
-    {
-        if(kernel_directory->tables[0]->pages[i].present == 1)
+        get_page(i, 1, kernel_directory);
+        i += 0x1000 * 1024;
+        if(i == 0) 
         {
-            print("error ");
-            printInt(i);
-            asm("hlt");
-        }
+            break;
+        } 
     }
-    print("working");
 
 
     // allocating the kernel frames
@@ -61,8 +35,6 @@ void initialize_paging(unsigned_int32 total_frames)
     while(i < currentAddress)
     {
         myPage = get_page(i, 0, kernel_directory);    
-        readString();
-        printInt(myPage->present);
         // Kernel code is readable but not writeable from userspace.
         allocateFrame(myPage, 0, 0);
         i += 0x1000;
@@ -82,7 +54,7 @@ void initialize_paging(unsigned_int32 total_frames)
 
 void switch_page_directory(page_directory * addr)
 {
-    loadPageDirectory(&addr->physicalAddress);
+    loadPageDirectory(_physicalAddr);
     print("load");
     enablePaging();
 }
@@ -166,7 +138,6 @@ page *make_page(unsigned_int32 address, page_directory *dir)
     {
         dir->tables[address / ENTERY_SIZE]->pages[i].present = 0;
     }
-    
 
     return myPage;
 }
