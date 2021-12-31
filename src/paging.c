@@ -1,5 +1,5 @@
 #include "../include/paging.h"
-
+#include "../include/frame.h"
 /*
 the function sets up the paging in the memory
 total_frames: gets the total amount of frames (using the bootloader)
@@ -53,10 +53,10 @@ void switch_page_directory(page_directory * directory)
 {
     uint32* tablesPointer = &directory->tablesPhysicalAdrs;
     current_directory = directory;
-    loadPageDirectory(tablesPointer);
-    asm volatile("mov %0, %%cr3":: "r"(tablesPointer));
 
+    asm volatile("mov %0, %%cr3":: "r"(tablesPointer));
     enablePaging();
+
 }
 
 /*

@@ -3,7 +3,6 @@
 #include "types.h"
 #include "malloc.h"
 #include "screen.h"
-#include "frame.h"
 #include "input.h"
 #define OFFSET_LEN 0x1000
 #define ENTERY_SIZE 0x400
@@ -29,14 +28,14 @@ typedef struct page
     uint32 unusedBits : 7;   
     // Frame address
     uint32 frameAddress : 20;  
-}page ;
+}page;
 
 uint32 _physicalAddr;
 
 
 typedef struct page_table
 {
-    struct page pages[1024];
+    page pages[1024];
 }page_table;
 
 typedef struct page_directory
@@ -53,12 +52,11 @@ page_directory *current_directory;
 
 void switch_page_directory(page_directory * addr);
 void initialize_paging(uint32);
-page *get_page(uint32 address, bool make, struct page_directory *dir);
+page *get_page(uint32 address, bool make, page_directory *dir);
 page* getPageByFrame(uint32 frameAddress);
 page* mapPage(uint32 address);
 page *make_page(uint32 address, page_directory *dir);
 void clear_page(uint32 address);
 extern void enablePaging();
-extern void loadPageDirectory(uint32* );
 
 #endif

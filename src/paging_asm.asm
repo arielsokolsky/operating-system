@@ -1,5 +1,6 @@
 global enablePaging
 global loadPageDirectory
+extern tablesPointer
 
 enablePaging:
 mov eax, cr0
@@ -7,7 +8,4 @@ or eax, 0x80000000
 mov cr0, eax
 ret
 
-loadPageDirectory:
-pop eax
-mov cr3, eax
-ret
+
