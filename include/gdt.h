@@ -4,25 +4,25 @@
 
 //the entry struct in the gdt table
 //the struct is packed so the complier will won't try to "optimize" the struct in the memory
-struct gdt_entry{
+typedef struct gdt_entry{
     unsigned_int16 low_limit;
     unsigned_int16 low_base;
     unsigned_int8 middle_base;
     unsigned_int8 access_byte;
     unsigned_int8 limit_and_flags;
     unsigned_int8 high_base;
-} __attribute__((packed));
+} __attribute__((packed)) gdt_entry;
 
 
 
 //the poiter for the gdt table
-struct gdt_ptr {
+typedef struct gdt_ptr {
     unsigned_int16 limit;
     unsigned_int32 base;
-}__attribute__((packed));
+}__attribute__((packed)) gdt_ptr;
 
-struct gdt_entry gdt[5];
-struct gdt_ptr gp;
+gdt_entry gdt[5];
+gdt_ptr gp;
 
 //this function is in the start.asm file
 //the function will reload the new segment register

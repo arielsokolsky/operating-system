@@ -13,6 +13,5 @@ int printMultiBootInfo(multiboot_info* info)
     print("total frames: ");
     printInt(total_frames);
 
-    println("\npress enter");
     return total_frames;
 }

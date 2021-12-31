@@ -30,9 +30,9 @@ uint32 mallocBasic(uint32 size, bool aligened, uint32 *phys)
     }
 
     temp = currentAddress;
-    temp += size;
+    currentAddress += size;
 
-    return currentAddress;
+    return temp;
 }
 
 
@@ -56,6 +56,7 @@ uint32 stopMalloc()
     return end;
 
 }
+
 
 
 uint32 malloc_a(uint32 size) 

@@ -12,16 +12,19 @@
 int main(multiboot_info* info)
 {  
     int numFrames;
+
     printWelcomeScreen();
     setupIdt();
     install_gdt();
-    
+
 
     print("\n");
     numFrames = printMultiBootInfo(info);
+    println("");
 
-    //initialize_paging(numFrames);
-    
+    initialize_paging(numFrames);
+    println("\npress enter");
+
     readString();
     clearScreen();
 
