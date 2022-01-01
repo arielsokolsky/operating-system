@@ -3,14 +3,14 @@ include makefile.cfg
 all: build link run create_img clean
 .PHONEY = all
 
-OBJECTS_C = $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(wildcard $(SRC)/*.c))
-OBJECTS_ASM  = $(patsubst $(SRC)/%.asm, $(OBJ)/%.o, $(wildcard $(SRC)/*.asm))
+OBJECTS_C = $(patsubst $(C_SRC)/%.c, $(OBJ)/%.o, $(wildcard $(C_SRC)/*.c))
+OBJECTS_ASM  = $(patsubst $(ASM_SRC)/%.asm, $(OBJ)/%.o, $(wildcard $(ASM_SRC)/*.asm))
 
 
-$(OBJ)/%.o: $(SRC)/%.c
+$(OBJ)/%.o: $(C_SRC)/%.c
 	@$(COMPILER) $(C_FLAGS) $< -o $@
 
-$(OBJ)/%.o: $(SRC)/%.asm
+$(OBJ)/%.o: $(ASM_SRC)/%.asm
 	@$(ASSEMBLER) $(A_FLAGS) $< -o $@
 	
 build:$(OBJECTS_C) $(OBJECTS_ASM)
