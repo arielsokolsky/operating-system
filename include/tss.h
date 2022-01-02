@@ -1,7 +1,57 @@
 #ifndef TSS_H
 #define TSS_H
-#include "types.h":
+#include "types.h";
 
+
+
+void tssSetStack(uint32 stack);
+void tssInit(uint32 num, uint16 ss0, uint16 esp0);
+void tssSwitch();
+
+
+typedef struct tss
+{
+    //check if called by `CALL` or `INT` or rather by `JMP`
+    uint16 link;
+    uint16 link_h;
+    
+    //stack pointer(esp) and stack segment(ss)
+    stack_segment_t stack_segment1;
+    stack_segment_t stack_segment2;
+    stack_segment_t stack_segment3;
+
+    //control register3 - point to Page Directory Base Register (PDBR)
+    uint32 cr3; 
+    
+    //execution_state
+    execution_state_t execution_state;
+
+    //general purpose registers
+    general_purpose_registers_t general_purpose_registers;
+
+    //stack registers
+    stack_registers_t stack_registers;    
+
+    //pointer_registers
+    pointer_registers_t pointer_registers;
+
+    //segment registers
+    segment_registers_t segment_registers;
+
+    //pointer to the ldt local descriptor table
+    uint16 ldtr; 
+    uint16 ldtr_h;
+
+    uint16 trap;
+    uint16 iomap;
+} __attribute__((packed)) tss_t;
+
+typedef struct stack_segment
+{
+    uint32 esp;
+    uint16 ss;
+    uint16 ss_h;
+} __attribute__((packed)) stack_segment_t;
 
 typedef struct stack_registers
 {
@@ -56,53 +106,6 @@ typedef struct general_purpose_registers
     uint32 edx; //data
     uint32 ebx; //base 
 }__attribute__((packed)) general_purpose_registers_t;
-
-
-
-typedef struct tss
-{
-    //check if called by `CALL` or `INT` or rather by `JMP`
-    uint16 link;
-    uint16 link_h;
-    
-    //stack pointer(esp) and stack segment(ss)
-    uint32 esp0; 
-    uint16 ss0; 
-    uint16 ss0_h;
-    
-    uint32 esp1; 
-    uint16 ss1;
-    uint16 ss1_h;
-
-    uint32 esp2; 
-    uint16 ss2;
-    uint16 ss2_h;
-
-    //control register3 - point to Page Directory Base Register (PDBR)
-    uint32 cr3; 
-    
-    //execution_state
-    execution_state_t execution_state;
-
-    //general purpose registers
-    general_purpose_registers_t general_purpose_registers;
-
-    //stack registers
-    stack_registers_t stack_registers;    
-
-    //pointer_registers
-    pointer_registers_t pointer_registers;
-
-    //segment registers
-    segment_registers_t segment_registers;
-
-    //pointer to the ldt local descriptor table
-    uint16 ldtr; 
-    uint16 ldtr_h;
-
-    uint16 trap;
-    uint16 iomap;
-} __attribute__((packed)) tss_t;
 
 
 #endif
