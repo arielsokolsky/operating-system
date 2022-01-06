@@ -25,4 +25,7 @@ asm_switch:
     push eax
 
     pushl 0x1B
+    mov ax, ip
+    add ax, 3
+    push ax
     ret
