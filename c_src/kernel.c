@@ -8,6 +8,7 @@
 #include "../include/gdt.h"
 #include "../include/paging.h"
 #include "../include/malloc.h"
+#include "../include/task.h"
 
 int main(multiboot_info* info)
 {  

@@ -12,8 +12,18 @@ typedef struct task
     uint32 eip;
     page_directory *page_dir;
     uint32 kernel_stack;
-    task_t* next;
+    struct task_t* next;
 }task_t;
 
+task_t* ready_queue;
+task_t* current_task;
+
+extern void to_esp(uint32 esp);
+
+//void task_install();
+//void task_switch();
+//void move_stack(void* new_stack_start, uint32 size);
+
+uint32 getpid();
 
 #endif
