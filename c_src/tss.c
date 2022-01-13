@@ -21,6 +21,9 @@ void tss_install(uint32 index, uint16 ss, uint16 esp)
 
     set_gdt_gate(index, tss_addr, size, 0xE9, 0);
 
+    memset(&system_tss, 0, sizeof(system_tss));
+
+
     system_tss.stack_segment0.ss = ss;
     system_tss.stack_segment0.esp = esp;
 
@@ -31,6 +34,5 @@ void tss_install(uint32 index, uint16 ss, uint16 esp)
     system_tss.segment_registers.gs = 0x13;
     system_tss.segment_registers.ss = 0x13;
 
-    tss_flush();
 }
 

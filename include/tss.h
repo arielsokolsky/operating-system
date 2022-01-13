@@ -1,13 +1,12 @@
 #ifndef TSS_H
 #define TSS_H
-#include "types.h";
-
-extern void flush_tss();
+#include "types.h"
 
 void tssSetStack(uint32 stack);
-void tssInit(uint32 num, uint16 ss0, uint16 esp0);
-void tssSwitch();
-
+//void tssInit(uint32 num, uint16 ss0, uint16 esp0);
+//void tssSwitch();
+void tss_install(uint32 index, uint16 ss, uint16 esp);
+extern void tss_flush();
 typedef struct stack_segment
 {
     uint32 esp;

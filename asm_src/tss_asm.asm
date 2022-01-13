@@ -1,31 +1,31 @@
-global tss_flash
+global tss_flush
 global asm_switch
 
 tss_flush:
-    mov ax, 0x2B
-    lrt ax
+    mov ax, 0x28
+    ltr ax
     ret
 
 
 
 asm_switch:
     cli
-    mov ax 0x23
+    mov ax, 0x23
     mov ds, ax
     mov es, ax
     mov fs, ax
     mov gs, ax
 
     mov eax, esp
-    pushl 0x23
-    pushl eax
+    push 0x23
+    push eax
     pushf
     pop eax
     or eax, 0x200
     push eax
-
-    pushl 0x1B
-    mov ax, ip
-    add ax, 3
-    push ax
+    mov eax, 0x1B 
+    push eax
+    ;mov ax, sp
+    ;add ax, 3
+    ;push ax
     ret
