@@ -103,6 +103,7 @@ ret: destion address
 */
 void* memcpy(const void* src, void* dst, int unsigned len)
 {
+	readString();
     for (unsigned int i = 0; i < len; i++)
     {
         ((int*)dst)[i] = ((int*)src)[i];
