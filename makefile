@@ -1,6 +1,6 @@
 include makefile.cfg
 
-all: build link run create_img clean
+all: clean build link run create_img clean
 .PHONEY = all
 
 OBJECTS_C = $(patsubst $(C_SRC)/%.c, $(OBJ)/%.o, $(wildcard $(C_SRC)/*.c))

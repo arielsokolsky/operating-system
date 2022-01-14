@@ -22,7 +22,7 @@ void initialize_paging(unsigned_int32 total_frames)
     for(i = 0; i < 0xFFFFFFFF;) 
     {
         get_page(i, 1, kernel_directory);
-        i += 0x1000 * 1024;
+        i += PAGE_SIZE * 1024;
         if(i == 0) 
         {
             break;
@@ -36,14 +36,14 @@ void initialize_paging(unsigned_int32 total_frames)
         myPage = get_page(i, 1, kernel_directory);    
         // Kernel code is readable but not writeable from userspace.
         allocateFrame(myPage, 0, 0);
-        i += 0x1000;
+        i += PAGE_SIZE;
     }
     
     _physicalAddr = &kernel_directory->physicalAddress;
     switch_page_directory(kernel_directory);
 
     initialized = true;
-    print("initialize_paging");
+    println("initialize_paging");
     return;
 
 }
@@ -71,7 +71,6 @@ page *get_page(unsigned_int32 address, bool make, page_directory *dir)
     address /= OFFSET_LEN;
     // Find the page table containing this address
     unsigned_int32 table_idx = address / ENTERY_SIZE;
-
     if (dir->tables[table_idx] != 0) // If this table is already assigned
     {        
         //returns the page in the correct table and page
