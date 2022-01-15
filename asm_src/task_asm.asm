@@ -1,6 +1,6 @@
-global to_esp
+global read_eip
 global flush_tlb
-to_esp:
+read_eip:
     pop eax
     jmp eax
 

@@ -1,6 +1,11 @@
 #include "../include/task.h"
 int next_pid = 1;
 
+/*
+the function return the current process id
+param: none
+return: the id
+*/
 uint32 getpid()
 {
     return current_task->id;
@@ -36,11 +41,24 @@ void move_stack(void* new_stack_start, uint32 size)
 
     newStackBase = oldStackBase + offset;
     newStackPointer = oldStackPointer + offset;
-    printInt(newStackPointer);
-    printInt(oldStackPointer);
-    //copy the stack
-    memcpy((void*)newStackPointer, (void*)oldStackPointer, stack_end - oldStackPointer);
     
+    //copy the stack
+    memcpy((void*)oldStackPointer, (void*)newStackPointer, stack_end - oldStackPointer);
+
+    for (uint32 i = (uint32)new_stack_start; i > (uint32)new_stack_start - size; i -= 4)
+	{
+		uint32 tmp = *(uint32*)i;
+
+		// If tmp inside old stack, then remap it
+		if ((oldStackPointer < tmp) && (tmp < stack_end))
+		{
+			tmp = tmp + offset;
+			uint32* tmp2 = (uint32*)i;
+			*tmp2 = tmp;
+		}
+	}
+
+    print("copy the stack");
     //set esp and ebp
     asm volatile("mov %0, %%esp" : : "r" (newStackPointer));
 	asm volatile("mov %0, %%ebp" : : "r" (newStackBase));
@@ -50,11 +68,12 @@ void move_stack(void* new_stack_start, uint32 size)
 
 /*
 the function setup a task mechanism
+param: none
 return: none
 */
 void task_install()
 {
-    move_stack((void*)(0xE0000000), STACK_SIZE);
+    //move_stack((void*)(0xE0000000), STACK_SIZE);
     println("move stack\n");
     
     task_t myTask;
@@ -70,7 +89,6 @@ void task_install()
     next_pid += 1;
     current_task = &myTask;
     ready_queue = current_task;
-
 }
 
 /*
@@ -90,7 +108,7 @@ void task_switch()
     //get registers values
     asm volatile ("mov %%esp, %0" : "=r" (esp));
     asm volatile ("mov %%ebp, %0" : "=r" (ebp));
-    eip = get_eip();
+    eip = read_eip();
 
     //if equal to dummy value that mean we switched
     if(eip == 0x12345)
@@ -111,25 +129,26 @@ void task_switch()
     current_directory = current_task->page_dir;
     //tss set kernel stack
 
+
+    /*
+    steps:
+    disable interrupt
+    save eip in ecx
+    load new stack
+    load new page ditroctry
+    put dummy value in eax
+    enable interrupt 
+    */
     asm volatile("				\
-        ;disable interrupt      \
         cli;                    \
-        ;save eip in ecx		\
-    	mov %0, %%ecx           \
-        ;load new stack			\
-    	mov %0, %%esp			\
-        mov %0, %%ebp			\
-        ;load new page ditroctry\
-        mov %0, %%cr3           \
-        ;put dummy value in eax \
-        mov 0x12345, eax        \
-        ;enable interrupt       \
-        sti                     \
-    	jmp *%%ecx"                             
-        : : "r"(eip) "r"(esp) "r"(ebp) "r"(current_directory));
-
-    
+    	mov %0, %%ecx;          \
+    	mov %1, %%esp;			\
+        mov %2, %%ebp;			\
+        mov %3, %%cr3;          \
+        mov $0x12345, %%eax;    \
+        sti;                    \
+    	jmp *%%ecx;"                             
+        : : "r"(eip), "r"(esp), "r"(ebp), "r"(current_directory));
 }
-
 
 

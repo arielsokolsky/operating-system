@@ -23,7 +23,7 @@ task_t* current_task;
 
 extern uint32 stack_end;
 
-extern void to_esp(uint32 esp);
+extern uint32 read_eip();
 extern void flush_tlb();
 void move_stack(void* new_stack_start, uint32 size);
 uint32 getpid();
