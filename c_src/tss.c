@@ -10,7 +10,8 @@ return: none
 */
 void tssSetStack(uint32 stack)
 {
-    system_tss.stack_segment0.esp = stack;
+    //system_tss.stack_segment0.esp = stack;
+    system_tss.esp0 = stack;
 }
 
 
@@ -24,15 +25,24 @@ void tss_install(uint32 index, uint16 ss, uint16 esp)
     memset(&system_tss, 0, sizeof(system_tss));
 
 
-    system_tss.stack_segment0.ss = ss;
-    system_tss.stack_segment0.esp = esp;
+    //system_tss.stack_segment0.ss = ss;
+    //system_tss.stack_segment0.esp = esp;
 
-    system_tss.segment_registers.cs = 0x0B;
-    system_tss.segment_registers.ds = 0x13;
-    system_tss.segment_registers.es = 0x13;
-    system_tss.segment_registers.fs = 0x13;
-    system_tss.segment_registers.gs = 0x13;
-    system_tss.segment_registers.ss = 0x13;
+    //system_tss.segment_registers.cs = 0x0B;
+    //system_tss.segment_registers.ds = 0x13;
+    //system_tss.segment_registers.es = 0x13;
+    //system_tss.segment_registers.fs = 0x13;
+    //system_tss.segment_registers.gs = 0x13;
+    //system_tss.segment_registers.ss = 0x13;
 
+
+    system_tss.ss0 = ss;
+    system_tss.esp0 = esp;
+    system_tss.cs = 0x0B;
+    system_tss.ds = 0x13;
+    system_tss.es = 0x13;
+    system_tss.fs = 0x13;
+    system_tss.gs = 0x13;
+    system_tss.ss = 0x13;
 }
 
