@@ -16,10 +16,11 @@ int main(multiboot_info* info)
     int numFrames;
 
     printWelcomeScreen();
-    setupIdt();
+    
     install_gdt();
-
-
+    setupIdt();
+    
+    
     print("\n");
     numFrames = printMultiBootInfo(info);
     println("");

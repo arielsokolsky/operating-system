@@ -10,10 +10,10 @@ void set_gdt_gate(unsigned_int8 entry, unsigned_int32 base, unsigned_int32 limit
     gdt[entry].high_base = (base >> 24) & 0xFF;
 
     gdt[entry].low_limit = (limit & 0xFFFF); 
-    gdt[entry].limit_and_flags = (limit >> 16) & 0x0F;  //gdt[entry_num].limit_and_flags = ((limit >> 16) & 0x0F) + (flags & 0xF0);
+    gdt[entry].limit_and_flags = (limit >> 16) & 0x0F; 
 
-    gdt[entry].limit_and_flags |= flags & 0xF0;
     gdt[entry].access_byte = access;
+    gdt[entry].limit_and_flags |= flags & 0xF0;
 }
 
 //creates the gdt table and its pointer, and sets up the
@@ -21,7 +21,7 @@ void set_gdt_gate(unsigned_int8 entry, unsigned_int32 base, unsigned_int32 limit
 //and then flushes the segments
 void install_gdt()
 {
-    gp.limit = (sizeof(struct gdt_entry) * 5) - 1;
+    gp.limit = sizeof(gdt) - 1;
     gp.base = (unsigned_int32) &gdt;
 
     set_gdt_gate(0, 0 ,0, 0, 0);
@@ -34,9 +34,11 @@ void install_gdt()
     //User mode data segment
     set_gdt_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); 
 
+    //tss_install(5, 0x10, 0);
     tss_install(5, 0x10, 0);
-
     _gdt_flush();
-    tss_flush();
     print("gdt is setup\n");
+    tss_flush();
+    println("tss is setup");
+    
 }

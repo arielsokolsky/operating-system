@@ -2,7 +2,7 @@
 #define TSS_H
 #include "types.h"
 
-void tssSetStack(uint32 stack);
+void tssSetStack(uint32, uint32);
 //void tssInit(uint32 num, uint16 ss0, uint16 esp0);
 //void tssSwitch();
 void tss_install(uint32 index, uint16 ss, uint16 esp);
