@@ -11,6 +11,14 @@
 #include "../include/tss.h"
 #include "../include/task.h"
 
+
+void entry()
+{
+
+}
+
+
+
 int main(multiboot_info* info)
 {  
     int numFrames;
@@ -26,8 +34,14 @@ int main(multiboot_info* info)
     println("");
 
     initialize_paging(numFrames);
+    
+    task_install();
+    println("install task");
+    tss_switch();
+    asm ("hlt");
+    entry();
+    
     println("\npress enter");
-
     readString();
     clearScreen();
 
@@ -37,16 +51,3 @@ int main(multiboot_info* info)
     return 0;
 }
 
-/*
-the function print the welcome screen
-param: none
-return: none
-*/
-
-void printWelcomeScreen()
-{
-    clearScreen();
-    changeTextColor(White);
-    print("welcome to our os \n");
-    print("the os is very effective with memory\n\n");
-}
