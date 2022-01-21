@@ -21,8 +21,8 @@ typedef struct gdt_ptr {
     unsigned_int32 base;
 }__attribute__((packed)) gdt_ptr;
 
-gdt_entry gdt[5];
-gdt_ptr gp;
+static gdt_entry gdt[5];
+static gdt_ptr gp;
 
 //this function is in the start.asm file
 //the function will reload the new segment register
