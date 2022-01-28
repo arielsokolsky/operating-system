@@ -12,13 +12,6 @@
 #include "../include/task.h"
 
 
-void entry()
-{
-
-}
-
-
-
 int main(multiboot_info* info)
 {  
     int numFrames;
@@ -37,10 +30,10 @@ int main(multiboot_info* info)
     
     task_install();
     println("install task");
-    tss_switch();
-    asm ("hlt");
-    entry();
     
+    //not switching to user mode becuase syscall not implemented
+    //switch_to_user_mode();
+
     println("\npress enter");
     readString();
     clearScreen();
