@@ -122,7 +122,7 @@ page* mapPage(uint32 address)
     return myPage;
 }
 
-page *make_page(unsigned_int32 address, page_directory *dir)
+page* make_page(unsigned_int32 address, page_directory *dir)
 {
     page* myPage;
     uint32 newAddr;
