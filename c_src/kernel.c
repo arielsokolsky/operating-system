@@ -25,7 +25,6 @@ int main(multiboot_info* info)
 
     setupIdt();
     install_gdt();
-    setupIdt();
     
     
     print("\n");
