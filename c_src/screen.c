@@ -147,7 +147,18 @@ void backSpace()
 }
 
 
-
+/*
+the function print the welcome screen
+param: none
+return: none
+*/
+void printWelcomeScreen()
+{
+    clearScreen();
+    changeTextColor(White);
+    print("welcome to our os \n");
+    print("the os is very effective with memory\n\n");
+}
 
 
 

@@ -8,6 +8,9 @@
 #include "../include/gdt.h"
 #include "../include/paging.h"
 #include "../include/malloc.h"
+#include "../include/tss.h"
+#include "../include/task.h"
+
 
 int main(multiboot_info* info)
 {  
@@ -22,15 +25,22 @@ int main(multiboot_info* info)
 
     setupIdt();
     install_gdt();
-
-
+    setupIdt();
+    
+    
     print("\n");
     numFrames = printMultiBootInfo(info);
     println("");
 
     initialize_paging(numFrames);
-    println("\npress enter");
+    
+    task_install();
+    println("install task");
+    
+    //not switching to user mode becuase syscall not implemented
+    //switch_to_user_mode();
 
+    println("\npress enter");
     readString();
     clearScreen();
 
