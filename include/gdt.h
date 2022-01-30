@@ -1,7 +1,7 @@
 #ifndef GDT_H
 #define GDT_H
 #include "types.h"
-
+#define NUM_DESCRIPTORS 8
 //the entry struct in the gdt table
 //the struct is packed so the complier will won't try to "optimize" the struct in the memory
 typedef struct gdt_entry{
@@ -21,7 +21,7 @@ typedef struct gdt_ptr {
     unsigned_int32 base;
 }__attribute__((packed)) gdt_ptr;
 
-gdt_entry gdt[5];
+gdt_entry gdt[NUM_DESCRIPTORS];
 gdt_ptr gp;
 
 //this function is in the start.asm file
