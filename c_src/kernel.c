@@ -50,42 +50,6 @@ int main(multiboot_info* info)
     return 0;
 }
 
-/*
-the function print the welcome screen
-param: none
-return: none
-*/
 
-void printWelcomeScreen()
-{
-    clearScreen();
-    changeTextColor(White);
-    print("welcome to our os \n");
-    print("the os is very effective with memory\n\n");
-
-
-}
-
-void printRhino()
-{
-    println("      __.--**\"\"\"**--...__..--**\"\"\"\"*-.           ");
-    println("    .'                                `-.               ");
-    println("  .'                         _           \\             ");
-    println(" /                         .'        .    \\   _._      ");
-    println(":                         :          :`*.  :-'.' ;      ");
-    println(";    `                    ;          `.) \\   /.-'      ");
-    println(":     `                             ; ' -*   ;          ");
-    println("       :.    \\           :       :  :        :         ");
-    println(" ;     ; `.   `.         ;     ` |  '                   ");
-    println(" |         `.            `. -*\"*\\; /        :         ");
-    println(" |    :     /`-.           `.    \\/`.'  _    `.        ");
-    println(" :    ;    :    `*-.__.-*\"\"\":`.   \\ ;  'o` `. /     ");
-    println("       ;   ;                ;  \\   ;:       ;:   ,/    ");
-    println("  |  | |                       /`  | ,      `*-*'/      ");
-    println("  `  : :  :                /  /    | : .    ._.-'       ");
-    println("   \\  \\ ,  \\              :   `.   :  \\ \\   .'     ");
-    println("    :  *:   ;             :    |`*-'   `*+-*            ");
-    println("    `**-*`\"\"               *---*                      ");   
-}
 
 

@@ -162,6 +162,34 @@ void printWelcomeScreen()
 
 
 
+/*
+the function print the logo
+param: none
+return: none
+*/
+void printRhino()
+{
+    println("      __.--**\"\"\"**--...__..--**\"\"\"\"*-.           ");
+    println("    .'                                `-.               ");
+    println("  .'                         _           \\             ");
+    println(" /                         .'        .    \\   _._      ");
+    println(":                         :          :`*.  :-'.' ;      ");
+    println(";    `                    ;          `.) \\   /.-'      ");
+    println(":     `                             ; ' -*   ;          ");
+    println("       :.    \\           :       :  :        :         ");
+    println(" ;     ; `.   `.         ;     ` |  '                   ");
+    println(" |         `.            `. -*\"*\\; /        :         ");
+    println(" |    :     /`-.           `.    \\/`.'  _    `.        ");
+    println(" :    ;    :    `*-.__.-*\"\"\":`.   \\ ;  'o` `. /     ");
+    println("       ;   ;                ;  \\   ;:       ;:   ,/    ");
+    println("  |  | |                       /`  | ,      `*-*'/      ");
+    println("  `  : :  :                /  /    | : .    ._.-'       ");
+    println("   \\  \\ ,  \\              :   `.   :  \\ \\   .'     ");
+    println("    :  *:   ;             :    |`*-'   `*+-*            ");
+    println("    `**-*`\"\"               *---*                      ");   
+}
+
+
 
 
 

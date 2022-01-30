@@ -20,4 +20,7 @@ void printArr(int* arr, int len);
 void println(string str);
 void backSpace();
 
+void printRhino();
+void printWelcomeScreen();
+
 #endif

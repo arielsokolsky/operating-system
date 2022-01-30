@@ -37,7 +37,7 @@ typedef struct idtPointer
 
 
 static idtEntery idt[NUM_OF_IDT_ENTRIES];
-static idtPointer _lidt;
+idtPointer _lidt;
 
 //the function setupt the idtPionter and clear entries
 void setupIdt();
