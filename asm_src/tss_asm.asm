@@ -24,7 +24,8 @@ asm_switch:
     push eax
     mov eax, 0x1B 
     push eax
-    ;mov ax, sp
-    ;add ax, 3
-    ;push ax
+    push l
     ret
+
+
+l:

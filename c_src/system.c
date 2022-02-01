@@ -13,3 +13,8 @@ unsigned_int8 inputPort(unsigned_int16 port)
     return recived_input;
 }
 
+void outportb (uint16 port, uint8 data)
+{
+	__asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (data));
+}
+

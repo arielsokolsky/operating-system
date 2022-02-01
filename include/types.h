@@ -16,7 +16,7 @@ typedef unsigned short uint16;
 typedef unsigned long uint32;
 typedef unsigned long long uint64;
 
-typedef _Bool bool;
+//typedef _Bool bool;
 #define false 0
 #define true !(false)
 
