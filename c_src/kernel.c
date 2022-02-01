@@ -26,7 +26,6 @@ int main(multiboot_info* info)
     setupIdt();
     install_gdt();
     
-    
     print("\n");
     numFrames = printMultiBootInfo(info);
     println("");
@@ -48,7 +47,5 @@ int main(multiboot_info* info)
 
     return 0;
 }
-
-
 
 
