@@ -9,7 +9,6 @@
 #define MAX_ADDRESS OFFSET_LEN * ENTERY_SIZE * ENTERY_SIZE
 
 
-static bool initialized;
 extern uint32 currentAddress;
 
 typedef struct page 

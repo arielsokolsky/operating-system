@@ -18,21 +18,11 @@ void initialize_paging(unsigned_int32 total_frames)
 
     current_directory = kernel_directory;
 
-    // allocate the page tables
-    for(i = 0; i < 0xFFFFFFFF;) 
-    {
-        get_page(i, 1, kernel_directory);
-        i += PAGE_SIZE * 1024;
-        if(i == 0) 
-        {
-            break;
-        } 
-    }
-
     // allocating the kernel frames
     i = 0;
     while(i < currentAddress)
     {
+        //make the page
         myPage = get_page(i, 1, kernel_directory);    
         // Kernel code is readable but not writeable from userspace.
         allocateFrame(myPage, 0, 0);
@@ -42,7 +32,6 @@ void initialize_paging(unsigned_int32 total_frames)
     _physicalAddr = &kernel_directory->physicalAddress;
     switch_page_directory(kernel_directory);
 
-    initialized = true;
     println("initialize_paging");
     return;
 
@@ -88,7 +77,6 @@ page *get_page(unsigned_int32 address, bool make, page_directory *dir)
 
 
     return 0;
-    
 }
 
 /*
