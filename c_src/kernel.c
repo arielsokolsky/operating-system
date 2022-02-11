@@ -10,6 +10,7 @@
 #include "../include/malloc.h"
 #include "../include/tss.h"
 #include "../include/task.h"
+#include "../include/irq.h"
 
 
 int main(multiboot_info* info)
@@ -23,6 +24,7 @@ int main(multiboot_info* info)
     //readString();
     clearScreen();
 
+    installIrq();
     setupIdt();
     install_gdt();
     
