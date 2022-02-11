@@ -20,7 +20,7 @@ int main(multiboot_info* info)
     printRhino();
 
     println("press enter to start system");
-    readString();
+    //readString();
     clearScreen();
 
     setupIdt();
