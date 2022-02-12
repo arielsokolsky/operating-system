@@ -16,17 +16,19 @@
 int main(multiboot_info* info)
 {  
     int numFrames;
-
+    registers_t a;
     printWelcomeScreen();
     printRhino();
 
     println("press enter to start system");
-    //readString();
+    readString();
     clearScreen();
-
+    
     installIrq();
     setupIdt();
     install_gdt();
+
+    
     
     print("\n");
     numFrames = printMultiBootInfo(info);
