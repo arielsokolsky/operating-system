@@ -33,7 +33,7 @@ extern void irq14();
 extern void irq15();
 
 
-void defult_function();
+void keyboard_handler();
 
 
 
