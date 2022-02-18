@@ -1,5 +1,6 @@
 #include "../include/vfs.h"
 #include "../include/ata_pio_drv.h"
+#include "../include/screen.h"
 
 
 fat32 *installFilesystem(char *fatSystem)
@@ -7,10 +8,11 @@ fat32 *installFilesystem(char *fatSystem)
     fat32 *fs = malloc(sizeof (fat32));
     if (!identify())
     {
+        print("not exist");
         return 0;
     }
 
-    read_bpb(fs, &fs->bpb);
+    //read_bpb(fs, &fs->bpb);
     
 
 

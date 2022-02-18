@@ -2,41 +2,42 @@ global insw
 global outsw
 
 insw:
-    pushl   %edi
-    movl    8(%esp), %edx  # port
-    movl    12(%esp), %edi # addr
-    movl    16(%esp), %ecx # count
+    push   edi
+    mov    edx, [esp + 8] 
+    mov    esi, [esp + 12]
+    mov    ecx, [esp + 16]
 
-    xorl    %eax, %eax
-.insw_startLoop:
-    cmpl    %eax, %ecx
-    je      .insw_end
+    xor eax, eax
+
+insw_startLoop:
+    cmp    ecx, eax
+    je      insw_end
 
     insw
 
-    incl    %eax
-    jmp     .insw_startLoop
+    inc    eax
+    jmp     insw_startLoop
 
-.insw_end:
-    popl    %edi
+insw_end:
+    pop    edi
     ret
 
 outsw:
-    pushl   %esi
-    movl    8(%esp), %edx  # port
-    movl    12(%esp), %esi # addr
-    movl    16(%esp), %ecx # count
+    push   esi
+    mov    edx, [esp + 8]
+    mov    esi, [esp + 12]
+    mov    ecx, [esp + 16]
 
-    xorl    %eax, %eax
-.outsw_startLoop:
-    cmpl    %eax, %ecx
-    je      .outsw_end
+    xor    eax, eax
+outsw_startLoop:
+    cmp     ecx, eax
+    je      outsw_end
 
     outsw
 
-    incl    %eax
-    jmp     .outsw_startLoop
+    inc    eax
+    jmp     outsw_startLoop
 
-.outsw_end:
-    popl    %esi
+outsw_end:
+    pop    esi
     ret

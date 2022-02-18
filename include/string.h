@@ -6,7 +6,7 @@
 int strlen(string str);
 
 //return if string the same
-bool strcmp(string str1, string str2);
+_Bool strcmp(string str1, string str2);
 
 //reverse the string
 string strrev(string str);
