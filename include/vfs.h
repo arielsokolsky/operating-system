@@ -57,3 +57,6 @@ typedef struct fat32 {
 
 static void read_bpb(fat32 *fs, struct bios_parameter_block *bpb);
 fat32 *installFilesystem(char *fatSystem);
+static uint32 readi32(uint8 *buff, uint32 offset);
+static uint32 readi16(uint8 *buff, uint32 offset);
+static void trim_spaces(char *c, int max);

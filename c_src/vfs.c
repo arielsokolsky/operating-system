@@ -11,13 +11,31 @@ fat32 *installFilesystem(char *fatSystem)
         print("not exist");
         return 0;
     }
-
-    //read_bpb(fs, &fs->bpb);
+    //read the bios parameter block from the memory
+    read_bpb(fs, &fs->bpb);
     
+    //sets all the sectors and parameters using information from the bios
+    fs->partition_begin_sector = 0;
+    fs->fat_begin_sector = fs->bpb.reserved_sectors;
+    fs->cluster_alloc_hint = 0;
+    fs->cluster_size = 512 * fs->bpb.sectors_per_cluster;
+    fs->cluster_sector_begin = fs->bpb.FAT_count * fs->bpb.count_sectors_per_FAT32;
 
+    //mallocs the FAT into the memory
+    fs->FAT = malloc(fs->bpb.count_sectors_per_FAT32 * 512);
+    // read from the memory every sector and put it inthe right place until the FAT is contains 
+    // all the file system that is in the memory
+    uint32 i, j, sector[512];
+    for (i = 0; i < fs->bpb.count_sectors_per_FAT32; i++)
+    {
+        ata_pio_read48(sector, fs->fat_begin_sector + i, 1);
+        for (j = 0; j < 128; j++)
+        {
+            fs->FAT[i * 128 + j] = readi32(sector, j * 4);
+        }
+    }
 
-
-    
+    return fs;
 
 }
 
@@ -28,12 +46,14 @@ static void trim_spaces(char *c, int max) {
     }
     if(*c == ' ') *c = 0;
 }
+//transforms 2 8-bit parameter into 1 16-bit parameter
 static uint16 readi16(uint8 *buff, uint32 offset)
 {
     uint8 *ubuff = buff + offset;
     return ubuff[1] << 8 | ubuff[0];
 }
 
+//transforms 4 8-bit parameter into 1 32-bit parameter
 static uint32 readi32(uint8 *buff, uint32 offset) {
     uint8 *ubuff = buff + offset;
     return
@@ -42,7 +62,7 @@ static uint32 readi32(uint8 *buff, uint32 offset) {
         ((ubuff[1] << 8) & 0x0000FF00) |
         (ubuff[0] & 0x000000FF);
 }
-
+//reads each correct parameter from the bios in the memory and puts it in the memory
 static void read_bpb(fat32 *fs, struct bios_parameter_block *bpb) 
 {
     uint8 sector0[512];
