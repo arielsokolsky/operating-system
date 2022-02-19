@@ -16,7 +16,6 @@
 int main(multiboot_info* info)
 {  
     int numFrames;
-    registers_t a;
     printWelcomeScreen();
     printRhino();
 
@@ -28,7 +27,10 @@ int main(multiboot_info* info)
     setupIdt();
     install_gdt();
 
-    
+    setIrqEnery(1, keyboard_handler);
+    irq1();
+
+    init_timer(100);
     
     print("\n");
     numFrames = printMultiBootInfo(info);
