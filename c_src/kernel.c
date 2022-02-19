@@ -10,7 +10,7 @@
 #include "../include/malloc.h"
 #include "../include/tss.h"
 #include "../include/task.h"
-
+#include "../include/vfs.h"
 
 void entry()
 {
@@ -28,7 +28,7 @@ int main(multiboot_info* info)
     install_gdt();
     setupIdt();
     
-    
+    installFilesystem(0);
     print("\n");
     numFrames = printMultiBootInfo(info);
     println("");
