@@ -84,9 +84,6 @@ bool test()
 	uint32* target;
 	uint32* target2;
 
-	//reading data
-    read_sectors_ATA_PIO(target, 0x0, 1);
-
     //writing 0
     char bwrite[512];
     for(i = 0; i < 512; i++)
@@ -101,7 +98,7 @@ bool test()
     i = 0;
     while(i < 128)
     {
-		if(target2[i] != target[i])
+		if(target2[i] != 0x0)
 		{
 			working = false;
 			break;

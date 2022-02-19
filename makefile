@@ -12,6 +12,10 @@ $(OBJ)/%.o: $(C_SRC)/%.c
 
 $(OBJ)/%.o: $(ASM_SRC)/%.asm
 	@$(ASSEMBLER) $(A_FLAGS) $< -o $@
+
+create_disk:
+	dd if=/dev/zero of=f32.disk bs=1M count=100
+	mkfs.fat -F32 f32.disk -s 1
 	
 build:$(OBJECTS_C) $(OBJECTS_ASM)
 	@echo "build"
