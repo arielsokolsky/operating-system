@@ -1,6 +1,6 @@
 #ifndef STRING_H
 #define STRING_H
-#include "./types.h"
+#include "types.h"
 
 //return the length of a string
 int strlen(string str);

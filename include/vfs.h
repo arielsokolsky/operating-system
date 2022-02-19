@@ -55,5 +55,5 @@ typedef struct fat32 {
 }fat32;
 
 
-
+static void read_bpb(fat32 *fs, struct bios_parameter_block *bpb);
 fat32 *installFilesystem(char *fatSystem);

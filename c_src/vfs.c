@@ -41,7 +41,8 @@ static uint32 readi32(uint8 *buff, uint32 offset) {
         (ubuff[0] & 0x000000FF);
 }
 
-static void read_bpb(fat32 *fs, struct bios_parameter_block *bpb) {
+static void read_bpb(fat32 *fs, struct bios_parameter_block *bpb) 
+{
     uint8 sector0[512];
     ata_pio_read48(sector0, 0, 1);
 
