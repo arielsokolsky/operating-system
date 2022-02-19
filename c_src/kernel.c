@@ -11,11 +11,7 @@
 #include "../include/tss.h"
 #include "../include/task.h"
 #include "../include/vfs.h"
-
-void entry()
-{
-
-}
+#include "../include/ata.h"
 
 
 
@@ -37,9 +33,7 @@ int main(multiboot_info* info)
     
     task_install();
     println("install task");
-    tss_switch();
-    asm ("hlt");
-    entry();
+    //tss_switch();
     
     println("\npress enter");
     readString();

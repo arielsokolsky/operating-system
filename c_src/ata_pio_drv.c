@@ -23,19 +23,19 @@
 uint8 identify() {
     //puts 0 on the sector count and in the linear block address
     inputPort(ATA_PRIMARY_COMM_REGSTAT);
-    outportb(ATA_PRIMARY_DRIVE_HEAD, 0xA0);
+    outPort(ATA_PRIMARY_DRIVE_HEAD, 0xA0);
     inputPort(ATA_PRIMARY_COMM_REGSTAT);
-    outportb(ATA_PRIMARY_SECCOUNT, 0);
+    outPort(ATA_PRIMARY_SECCOUNT, 0);
     inputPort(ATA_PRIMARY_COMM_REGSTAT);
-    outportb(ATA_PRIMARY_LBA_LO, 0);
+    outPort(ATA_PRIMARY_LBA_LO, 0);
     inputPort(ATA_PRIMARY_COMM_REGSTAT);
-    outportb(ATA_PRIMARY_LBA_MID, 0);
+    outPort(ATA_PRIMARY_LBA_MID, 0);
     inputPort(ATA_PRIMARY_COMM_REGSTAT);
-    outportb(ATA_PRIMARY_LBA_HI, 0);
+    outPort(ATA_PRIMARY_LBA_HI, 0);
     //run command 0xE7 in the command registat port address
     inputPort(ATA_PRIMARY_COMM_REGSTAT);
-    outportb(ATA_PRIMARY_COMM_REGSTAT, 0xEC);
-    outportb(ATA_PRIMARY_COMM_REGSTAT, 0xE7);
+    outPort(ATA_PRIMARY_COMM_REGSTAT, 0xEC);
+    outPort(ATA_PRIMARY_COMM_REGSTAT, 0xE7);
 
     // Read the status port. If it's zero, the drive does not exist.
     uint8 status = inputPort(ATA_PRIMARY_COMM_REGSTAT);
@@ -90,12 +90,12 @@ void ata_pio_read48(uint32 LBA, uint8 sectorcount, uint8 *target) {
     3 - LBA in first sector
     3 - LBA in a */
     // HARD CODE MASTER (for now)
-    outportb(ATA_PRIMARY_DRIVE_HEAD, 0x40);                     // Select master
-    outportb(ATA_PRIMARY_SECCOUNT, sectorcount & 0xFF);         // sectorcount low
-    outportb(ATA_PRIMARY_LBA_LO, LBA & 0xFF);                   // LBA1
-    outportb(ATA_PRIMARY_LBA_MID, (LBA >> 8) & 0xFF);           // LBA2
-    outportb(ATA_PRIMARY_LBA_HI, (LBA >> 16) & 0xFF);           // LBA3
-    outportb(ATA_PRIMARY_COMM_REGSTAT, 0x24);                   // READ SECTORS EXT
+    outPort(ATA_PRIMARY_DRIVE_HEAD, 0x40);                     // Select master
+    outPort(ATA_PRIMARY_SECCOUNT, sectorcount & 0xFF);         // sectorcount low
+    outPort(ATA_PRIMARY_LBA_LO, LBA & 0xFF);                   // LBA1
+    outPort(ATA_PRIMARY_LBA_MID, (LBA >> 8) & 0xFF);           // LBA2
+    outPort(ATA_PRIMARY_LBA_HI, (LBA >> 16) & 0xFF);           // LBA3
+    outPort(ATA_PRIMARY_COMM_REGSTAT, 0x24);                   // READ SECTORS EXT
 
     uint8 i;
     for(i = 0; i < sectorcount; i++) {
@@ -118,12 +118,12 @@ void ata_pio_read48(uint32 LBA, uint8 sectorcount, uint8 *target) {
 void ata_pio_write48(uint32 LBA, uint8 sectorcount, uint8 *target) {
 
     // HARD CODE MASTER (for now)
-    outportb(ATA_PRIMARY_DRIVE_HEAD, 0x40);                     // Select master
-    outportb(ATA_PRIMARY_SECCOUNT, sectorcount & 0xFF);         // sectorcount low
-    outportb(ATA_PRIMARY_LBA_LO, LBA & 0xFF);                   // LBA1
-    outportb(ATA_PRIMARY_LBA_MID, (LBA >> 8) & 0xFF);           // LBA2
-    outportb(ATA_PRIMARY_LBA_HI, (LBA >> 16) & 0xFF);           // LBA3
-    outportb(ATA_PRIMARY_COMM_REGSTAT, 0x34);                   // READ SECTORS EXT
+    outPort(ATA_PRIMARY_DRIVE_HEAD, 0x40);                     // Select master
+    outPort(ATA_PRIMARY_SECCOUNT, sectorcount & 0xFF);         // sectorcount low
+    outPort(ATA_PRIMARY_LBA_LO, LBA & 0xFF);                   // LBA1
+    outPort(ATA_PRIMARY_LBA_MID, (LBA >> 8) & 0xFF);           // LBA2
+    outPort(ATA_PRIMARY_LBA_HI, (LBA >> 16) & 0xFF);           // LBA3
+    outPort(ATA_PRIMARY_COMM_REGSTAT, 0x34);                   // READ SECTORS EXT
 
     uint8 i;
     for(i = 0; i < sectorcount; i++) {
@@ -142,7 +142,7 @@ void ata_pio_write48(uint32 LBA, uint8 sectorcount, uint8 *target) {
     }
 
     // Flush the cache.
-    outportb(ATA_PRIMARY_COMM_REGSTAT, 0xE7);
+    outPort(ATA_PRIMARY_COMM_REGSTAT, 0xE7);
     // Poll for BSY.
     while(inputPort(ATA_PRIMARY_COMM_REGSTAT) & STAT_BSY) {}
 }

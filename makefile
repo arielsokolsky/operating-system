@@ -22,7 +22,7 @@ link:
 
 run:
 	@echo "run"
-	@$(EMULATOR) $(EMULATOR_FLAGS) $(OUTPUT)
+	@$(EMULATOR) $(EMULATOR_FLAGS) $(OUTPUT) -drive file=f32.disk,format=raw -m size=4096
 
 clean:
 	@echo "clean"

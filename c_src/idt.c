@@ -2,7 +2,7 @@
 
 
 
-void changeIdtEntry(int num, unsigned_int32 handler) 
+void changeIdtEntry(int num, uint32 handler) 
 {
     idt[num].offestLow = low_16(handler);
     idt[num].selector = KERNEL_CS;
@@ -13,7 +13,7 @@ void changeIdtEntry(int num, unsigned_int32 handler)
 
 void setupIdt()
 {
-    _lidt.base = (unsigned_int32) &idt;
+    _lidt.base = (uint32) &idt;
     _lidt.limit = NUM_OF_IDT_ENTRIES * sizeof(idtEntery) - 1;
 
     install_idt_entries();
