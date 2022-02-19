@@ -2,7 +2,7 @@
 
 
 /*
-the function remape the irq (because the defulat locatin of irq as the same as software interrupt)
+the function remap the irq (because the defulat locatin of irq as the same as software interrupt)
 param: none
 return: none
 */
@@ -20,7 +20,7 @@ void remapIrq()
 
     outPort(MASTER_DATA, 0x0);
     outPort(SLAVE_DATA, 0x0);
-    println("remape");
+    println("remap");
 }
 
 

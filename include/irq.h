@@ -12,7 +12,6 @@ void* irq_handlers[NUM_OF_IRQ];
 
 void setIrqEnery(int num, void* handler);
 void installIrq();
-void irqRemape();
 void irq_handler(registers_t);
 
 extern void irq0();
@@ -33,7 +32,7 @@ extern void irq14();
 extern void irq15();
 
 
-void defult_function();
+void keyboard_handler();
 
 
 

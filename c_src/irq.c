@@ -95,7 +95,7 @@ void irq_handler(registers_t regs)
 	}
 }
 
-void defult_function()
+void keyboard_handler()
 {
-    println("hello there2");
+	int byte = inputPort(0x60);
 }
