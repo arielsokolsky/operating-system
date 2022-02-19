@@ -13,3 +13,15 @@ unsigned_int8 inputPort(unsigned_int16 port)
     return recived_input;
 }
 
+/*
+the function let us write to ports data
+param port: the port to write to
+param data: the data we want to write to that port
+return: none
+*/
+void outPort(uint16 port, unsigned_int8 data)
+{
+    __asm__ __volatile__ ("outb %1, %0" : : "dN" (port), "a" (data));
+}
+
+
