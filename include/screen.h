@@ -11,6 +11,9 @@
 enum COLORS{Black = 0, Blue, Green, Cyan, Red, Purple, Brown, Gray, Dark_gray, Light_blue, light_green, Light_cyan, Light_Red, light_purple, Yellow , White};
 static int currentColor = White;
 
+static uint8 curX = 0;
+static uint8 curY = 0;
+
 void printch(char ch);
 void print(string str);
 void changeTextColor(int);

@@ -10,21 +10,27 @@
 #include "../include/malloc.h"
 #include "../include/tss.h"
 #include "../include/task.h"
+#include "../include/irq.h"
 
 
 int main(multiboot_info* info)
 {  
     int numFrames;
-
     printWelcomeScreen();
     printRhino();
 
     println("press enter to start system");
     readString();
     clearScreen();
-
+    
+    installIrq();
     setupIdt();
     install_gdt();
+
+    setIrqEnery(1, keyboard_handler);
+    irq1();
+
+    init_timer(100);
     
     print("\n");
     numFrames = printMultiBootInfo(info);

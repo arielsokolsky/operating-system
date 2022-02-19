@@ -104,6 +104,9 @@ void isr19()
 
 void install_idt_entries()
 {
+    //set software interrupt entries
+    println("software interrupt is setup");
+    
     changeIdtEntry(0, isr0);
     changeIdtEntry(1, isr1);
     changeIdtEntry(2, isr2);
