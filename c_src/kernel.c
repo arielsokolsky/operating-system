@@ -28,14 +28,25 @@ int main(multiboot_info* info)
     print("\n");
     numFrames = printMultiBootInfo(info);
     println("");
-
+    
     initialize_paging(numFrames);
-    
     task_install();
-    println("install task");
+    println("install task\n");
     //tss_switch();
+
+    int working = test();
+    if(working)
+    {
+        println("file system is ready\n");
+    }
+    else
+    {
+        println("a error accured while loading file system");
+        asm("hlt");
+    }
     
-    println("\npress enter");
+    println("the operating system finish initialization");
+    println("press enter to start");
     readString();
     clearScreen();
 

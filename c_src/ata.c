@@ -74,3 +74,40 @@ static void ATA_wait_DRQ()  //Wait fot drq to be 1
 {
 	while(!(inputPort(0x1F7)&STATUS_RDY));
 }
+
+
+bool test()
+{
+	bool working = true;
+	int i = 0;
+
+	uint32* target;
+	uint32* target2;
+
+	//reading data
+    read_sectors_ATA_PIO(target, 0x0, 1);
+
+    //writing 0
+    char bwrite[512];
+    for(i = 0; i < 512; i++)
+    {
+        bwrite[i] = 0x0;
+    }
+    write_sectors_ATA_PIO(0x0, 1, bwrite);
+
+	//reading again
+    read_sectors_ATA_PIO(target2, 0x0, 1);
+	
+    i = 0;
+    while(i < 128)
+    {
+		if(target2[i] != target[i])
+		{
+			working = false;
+			break;
+		}
+        i++;
+    }
+
+    return working; 
+}
