@@ -1,5 +1,5 @@
 #include "../include/vfs.h"
-#include "../include/ata_pio_drv.h"
+#include "../include/ata.h"
 #include "../include/screen.h"
 
 
@@ -45,7 +45,7 @@ static uint32 readi32(uint8 *buff, uint32 offset) {
 
 static void read_bpb(fat32 *fs, struct bios_parameter_block *bpb) {
     uint8 sector0[512];
-    ata_pio_read48(sector0, 0, 1);
+    read_sectors_ATA_PIO(sector0, 0, 1);
 
     bpb->bytes_per_sector = readi16(sector0, 11);;
     bpb->sectors_per_cluster = sector0[13];
