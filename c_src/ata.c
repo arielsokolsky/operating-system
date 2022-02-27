@@ -1,27 +1,32 @@
 #include "../include/ata.h"
 
-/*
- BSY: a 1 means that the controller is busy executing a command. No register should be accessed (except the digital output register) while this bit is set.
-RDY: a 1 means that the controller is ready to accept a command, and the drive is spinning at correct speed..
-WFT: a 1 means that the controller detected a write fault.
-SKC: a 1 means that the read/write head is in position (seek completed).
-DRQ: a 1 means that the controller is expecting data (for a write) or is sending data (for a read). Don't access the data register while this bit is 0.
-COR: a 1 indicates that the controller had to correct data, by using the ECC bytes (error correction code: extra bytes at the end of the sector that allows to verify its integrity and, sometimes, to correct errors).
-IDX: a 1 indicates the the controller retected the index mark (which is not a hole on hard-drives).
-ERR: a 1 indicates that an error occured. An error code has been placed in the error register.
-*/
 
-#define STATUS_BSY 0x80
-#define STATUS_RDY 0x40
-#define STATUS_DRQ 0x08
-#define STATUS_DF 0x20
-#define STATUS_ERR 0x01
 
-//This is really specific to out OS now, assuming ATA bus 0 master 
-//Source - OsDev wiki
-static void ATA_wait_BSY();
-static void ATA_wait_DRQ();
-void read_sectors_ATA_PIO(uint32 target_address, uint32 LBA, uint8 sector_count)
+
+char* read(uint32 LBA, uint8 sector_count)
+{
+    char bwrite[512];
+    uint32* target;
+    //reading again
+    readBasic(target, LBA, sector_count);
+	
+    int i = 0;
+    int num = 0;
+    while(i < 128)
+    {
+        for(int j = 0; j < 4; j++)
+        {
+            num = (target[i] >> (8 * j)) & 0xFF;
+            char a = (char) num;
+            bwrite[j] = a;
+        }
+        i++;
+    }
+    return bwrite;
+}
+
+
+void readBasic(uint32 target_address, uint32 LBA, uint8 sector_count)
 {
 	ATA_wait_BSY();
 	outPort(0x1F6,0xE0 | ((LBA >>24) & 0xF));
@@ -43,9 +48,11 @@ void read_sectors_ATA_PIO(uint32 target_address, uint32 LBA, uint8 sector_count)
 		}	
 		target+=256;
 	}
+    
+
 }
 
-void write_sectors_ATA_PIO(uint32 LBA, uint8 sector_count, uint32* bytes)
+void writeBasic(uint32 LBA, uint8 sector_count, uint32* bytes)
 {
 	ATA_wait_BSY();
 	outPort(0x1F6,0xE0 | ((LBA >>24) & 0xF));
@@ -87,27 +94,23 @@ bool test()
     char bwrite[512];
     for(i = 0; i < 512; i++)
     {
-        bwrite[i] = MAGIC_NUMBER;
+        bwrite[i] = '1';
     }
-    write_sectors_ATA_PIO(0x0, 1, bwrite);
+    bwrite[0] = 'a';
+    bwrite[1] = 'r';
+    bwrite[2] = 'i';
+    bwrite[3] = 'e';
+    bwrite[80] = 'g';
+    writeBasic(0x0, 1, bwrite);
 
-	//reading again
-    read_sectors_ATA_PIO(target, 0x0, 1);
-	
-    i = 0;
-    while(i < 128)
+	char* buffer = read(0x0, 1);
+    for (int i = 0; i < 512; i++)
     {
-		if(target[i] & 0xFF != MAGIC_NUMBER || (target[i] >> 8) & 0xFF != MAGIC_NUMBER)
-		{
-			working = false;
-			break;
-		}
-        i++;
+        printch(buffer[i]);
     }
 
     return working; 
 }
-
 
 
 uint8 identify() 

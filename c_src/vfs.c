@@ -8,8 +8,8 @@ fat32 *installFilesystem(char *fatSystem)
     fat32 *fs = malloc(sizeof (fat32));
     if (!identify())
     {
-        print("not exist");
-        return 0;
+        print("erorr: there is no disk file");
+        asm("hlt");
     }
 
     //read_bpb(fs, &fs->bpb);
@@ -45,7 +45,7 @@ static uint32 readi32(uint8 *buff, uint32 offset) {
 
 static void read_bpb(fat32 *fs, struct bios_parameter_block *bpb) {
     uint8 sector0[512];
-    read_sectors_ATA_PIO(sector0, 0, 1);
+    readBasic(sector0, 0, 1);
 
     bpb->bytes_per_sector = readi16(sector0, 11);;
     bpb->sectors_per_cluster = sector0[13];
