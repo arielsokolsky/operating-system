@@ -3,9 +3,10 @@
 
 #include "types.h"
 #include "system.h"
+#include "string.h"
 
 #define MAGIC_NUMBER  0x4
-#define SECTOR_SIZE 256
+#define SECTOR_SIZE 512
 
 #define ATA_PRIMARY_DATA         0x1F0
 #define ATA_PRIMARY_ERR          0x1F1
@@ -42,13 +43,14 @@ ERR: a 1 indicates that an error occured. An error code has been placed in the e
 #define STAT_BSY  (1 << 7) // Indicates the drive is preparing to send/receive data (wait for it to clear).
                            // In case of 'hang' (it never clears), do a software reset.
 
-void readBasic(uint32 target_address, uint32 LBA, uint8 sector_count);
+void readBasic(void* target_address, uint32 LBA, uint8 sector_count);
 void writeBasic(uint32 LBA, uint8 sector_count, uint32* bytes);
+
 bool test();
 uint8 identify();
 static void ATA_wait_BSY();
 static void ATA_wait_DRQ();
 
-char* read(uint32 LBA, uint8 sector_count);
+void write(uint32 address, uint32 len, void* bytes);
 
 #endif

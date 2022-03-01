@@ -1,32 +1,45 @@
 #include "../include/ata.h"
 
 
-
-
-char* read(uint32 LBA, uint8 sector_count)
+/*
+the function first write all the full sector and to write the what left she read change the data and write again
+param LBA: the address to where to write
+param len: how byte to write
+param byte: what to write
+return: none
+*/
+void write(uint32 address, uint32 len, void* bytes)
 {
-    char bwrite[512];
-    uint32* target;
-    //reading again
-    readBasic(target, LBA, sector_count);
-	
-    int i = 0;
-    int num = 0;
-    while(i < 128)
+    uint8* data = (uint8 *)bytes;
+    int startSector = address / SECTOR_SIZE;
+    int numOfSectors = len / SECTOR_SIZE;
+    int lastSector = startSector + numOfSectors;
+    int lastSectorLen = len % SECTOR_SIZE;
+
+    //write the full sectors
+    if(numOfSectors > 0)
     {
-        for(int j = 0; j < 4; j++)
-        {
-            num = (target[i] >> (8 * j)) & 0xFF;
-            char a = (char) num;
-            bwrite[j] = a;
-        }
-        i++;
+        writeBasic(startSector, numOfSectors, data);
     }
-    return bwrite;
+    
+    //read the data of the last sector
+    char buffer[512];
+    readBasic(buffer, lastSector, 1);
+    
+    //change part of the data
+    for (int i = 0; i < lastSectorLen; i++)
+    {
+        buffer[i] = data[numOfSectors * SECTOR_SIZE + i];
+    }
+    
+    //send the same data with changes
+    if(lastSectorLen > 0)
+    {
+        writeBasic(lastSector, 1, buffer);
+    }
 }
 
-
-void readBasic(uint32 target_address, uint32 LBA, uint8 sector_count)
+void readBasic(void* target_address, uint32 LBA, uint8 sector_count)
 {
 	ATA_wait_BSY();
 	outPort(0x1F6,0xE0 | ((LBA >>24) & 0xF));
@@ -82,29 +95,32 @@ static void ATA_wait_DRQ()  //Wait fot drq to be 1
 	while(!(inputPort(0x1F7)&STATUS_RDY));
 }
 
-
 bool test()
 {
 	bool working = true;
 	int i = 0;
 
 	uint32* target;
+    string str = "12345";
+    char bwrite[600] = {0};
+    
+    strcpy(bwrite, str);
 
-    //writing 0
-    char bwrite[512];
-    for(i = 0; i < 512; i++)
+    for(int i = 0; i < 600; i++)
     {
-        bwrite[i] = '1';
+        bwrite[i] = str[i % 5];
     }
-    bwrite[0] = 'a';
-    bwrite[1] = 'r';
-    bwrite[2] = 'i';
-    bwrite[3] = 'e';
-    bwrite[80] = 'g';
-    writeBasic(0x0, 1, bwrite);
 
-	char* buffer = read(0x0, 1);
-    for (int i = 0; i < 512; i++)
+    for(int i = 512; i < 600; i++)
+    {
+        bwrite[i] = 'a';
+    }
+    write(0x0, 550, bwrite);
+
+    char buffer[1024];
+    readBasic(buffer, 0x0, 2);
+
+    for (int i = 0; i < 550; i++)
     {
         printch(buffer[i]);
     }
@@ -177,4 +193,3 @@ uint8 identify()
     // We read it!
     return 1;
 }
-

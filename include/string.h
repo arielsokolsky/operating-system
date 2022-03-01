@@ -2,6 +2,9 @@
 #define STRING_H
 #include "./types.h"
 
+//the function copy str src to str dst
+void strcpy(string dest, string source);
+
 //return the length of a string
 int strlen(string str);
 
