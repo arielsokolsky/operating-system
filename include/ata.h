@@ -52,5 +52,6 @@ static void ATA_wait_BSY();
 static void ATA_wait_DRQ();
 
 void write(uint32 address, uint32 len, void* bytes);
+void read(void* buffer, uint32 address, uint32 len);
 
 #endif

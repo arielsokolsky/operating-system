@@ -2,45 +2,136 @@
 
 
 /*
-the function first write all the full sector and to write the what left she read change the data and write again
-param LBA: the address to where to write
-param len: how byte to write
+the function can write to any address with any length
+param address: the address to where to write
+param len: how many byte to write
 param byte: what to write
 return: none
 */
 void write(uint32 address, uint32 len, void* bytes)
 {
     uint8* data = (uint8 *)bytes;
-    int startSector = address / SECTOR_SIZE;
-    int numOfSectors = len / SECTOR_SIZE;
-    int lastSector = startSector + numOfSectors;
-    int lastSectorLen = len % SECTOR_SIZE;
+    char buffer[512];
+    int currentLocation = 0;
 
-    //write the full sectors
-    if(numOfSectors > 0)
+    int startSector = address / SECTOR_SIZE;
+    int startSectorAddr = address % SECTOR_SIZE;
+    int lenFirstSector = SECTOR_SIZE - (address % SECTOR_SIZE);
+
+    int finalSector = (address + len) / SECTOR_SIZE;
+
+    // the minos 1 is exclude the first sector
+    int fullSectorCount = finalSector - startSector - 1;
+
+    //start + middle + end = len => end = len - start - middle
+    int finalSectorLen = len - lenFirstSector - fullSectorCount * SECTOR_SIZE;
+
+    //check if more then one sector
+    if(lenFirstSector > len)
     {
-        writeBasic(startSector, numOfSectors, data);
+        lenFirstSector = len;
+    }
+
+    //read the first sector
+    readBasic(buffer, startSector, 1);
+    //change first sector
+    for (currentLocation = 0; currentLocation < lenFirstSector; currentLocation++)
+    {
+        buffer[startSectorAddr + currentLocation] = data[currentLocation];
+    }
+    //write it 
+    writeBasic(startSector, 1, buffer);
+
+    
+    //write the full sectors
+    if(fullSectorCount > 0)
+    {
+        writeBasic(startSector + 1, fullSectorCount, data + currentLocation);
+        currentLocation += fullSectorCount * SECTOR_SIZE;
     }
     
+    //check if last sector exist
+    if(finalSectorLen == 0)
+    {
+        return;
+    }
+
     //read the data of the last sector
-    char buffer[512];
-    readBasic(buffer, lastSector, 1);
+    readBasic(buffer, finalSector, 1);
     
     //change part of the data
-    for (int i = 0; i < lastSectorLen; i++)
+    for (int i = 0; i + currentLocation < len; i++)
     {
-        buffer[i] = data[numOfSectors * SECTOR_SIZE + i];
+        buffer[i] = data[currentLocation + i];
     }
     
     //send the same data with changes
-    if(lastSectorLen > 0)
+    writeBasic(finalSector, 1, buffer);
+    
+    return;
+}
+
+/*
+the function can read from any address with any length
+param buffer: where to to store the data
+param len: how many byte to write
+param address: what address to read from
+return: none
+*/
+void read(void* buffer, uint32 address, uint32 len)
+{
+    int currentLocation = 0;
+    uint8* bytes = (uint8*) buffer;
+    char data[512] = {0};
+    int lenFirstSector = SECTOR_SIZE - (address % SECTOR_SIZE);
+    int startSector = address / SECTOR_SIZE;
+    int finalSector = (address + len) / SECTOR_SIZE;
+    int FullSectorCount = finalSector - startSector - 1;
+    
+    if(lenFirstSector > len)
     {
-        writeBasic(lastSector, 1, buffer);
+        lenFirstSector = len;
+    }
+
+    //read the first sector
+    readBasic(data, startSector, 1);
+    for (currentLocation = 0; currentLocation < lenFirstSector; currentLocation++)
+    {
+        bytes[currentLocation] = data[(address % SECTOR_SIZE) + currentLocation];
+    }
+    
+    //read all the full sector
+    if(FullSectorCount > 0)
+    {
+        readBasic(buffer + currentLocation, startSector + 1, FullSectorCount);
+        currentLocation += FullSectorCount * SECTOR_SIZE;
+    }
+
+
+    //read the final sector
+    if(currentLocation - len != 0)
+    {
+        readBasic(data, finalSector, 1);
+        for (int i = 0; i < len - currentLocation; i++)
+        {
+            bytes[currentLocation + i] = data[i];
+        }
     }
 }
 
+/*
+the function can read from a sepecific sector and can only read sector size
+param target_address: where to store the data
+param lba: the sector number to read from
+param sector_count : how many sectors to read
+return: none
+*/
 void readBasic(void* target_address, uint32 LBA, uint8 sector_count)
 {
+    if(sector_count == 0)
+    {
+        return;
+    }
 	ATA_wait_BSY();
 	outPort(0x1F6,0xE0 | ((LBA >>24) & 0xF));
 	outPort(0x1F2,sector_count);
@@ -65,6 +156,13 @@ void readBasic(void* target_address, uint32 LBA, uint8 sector_count)
 
 }
 
+/*
+the function can write to a sepecific sector and can only write sector size
+param bytes: what data to write
+param lba: the sector number to read from
+param sector_count : how many sectors to read
+return: none
+*/
 void writeBasic(uint32 LBA, uint8 sector_count, uint32* bytes)
 {
 	ATA_wait_BSY();
@@ -95,40 +193,38 @@ static void ATA_wait_DRQ()  //Wait fot drq to be 1
 	while(!(inputPort(0x1F7)&STATUS_RDY));
 }
 
+/*
+the function check that read and write working
+param: none
+return: if working return true else return false
+*/
 bool test()
 {
 	bool working = true;
+    char bwrite[50] = {0};
+    char buffer[50] = {0};
 	int i = 0;
 
 	uint32* target;
-    string str = "12345";
-    char bwrite[600] = {0};
+    string str = "hello this is test";
+    int len = strlen(str);
     
     strcpy(bwrite, str);
 
-    for(int i = 0; i < 600; i++)
-    {
-        bwrite[i] = str[i % 5];
-    }
+    write(500, len, bwrite);
+    
+    read(buffer, 500, len);
 
-    for(int i = 512; i < 600; i++)
-    {
-        bwrite[i] = 'a';
-    }
-    write(0x0, 550, bwrite);
-
-    char buffer[1024];
-    readBasic(buffer, 0x0, 2);
-
-    for (int i = 0; i < 550; i++)
-    {
-        printch(buffer[i]);
-    }
+    working = strcmp(buffer, bwrite);
 
     return working; 
 }
 
-
+/*
+the function check if disk connected
+param: none
+return: if file exist return 1 else 0
+*/
 uint8 identify() 
 {
     //puts 0 on the sector count and in the linear block address
