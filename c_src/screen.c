@@ -1,6 +1,5 @@
 #include "../include/screen.h"
 
-int curX = 0, curY = 0;
 const uint8 char_limit = 80, BACKSPACE_KEY = 0x08, bytes_in_char = 2; //the character limit in a line is 80
 
 /*
@@ -160,6 +159,32 @@ void printWelcomeScreen()
     print("the os is very effective with memory\n\n");
 }
 
+/*
+the function print the logo
+param: none
+return: none
+*/
+void printRhino()
+{
+    println("      __.--**\"\"\"**--...__..--**\"\"\"\"*-.           ");
+    println("    .'                                `-.               ");
+    println("  .'                         _           \\             ");
+    println(" /                         .'        .    \\   _._      ");
+    println(":                         :          :`*.  :-'.' ;      ");
+    println(";    `                    ;          `.) \\   /.-'      ");
+    println(":     `                             ; ' -*   ;          ");
+    println("       :.    \\           :       :  :        :         ");
+    println(" ;     ; `.   `.         ;     ` |  '                   ");
+    println(" |         `.            `. -*\"*\\; /        :         ");
+    println(" |    :     /`-.           `.    \\/`.'  _    `.        ");
+    println(" :    ;    :    `*-.__.-*\"\"\":`.   \\ ;  'o` `. /     ");
+    println("       ;   ;                ;  \\   ;:       ;:   ,/    ");
+    println("  |  | |                       /`  | ,      `*-*'/      ");
+    println("  `  : :  :                /  /    | : .    ._.-'       ");
+    println("   \\  \\ ,  \\              :   `.   :  \\ \\   .'     ");
+    println("    :  *:   ;             :    |`*-'   `*+-*            ");
+    println("    `**-*`\"\"               *---*                      ");   
+}
 
 
 

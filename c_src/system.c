@@ -32,9 +32,9 @@ uint32 inputPortDword(uint16 port)
 
 
 /*
-the function send data get to a port 
-param port: the port we write to
-param data: the data we want to write
+the function let us write to ports data
+param port: the port to write to
+param data: the data we want to write to that port
 return: none
 */
 void outPort(uint16 port, uint8 data)
@@ -54,4 +54,5 @@ void outPortDword(uint16 port, uint32 data)
 {
     __asm__("out %%eax, %%dx" : : "a" (data),  "d" (port));
 }
+
 

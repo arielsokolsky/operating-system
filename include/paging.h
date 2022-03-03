@@ -9,7 +9,6 @@
 #define MAX_ADDRESS OFFSET_LEN * ENTERY_SIZE * ENTERY_SIZE
 
 
-bool initialized;
 extern uint32 currentAddress;
 
 typedef struct page 
@@ -30,7 +29,7 @@ typedef struct page
     uint32 frameAddress : 20;  
 }page;
 
-uint32 _physicalAddr;
+static uint32 _physicalAddr;
 
 
 typedef struct page_table
@@ -47,8 +46,8 @@ typedef struct page_directory
     uint32 physicalAddress;
 }page_directory;
 
-page_directory *kernel_directory;
-page_directory *current_directory;
+static page_directory *kernel_directory;
+static page_directory *current_directory;
 
 void switch_page_directory(page_directory * addr);
 void initialize_paging(uint32);

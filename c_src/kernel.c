@@ -12,19 +12,33 @@
 #include "../include/task.h"
 #include "../include/vfs.h"
 #include "../include/ata.h"
-
+#include "../include/irq.h"
 
 
 int main(multiboot_info* info)
 {  
     int numFrames;
-
     printWelcomeScreen();
     
-    install_gdt();
-    setupIdt();
     
+    printRhino();
+
+    println("press enter to start system");
+    readString();
+    clearScreen();
+    
+    installIrq();
+    setupIdt();
+    install_gdt();
+
     installFilesystem(0);
+    
+    //remove the keyboard handler(because there is already handler)
+    //setIrqEnery(1, keyboard_handler);
+    //irq1();
+
+    //init_timer(100);
+    
     print("\n");
     numFrames = printMultiBootInfo(info);
     println("");
@@ -32,7 +46,9 @@ int main(multiboot_info* info)
     initialize_paging(numFrames);
     task_install();
     println("install task\n");
-    //tss_switch();
+
+    //not switching to user mode becuase syscall not implemented
+    //switch_to_user_mode(); 
 
     int working = test();
     if(working)
@@ -47,6 +63,7 @@ int main(multiboot_info* info)
     
     println("the operating system finish initialization");
     println("press enter to start");
+
     readString();
     clearScreen();
 
