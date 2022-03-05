@@ -2,9 +2,9 @@
 
 
 //array that contains the frames is used
-unsigned_int32* freeFrames = 0;
-unsigned_int32 numOfAllocatedFrames = 0;
-unsigned_int32 numOfFrames = 0;
+uint32* freeFrames = 0;
+uint32 numOfAllocatedFrames = 0;
+uint32 numOfFrames = 0;
 
 
 

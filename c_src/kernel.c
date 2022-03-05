@@ -11,11 +11,7 @@
 #include "../include/tss.h"
 #include "../include/task.h"
 #include "../include/vfs.h"
-
-void entry()
-{
-
-}
+#include "../include/ata.h"
 
 
 
@@ -28,20 +24,27 @@ int main(multiboot_info* info)
     install_gdt();
     setupIdt();
     
-    installFilesystem(0);
+    fat32 * fs = installFilesystem(0);
+    
     print("\n");
     numFrames = printMultiBootInfo(info);
     println("");
-
+    
     initialize_paging(numFrames);
-    
     task_install();
-    println("install task");
-    tss_switch();
-    asm ("hlt");
-    entry();
-    
-    println("\npress enter");
+    println("install task\n");
+    //tss_switch();
+
+    int working = test();
+    if(working == 0)
+    {
+        println("a error accured while loading file system");
+        asm("hlt");
+    }
+    println("file system is ready\n");
+
+    println("the operating system finish initialization");
+    println("press enter to start");
     readString();
     clearScreen();
 

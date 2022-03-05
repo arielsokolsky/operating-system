@@ -3,7 +3,7 @@
 
 
 //set a specific entry in the gdt table
-void set_gdt_gate(unsigned_int8 entry, unsigned_int32 base, unsigned_int32 limit, unsigned_int8 access, unsigned_int8 flags)
+void set_gdt_gate(uint8 entry, uint32 base, uint32 limit, uint8 access, uint8 flags)
 {
     gdt[entry].low_base = (base & 0xFFFF);
     gdt[entry].middle_base = (base >> 16) & 0xFF;
@@ -22,7 +22,7 @@ void set_gdt_gate(unsigned_int8 entry, unsigned_int32 base, unsigned_int32 limit
 void install_gdt()
 {
     gp.limit = sizeof(gdt) - 1;
-    gp.base = (unsigned_int32) &gdt;
+    gp.base = (uint32) &gdt;
 
     set_gdt_gate(0, 0 ,0, 0, 0);
     //code segment

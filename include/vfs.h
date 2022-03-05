@@ -1,11 +1,5 @@
-#ifndef VFS_H
-#define VFS_H
-
 #include "string.h"
 #include "malloc.h"
-
-#define EOC 0x0FFFFFF8
-
 
 struct bios_parameter_block {
     uint16 bytes_per_sector;          // IMPORTANT
@@ -63,8 +57,3 @@ typedef struct fat32 {
 
 
 fat32 *installFilesystem(char *fatSystem);
-void getSector(fat32* fs, uint8 *buffer, uint32 cluster_num);
-uint8 *readFile(fat32 *fs, struct dir_entry *dirent);
-
-
-#endif
