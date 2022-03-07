@@ -256,12 +256,12 @@ uint8 identify()
     
     if(status == 0) return 0;
 
-    //printf("Status indicates presence of a drive. Polling while STAT_BSY... ");
+
     while(status & STAT_BSY) {
-      //printf("\ninb(ATA_PRIMARY_COMM_REGSTAT);... ");
+
       status = inputPort(ATA_PRIMARY_COMM_REGSTAT);
     }
-    //printf("Done.\n");
+
 
     uint8 mid = inputPort(ATA_PRIMARY_LBA_MID);
     uint8 hi = inputPort(ATA_PRIMARY_LBA_HI);
@@ -270,7 +270,7 @@ uint8 identify()
         return 0;
     }
 
-    //printf("Waiting for ERR or DRQ.\n");
+
     // Wait for ERR or DRQ
     while(!(status & (STAT_ERR | STAT_DRQ))) {
         status = inputPort(ATA_PRIMARY_COMM_REGSTAT);
@@ -281,11 +281,8 @@ uint8 identify()
         return 0;
     }
 
-    //printf("Reading IDENTIFY structure.\n");
-    //uint8_t *buff = kmalloc(40960, 0, NULL);
     uint8 buff[552];
     insw(ATA_PRIMARY_DATA, buff, 256);
-    //printf("Success. Disk is ready to go.\n");
-    // We read it!
+
     return 1;
 }
