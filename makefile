@@ -16,6 +16,9 @@ $(OBJ)/%.o: $(ASM_SRC)/%.asm
 create_disk:
 	dd if=/dev/zero of=f32.disk bs=1M count=100
 	mkfs.fat -F32 f32.disk -s 1
+
+rm_disk:
+	rm f32.disk
 	
 build:$(OBJECTS_C) $(OBJECTS_ASM)
 	@echo "build"

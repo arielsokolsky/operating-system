@@ -9,12 +9,15 @@ typedef struct header{
     char name[MAX_NAME_LEN];
     uint32 address;
     uint32 dataLen;
-    struct header *next; 
+    uint32* nextAddress; 
 }__attribute__((packed)) header;
 
 static uint32 freeAddress;
 
 void createFile(string name, string path, string data);
+void readFile(header* head, char* data);
+header* findNextHeader(header* head);
+header findlast(header head);
 void createDir();
 void save();
 void loadFs();

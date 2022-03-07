@@ -52,7 +52,7 @@ int main(multiboot_info* info)
     loadFs();
 
     header currentHeader;
-    char data[] = "welcome to file 5";
+    char data[] = "this is new content";
     string result;
 
     int len = strlen(data);
@@ -62,15 +62,16 @@ int main(multiboot_info* info)
     read(&currentHeader, 0, sizeof(header));
     print("the name is: ");
     print(currentHeader.name);
-
+    
     println("");
-
+    
     print("data: ");
-    read(result, currentHeader.address, currentHeader.dataLen);
+    readFile(&currentHeader, result);
     result[currentHeader.dataLen] = 0;
     print(result);
-
+    /**/
     asm("hlt");
+    
     //end test
 
     //not switching to user mode becuase syscall not implemented
