@@ -13,6 +13,21 @@ int strlen(string str)
 }
 
 /*
+the function copy one string to the other
+param str1: the first string(src)
+param str2: the second string(dst)
+return: none
+*/
+void strcpy(string dest, string source)
+{
+    int i = 0;
+    for (i = 0; i < strlen(source) + 1; i++)
+    {
+        dest[i] = source[i];
+    }
+}
+
+/*
 the fuction get 2 string and return if equel
 param: 2 strings
 return: if string equel
