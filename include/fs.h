@@ -5,17 +5,18 @@
 
 #define MAX_NAME_LEN 20
 
-typedef struct header
-{
-    uint32 address;
-    int dataLen;
+typedef struct header{
     char name[MAX_NAME_LEN];
-    header* next; 
-}header;
+    uint32 address;
+    uint32 dataLen;
+    struct header *next; 
+}__attribute__((packed)) header;
 
-void createFile();
+static uint32 freeAddress;
+
+void createFile(string name, string path, string data);
 void createDir();
 void save();
-void load();
+void loadFs();
 
 #endif

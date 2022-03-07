@@ -21,11 +21,11 @@ int main(multiboot_info* info)
     int numFrames;
     printWelcomeScreen();
     
-    
+
     printRhino();
 
     println("press enter to start system");
-    readString();
+    //readString();
     clearScreen();
     
     installIrq();
@@ -47,6 +47,31 @@ int main(multiboot_info* info)
     initialize_paging(numFrames);
     task_install();
     println("install task\n");
+
+    // write test
+    loadFs();
+
+    header currentHeader;
+    char data[] = "welcome to file 5";
+    string result;
+
+    int len = strlen(data);
+    
+    createFile("file5.txt", ".", data);
+
+    read(&currentHeader, 0, sizeof(header));
+    print("the name is: ");
+    print(currentHeader.name);
+
+    println("");
+
+    print("data: ");
+    read(result, currentHeader.address, currentHeader.dataLen);
+    result[currentHeader.dataLen] = 0;
+    print(result);
+
+    asm("hlt");
+    //end test
 
     //not switching to user mode becuase syscall not implemented
     //switch_to_user_mode(); 

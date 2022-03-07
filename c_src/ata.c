@@ -67,7 +67,7 @@ void write(uint32 address, uint32 len, void* bytes)
     
     //send the same data with changes
     writeBasic(finalSector, 1, buffer);
-    
+
     return;
 }
 
