@@ -5,7 +5,7 @@ the function sets up the paging in the memory
 total_frames: gets the total amount of frames (using the bootloader)
 ret: none
 */
-void initialize_paging(unsigned_int32 total_frames) 
+void initialize_paging(uint32 total_frames) 
 {
     page* myPage; 
     uint32 _address = 0;
@@ -54,12 +54,12 @@ address: the address of the page you want to get
 dir: where the page table is in
 ret: the page that the address belonged to
 */
-page *get_page(unsigned_int32 address, bool make, page_directory *dir)
+page *get_page(uint32 address, bool make, page_directory *dir)
 {
     // removes the files offset from the address by shifting the address using division of the necessery amount of bits
     address /= OFFSET_LEN;
     // Find the page table containing this address
-    unsigned_int32 table_idx = address / ENTERY_SIZE;
+    uint32 table_idx = address / ENTERY_SIZE;
     if (dir->tables[table_idx] != 0) // If this table is already assigned
     {        
         //returns the page in the correct table and page
@@ -110,7 +110,7 @@ page* mapPage(uint32 address)
     return myPage;
 }
 
-page* make_page(unsigned_int32 address, page_directory *dir)
+page *make_page(uint32 address, page_directory *dir)
 {
     page* myPage;
     uint32 newAddr;

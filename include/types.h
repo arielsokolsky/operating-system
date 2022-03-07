@@ -6,10 +6,10 @@ typedef signed short int16;
 typedef signed long int32;
 typedef signed long long int64;
 
-typedef unsigned char unsigned_int8;
-typedef unsigned short unsigned_int16;
-typedef unsigned long unsigned_int32;
-typedef unsigned long long unsigned_int64;
+typedef unsigned char uint8;
+typedef unsigned short uint16;
+typedef unsigned long uint32;
+typedef unsigned long long uint64;
 
 typedef unsigned char uint8;
 typedef unsigned short uint16;
@@ -22,8 +22,8 @@ typedef _Bool bool;
 
 typedef char* string;
 
-#define low_16(address) (unsigned_int16)((address) & 0xFFFF)            
-#define high_16(address) (unsigned_int16)(((address) >> 16) & 0xFFFF)
+#define low_16(address) (uint16)((address) & 0xFFFF)            
+#define high_16(address) (uint16)(((address) >> 16) & 0xFFFF)
 
 
 #endif
