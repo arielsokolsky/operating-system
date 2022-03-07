@@ -133,12 +133,12 @@ void readBasic(void* target_address, uint32 LBA, uint8 sector_count)
         return;
     }
 	ATA_wait_BSY();
-	outPort(0x1F6,0xE0 | ((LBA >>24) & 0xF));
-	outPort(0x1F2,sector_count);
-	outPort(0x1F3, (uint8) LBA);
-	outPort(0x1F4, (uint8)(LBA >> 8));
-	outPort(0x1F5, (uint8)(LBA >> 16)); 
-	outPort(0x1F7,0x20); //Send the read command
+	outPort(ATA_PRIMARY_DRIVE_HEAD,0xE0 | ((LBA >>24) & 0xF));
+	outPort(ATA_PRIMARY_SECCOUNT,sector_count);
+	outPort(ATA_PRIMARY_LBA_LO, (uint8) LBA);
+	outPort(ATA_PRIMARY_LBA_MID, (uint8)(LBA >> 8));
+	outPort(ATA_PRIMARY_LBA_HI, (uint8)(LBA >> 16)); 
+	outPort(ATA_PRIMARY_COMM_REGSTAT,0x20); //Send the read command
 	
 	uint16 *target = (uint16*) target_address;
 	
@@ -148,7 +148,7 @@ void readBasic(void* target_address, uint32 LBA, uint8 sector_count)
 		ATA_wait_DRQ();
 		for(int i=0;i<256;i++)
 		{
-			target[i] = inputPortWord(0x1F0);
+			target[i] = inputPortWord(ATA_PRIMARY_DATA);
 		}	
 		target+=256;
 	}
@@ -166,12 +166,12 @@ return: none
 void writeBasic(uint32 LBA, uint8 sector_count, uint32* bytes)
 {
 	ATA_wait_BSY();
-	outPort(0x1F6,0xE0 | ((LBA >>24) & 0xF));
-	outPort(0x1F2,sector_count);
-	outPort(0x1F3, (uint8) LBA);
-	outPort(0x1F4, (uint8)(LBA >> 8));
-	outPort(0x1F5, (uint8)(LBA >> 16)); 
-	outPort(0x1F7,0x30); //Send the write command
+	outPort(ATA_PRIMARY_DRIVE_HEAD,0xE0 | ((LBA >>24) & 0xF));
+	outPort(ATA_PRIMARY_SECCOUNT,sector_count);
+	outPort(ATA_PRIMARY_LBA_LO, (uint8) LBA);
+	outPort(ATA_PRIMARY_LBA_MID, (uint8)(LBA >> 8));
+	outPort(ATA_PRIMARY_LBA_HI, (uint8)(LBA >> 16)); 
+	outPort(ATA_PRIMARY_COMM_REGSTAT,0x30); //Send the write command
 
 	for (int j =0;j<sector_count;j++)
 	{
@@ -179,18 +179,18 @@ void writeBasic(uint32 LBA, uint8 sector_count, uint32* bytes)
 		ATA_wait_DRQ();
 		for(int i=0;i<256;i++)
 		{
-			outPortDword(0x1F0, bytes[i]);
+			outPortDword(ATA_PRIMARY_DATA, bytes[i]);
 		}
 	}
 }
 
 static void ATA_wait_BSY()   //Wait for bsy to be 0
 {
-	while(inputPort(0x1F7)&STATUS_BSY);
+	while(inputPort(ATA_PRIMARY_COMM_REGSTAT)&STATUS_BSY);
 }
 static void ATA_wait_DRQ()  //Wait fot drq to be 1
 {
-	while(!(inputPort(0x1F7)&STATUS_RDY));
+	while(!(inputPort(ATA_PRIMARY_COMM_REGSTAT)&STATUS_RDY));
 }
 
 /*
