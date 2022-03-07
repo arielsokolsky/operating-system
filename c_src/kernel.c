@@ -13,6 +13,7 @@
 #include "../include/vfs.h"
 #include "../include/ata.h"
 #include "../include/irq.h"
+#include "../include/fs.h"
 
 
 int main(multiboot_info* info)
