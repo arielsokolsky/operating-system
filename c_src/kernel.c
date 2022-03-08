@@ -51,46 +51,43 @@ int main(multiboot_info* info)
 
 
 
-
-
     // write test
     loadFs();
 
     header currentHeader;
     char data[] = "hello world ";
-    string result;// = "a";
+    string result;
     
     currentHeader = createFile("file.txt", ".", data);
     println("");
 
-    //readFile(&currentHeader, result);
-    header* next;
-    findNextHeader(&currentHeader, next);
-    
-    print("next: ");
-    printInt(next->nextAddress);
-
-    println("");
-
-    header* final;
-    header Test = *next;
-    findNextHeader(&Test, final);
-
-    print("final: ");
-    printInt(final->dataLen);
     /*
-
-    result = "string";
+    readFile(&currentHeader, result);
     print("the result: ");
     println(result);
 
     println("");
     */
-    while(1)
-    {
 
-    }
     
+    header* final;
+    findLastHeader(currentHeader, final);
+
+    header Test = *final;
+    
+
+    print("final: ");
+    printInt(Test.dataLen);
+    
+    println("");
+    read(result, Test.address, Test.dataLen);
+
+    result[Test.dataLen] = 0;
+    print(result);
+    
+
+    
+    while(1){};    
     //end test
 
     //not switching to user mode becuase syscall not implemented
