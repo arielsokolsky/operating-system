@@ -48,28 +48,25 @@ int main(multiboot_info* info)
     task_install();
     println("install task\n");
 
+
+
+
+
+
     // write test
     loadFs();
 
     header currentHeader;
-    char data[] = "this is new content";
+    char data[] = "hello world ";
     string result;
-
-    int len = strlen(data);
     
-    createFile("file5.txt", ".", data);
-
-    read(&currentHeader, 0, sizeof(header));
-    print("the name is: ");
-    print(currentHeader.name);
-    
+    currentHeader = createFile("file.txt", ".", data);
     println("");
-    
-    print("data: ");
+
     readFile(&currentHeader, result);
-    result[currentHeader.dataLen] = 0;
     print(result);
-    /**/
+    
+
     asm("hlt");
     
     //end test

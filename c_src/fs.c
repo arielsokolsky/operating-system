@@ -1,9 +1,9 @@
 #include "../include/fs.h"
 
 
-void createFile(string name, string path, string data)
+header createFile(string name, string path, string data)
 {
-    header currentHeader;
+    header head;
     uint32 dataLen = strlen(data);
     string fullPath;
     
@@ -13,16 +13,35 @@ void createFile(string name, string path, string data)
     strcpy(fullPath + strlen(path) + 1, name);
 
     //set the struct
-    strcpy(currentHeader.name, fullPath);
-    currentHeader.dataLen = dataLen;
-    currentHeader.address = freeAddress + sizeof(header);
-    currentHeader.nextAddress = 0; 
+    strcpy(head.name, fullPath);
+    head.dataLen = dataLen;
+    head.address = freeAddress + sizeof(header);
+    head.nextAddress = 500; 
 
-    write(freeAddress, sizeof(header), &currentHeader);
+    write(freeAddress, sizeof(header), &head);
     freeAddress += sizeof(header);
 
     write(freeAddress, dataLen, data);
     freeAddress += dataLen;
+
+
+    
+    header nextHeader;
+    //set the next struct
+    string newData = "but still didn't finish";
+    strcpy(nextHeader.name, fullPath);
+    nextHeader.dataLen = strlen(newData);
+    nextHeader.address = 500 + sizeof(header);
+    nextHeader.nextAddress = 0; 
+
+    //write the header
+    write(500, sizeof(header), &nextHeader);
+
+    //write the data
+    write(nextHeader.address, nextHeader.dataLen, newData);
+    
+
+    return head;
 }
 
 /*
@@ -44,16 +63,23 @@ return: none
 void readFile(header* head, char* data)
 {
     char* bytes;
-
+    //get the data and copy to var
     read(bytes, head->address, head->dataLen);
     strcpy(data, bytes);
-    data += head->dataLen;
-
+    
+    //check if got to the end
     if(head->nextAddress == 0)
     {
+        //set the last byte of the string as 0
+        data[head->dataLen] = 0;
         return;
     }
-    readFile(findNextHeader(head), data);
+    //move the variable
+    data += head->dataLen;
+
+    //find the next header and pass it
+    header* next = findNextHeader(head);
+    readFile(next, data);
 }
 
 /*
@@ -64,6 +90,10 @@ return: the next header of head
 header* findNextHeader(header* head)
 {
     header* next;
+    if(head->nextAddress == 0)
+    {
+        return 0;
+    }
     read(next, head->nextAddress, sizeof(header));
     return next;
 }

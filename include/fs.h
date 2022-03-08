@@ -14,7 +14,7 @@ typedef struct header{
 
 static uint32 freeAddress;
 
-void createFile(string name, string path, string data);
+header createFile(string name, string path, string data);
 void readFile(header* head, char* data);
 header* findNextHeader(header* head);
 header findlast(header head);
