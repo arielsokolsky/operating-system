@@ -58,16 +58,38 @@ int main(multiboot_info* info)
 
     header currentHeader;
     char data[] = "hello world ";
-    string result;
+    string result;// = "a";
     
     currentHeader = createFile("file.txt", ".", data);
     println("");
 
-    readFile(&currentHeader, result);
-    print(result);
+    //readFile(&currentHeader, result);
+    header* next;
+    findNextHeader(&currentHeader, next);
     
+    print("next: ");
+    printInt(next->nextAddress);
 
-    asm("hlt");
+    println("");
+
+    header* final;
+    header Test = *next;
+    findNextHeader(&Test, final);
+
+    print("final: ");
+    printInt(final->dataLen);
+    /*
+
+    result = "string";
+    print("the result: ");
+    println(result);
+
+    println("");
+    */
+    while(1)
+    {
+
+    }
     
     //end test
 

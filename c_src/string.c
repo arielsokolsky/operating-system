@@ -25,6 +25,8 @@ void strcpy(string dest, string source)
     {
         dest[i] = source[i];
     }
+    //set the last byte of the string as 0
+    dest[strlen(source)] = 0;
 }
 
 /*

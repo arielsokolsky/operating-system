@@ -16,8 +16,8 @@ static uint32 freeAddress;
 
 header createFile(string name, string path, string data);
 void readFile(header* head, char* data);
-header* findNextHeader(header* head);
-header findlast(header head);
+void findNextHeader(header* head, header* next);
+void findLastHeader(header* head, header* next);
 void createDir();
 void save();
 void loadFs();
