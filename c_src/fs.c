@@ -39,7 +39,7 @@ header createFile(string name, string path, string data)
     strcpy(nextHeader.name, fullPath);
     nextHeader.dataLen = strlen(newData);
     nextHeader.address = 500 + sizeof(header);
-    nextHeader.nextAddress = 600; 
+    nextHeader.nextAddress = 0; 
 
     //write the header
     write(500, sizeof(header), &nextHeader);
@@ -82,32 +82,28 @@ the function read file
 param head: all the data needed to read the file
 return: none
 */
-void readFile(header* head, char* data)
-{
-    char* bytes;
-    uint32 address = head->address, len = head->dataLen;
-
-    //get the data and copy to var
-    read(bytes, address, len);
-
-    strcpy(data, bytes);
-    
-    printInt(head->nextAddress);
-    println("");
-
-    //move the variable
-    data += head->dataLen;
-    
-    //find the next header and pass it
-    header* next;
-    findNextHeader(*head, next);
-    
-    if(!next)
+void readFile(header head, char* data)
+{    
+    header* next; 
+    do
     {
-        return;
-    }
+        //get the data from the head
+        read(data, head.address, head.dataLen);
 
-    readFile(next, data);
+        //move the array by len
+        data += head.dataLen;
+
+        //change head to next
+        findNextHeader(head, next);  
+        head = *next;
+    }while(head.nextAddress != 0);
+
+    //add the last fragment
+    read(data, head.address, head.dataLen);
+    data += head.dataLen;
+
+    //add the zero to the string
+    data[0] = 0;
 }
 
 /*
@@ -148,15 +144,17 @@ param head: a part of the linked list
 param address: where the last node will point to
 return: none
 */
-void addHeader(header* node, uint32 address)
-{
-    header* last;
-    findLastHeader(*node, last);
-
+void addHeader(header* last, uint32 address)
+{    
+    header var;
+    
     //edit the last header 
-    node->nextAddress = address;
+    last->nextAddress = address;
+    
+    //write it again to disk
+    write(last->address - sizeof(header), sizeof(header), last);
 
-    //write it again
-    write(node->address - sizeof(header), sizeof(header), node);
+    //change the varable
+    findLastHeader(var, last);
 }
 

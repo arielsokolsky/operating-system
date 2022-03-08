@@ -61,30 +61,21 @@ int main(multiboot_info* info)
     currentHeader = createFile("file.txt", ".", data);
     println("");
 
-    /*
-    readFile(&currentHeader, result);
+    readFile(currentHeader, result);
     print("the result: ");
     println(result);
-
     println("");
-    */
 
     
     header* final;
     findLastHeader(currentHeader, final);
-
-    header Test = *final;
+    addHeader(final, 600); 
     
-
-    print("final: ");
-    printInt(Test.dataLen);
     
+    readFile(currentHeader, result);
+    print("the result: ");
+    println(result);
     println("");
-    read(result, Test.address, Test.dataLen);
-
-    result[Test.dataLen] = 0;
-    print(result);
-    
 
     
     while(1){};    
