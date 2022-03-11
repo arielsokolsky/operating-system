@@ -21,20 +21,26 @@ typedef struct fragmentHeader
 
 static uint32 freeAddress;
 
-fragmentHeader getHeader(uint32 address);
 
+//function's: create and remove files
+node writeFile(string name, string data);
+
+//function's: add and remove fragments
 uint32 addFragment(string data);
 void readFragments(uint32 address, char* data);
 
-node writeFile(string name, string data);
-
+//function's: find and move fragments
 void findNextHeader(fragmentHeader head, fragmentHeader* next);
 uint32 findLastHeader(uint32 address);
 
+//connection a new fragment
 void addFooter(uint32 address, uint32 newAddress);
 void appendFragments(uint32 address, string data);
 
-void createDir();
+//function's: converts
+fragmentHeader getHeader(uint32 address);
+
+//function's: store and save
 void save();
 void loadFs();
 

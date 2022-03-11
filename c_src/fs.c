@@ -114,6 +114,11 @@ return: the last header address
 uint32 findLastHeader(uint32 address)
 {
     fragmentHeader head = getHeader(address);
+    //if head doesn't have next
+    if(head.nextAddress == 0)
+    {
+        return address;
+    }
     fragmentHeader* last;
     uint32 lastAddress = 0;
     do
@@ -151,14 +156,12 @@ return: none
 */
 void appendFragments(uint32 address, string data)
 {
-    //get last header address
-    uint32 lastAddress = findLastHeader(address);
-
     //set the struct values
-    address = addFragment(data);
-    
+    uint32 newAddress = addFragment(data);
+    //get last header address
+    address = findLastHeader(address);
     //change last header
-    addFooter(lastAddress, address);
+    addFooter(address, newAddress);
 }
 
 /*
