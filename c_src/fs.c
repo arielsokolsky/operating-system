@@ -1,10 +1,23 @@
 #include "../include/fs.h"
 
 
+
+
+node writeFile(string fileName, string data)
+{
+    node file;
+    uint32 address;
+    
+    addFragment(data);
+
+    strcpy(file.name, fileName);
+    file.address = address;
+
+    return file;
+}
+
 /*
 the function craete a file
-param name: the name of the file
-param path: the path of the file
 param data: the data of the file
 return: the fragmentHeader of the file
 */
@@ -12,11 +25,6 @@ fragmentHeader addFragment(string data)
 {
     fragmentHeader head;
     uint32 dataLen = strlen(data);
-    
-    //add the path and the name
-    //strcpy(fullPath, path);
-    //strcpy(fullPath + strlen(path), "/");
-    //strcpy(fullPath + strlen(path) + 1, name);
 
     //set the struct
     head.dataLen = dataLen;
@@ -44,12 +52,12 @@ void loadFs()
 }
 
 /*
-the function read a file 
+the function read a fragment 
 param head: the head of the linked list (belong to the file)
 param data: where the info stored
 return: none
 */
-void readFile(fragmentHeader head, char* data)
+void readFragments(fragmentHeader head, char* data)
 {   
     fragmentHeader* next; 
     while(1)

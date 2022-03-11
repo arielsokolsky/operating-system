@@ -63,7 +63,7 @@ int main(multiboot_info* info)
     println("");
 
 
-    readFile(currentHeader, result);
+    readFragments(currentHeader, result);
     print("the result: ");
     print(result);
     println("");
@@ -74,7 +74,7 @@ int main(multiboot_info* info)
     //continueFile(final, str);
 
     
-    readFile(*final, result);
+    readFragments(*final, result);
     print("the result: ");
     println(result);
     println("");
