@@ -57,22 +57,23 @@ int main(multiboot_info* info)
     header currentHeader;
     char data[] = "hello world ";
     string result;
+    string str = "omg I can continue a file";
     
-    currentHeader = createFile("file.txt", ".", data);
+    currentHeader = addFragment("./file.txt", data);
     println("");
 
     readFile(currentHeader, result);
     print("the result: ");
-    println(result);
+    print(result);
     println("");
 
     
     header* final;
     findLastHeader(currentHeader, final);
-    addHeader(final, 600); 
+    continueFile(final, str);
+
     
-    
-    readFile(currentHeader, result);
+    readFile(*final, result);
     print("the result: ");
     println(result);
     println("");

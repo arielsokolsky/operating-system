@@ -8,22 +8,21 @@ param path: the path of the file
 param data: the data of the file
 return: the header of the file
 */
-header createFile(string name, string path, string data)
+header addFragment(string fullPath, string data)
 {
     header head;
     uint32 dataLen = strlen(data);
-    string fullPath;
     
     //add the path and the name
-    strcpy(fullPath, path);
-    strcpy(fullPath + strlen(path), "/");
-    strcpy(fullPath + strlen(path) + 1, name);
+    //strcpy(fullPath, path);
+    //strcpy(fullPath + strlen(path), "/");
+    //strcpy(fullPath + strlen(path) + 1, name);
 
     //set the struct
     strcpy(head.name, fullPath);
     head.dataLen = dataLen;
     head.address = freeAddress + sizeof(header);
-    head.nextAddress = 500; 
+    head.nextAddress = 0; 
 
     write(freeAddress, sizeof(header), &head);
     freeAddress += sizeof(header);
@@ -32,7 +31,7 @@ header createFile(string name, string path, string data)
     freeAddress += dataLen;
 
 
-    
+    /*
     header nextHeader;
     //set the next struct
     string newData = "but still didn't finish";
@@ -61,7 +60,7 @@ header createFile(string name, string path, string data)
 
     //write the data
     write(lastHeader.address, lastHeader.dataLen, dataNew);
-    
+    */
 
     return head;
 }
@@ -78,14 +77,15 @@ void loadFs()
 }
 
 /*
-the function read file 
-param head: all the data needed to read the file
+the function read a file 
+param head: the head of the linked list (belong to the file)
+param data: where the info stored
 return: none
 */
 void readFile(header head, char* data)
-{    
+{   
     header* next; 
-    do
+    while(1)
     {
         //get the data from the head
         read(data, head.address, head.dataLen);
@@ -93,17 +93,18 @@ void readFile(header head, char* data)
         //move the array by len
         data += head.dataLen;
 
+        //there is no next
+        if(head.nextAddress == 0)
+        {
+            //add the zero to the string
+            data[0] = 0;
+            return;
+        }
+
         //change head to next
         findNextHeader(head, next);  
         head = *next;
-    }while(head.nextAddress != 0);
-
-    //add the last fragment
-    read(data, head.address, head.dataLen);
-    data += head.dataLen;
-
-    //add the zero to the string
-    data[0] = 0;
+    }
 }
 
 /*
@@ -144,7 +145,7 @@ param head: a part of the linked list
 param address: where the last node will point to
 return: none
 */
-void addHeader(header* last, uint32 address)
+void addFooter(header* last, uint32 address)
 {    
     header var;
     
@@ -153,8 +154,21 @@ void addHeader(header* last, uint32 address)
     
     //write it again to disk
     write(last->address - sizeof(header), sizeof(header), last);
-
+    
     //change the varable
-    findLastHeader(var, last);
+    //findLastHeader(var, last);
 }
 
+void continueFile(header* last, string data)
+{
+    header currentHeader;
+    string name = last->name;
+    uint32 headAddr; 
+
+    //TO DO: FIND LAST HEADER
+
+    //set the struct values
+    currentHeader = addFragment(name, data);
+    
+    addFooter(last, currentHeader.address - sizeof(header));
+}

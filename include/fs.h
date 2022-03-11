@@ -16,9 +16,10 @@ typedef struct header{
 
 static uint32 freeAddress;
 
-header createFile(string name, string path, string data);
+header addFragment(string fullPath, string data);
+void continueFile(header* head, string data);
 void readFile(header head, char* data);
-void addHeader(header* last, uint32 address);
+void addFooter(header* last, uint32 address);
 void findNextHeader(header head, header* next);
 void findLastHeader(header head, header* last);
 void createDir();
