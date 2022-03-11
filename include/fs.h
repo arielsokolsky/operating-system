@@ -14,7 +14,6 @@ typedef struct node
 
 typedef struct fragmentHeader
 {
-    uint32 address;
     uint32 dataLen;
     uint32 nextAddress; 
 }__attribute__((packed)) fragmentHeader;
@@ -27,7 +26,7 @@ node writeFile(string name, string data);
 
 //function's: add and remove fragments
 uint32 addFragment(string data);
-void readFragments(uint32 address, char* data);
+void readFragments(uint32 address, string data);
 
 //function's: find and move fragments
 void findNextHeader(fragmentHeader head, fragmentHeader* next);

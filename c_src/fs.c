@@ -32,15 +32,18 @@ uint32 addFragment(string data)
 
     //set the struct
     head.dataLen = dataLen;
-    head.address = freeAddress + sizeof(fragmentHeader);
     head.nextAddress = 0; 
 
     write(freeAddress, sizeof(fragmentHeader), &head);
     headerAddress = freeAddress;
     freeAddress += sizeof(fragmentHeader);
 
-    write(freeAddress, dataLen, data);
-    freeAddress += dataLen;
+    if(dataLen > 0)
+    {
+        write(freeAddress, dataLen, data);
+        freeAddress += dataLen;
+    }
+
 
     return headerAddress;
 }
@@ -56,24 +59,27 @@ void loadFs()
     //get all the data from root dir
 }
 
+
 /*
 the function read a fragment 
 param head: the head of the linked list (belong to the file)
 param data: where the info stored
 return: none
 */
-void readFragments(uint32 address, char* data)
+void readFragments(uint32 address, string data)
 {   
+    uint32 currentAddress = address + sizeof(fragmentHeader);
     fragmentHeader head = getHeader(address);
     fragmentHeader* next; 
-    while(1)
+
+    while(true)
     {
         //get the data from the head
-        read(data, head.address, head.dataLen);
+        read(data, currentAddress, head.dataLen);
 
         //move the array by len
         data += head.dataLen;
-
+        
         //there is no next
         if(head.nextAddress == 0)
         {
@@ -82,10 +88,13 @@ void readFragments(uint32 address, char* data)
             return;
         }
 
+        currentAddress = head.nextAddress + sizeof(fragmentHeader);
+
         //change head to next
         findNextHeader(head, next);  
         head = *next;
     }
+    
 }
 
 /*
