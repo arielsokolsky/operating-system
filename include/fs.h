@@ -15,7 +15,6 @@ typedef struct node
 //
 typedef struct fragmentHeader
 {
-    char name[MAX_NAME_LEN];
     uint32 address;//address of first fragmentHeader
     uint32 dataLen;
     uint32 nextAddress; 
@@ -23,7 +22,7 @@ typedef struct fragmentHeader
 
 static uint32 freeAddress;
 
-fragmentHeader addFragment(string fullPath, string data);
+fragmentHeader addFragment(string data);
 void continueFile(fragmentHeader* head, string data);
 void readFile(fragmentHeader head, char* data);
 void addFooter(fragmentHeader* last, uint32 address);

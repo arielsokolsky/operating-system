@@ -59,8 +59,9 @@ int main(multiboot_info* info)
     string result;
     string str = "omg I can continue a file";
     
-    currentHeader = addFragment("./file.txt", data);
+    currentHeader = addFragment(data);
     println("");
+
 
     readFile(currentHeader, result);
     print("the result: ");

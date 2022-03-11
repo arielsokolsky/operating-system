@@ -8,7 +8,7 @@ param path: the path of the file
 param data: the data of the file
 return: the fragmentHeader of the file
 */
-fragmentHeader addFragment(string fullPath, string data)
+fragmentHeader addFragment(string data)
 {
     fragmentHeader head;
     uint32 dataLen = strlen(data);
@@ -19,7 +19,6 @@ fragmentHeader addFragment(string fullPath, string data)
     //strcpy(fullPath + strlen(path) + 1, name);
 
     //set the struct
-    strcpy(head.name, fullPath);
     head.dataLen = dataLen;
     head.address = freeAddress + sizeof(fragmentHeader);
     head.nextAddress = 0; 
@@ -29,9 +28,6 @@ fragmentHeader addFragment(string fullPath, string data)
 
     write(freeAddress, dataLen, data);
     freeAddress += dataLen;
-
-
-
 
     return head;
 }
@@ -133,13 +129,12 @@ void addFooter(fragmentHeader* last, uint32 address)
 void continueFile(fragmentHeader* last, string data)
 {
     fragmentHeader currentHeader;
-    string name = last->name;
     uint32 headAddr; 
 
     //TO DO: FIND LAST HEADER
 
     //set the struct values
-    currentHeader = addFragment(name, data);
+    currentHeader = addFragment(data);
     
     addFooter(last, currentHeader.address - sizeof(fragmentHeader));
 }
