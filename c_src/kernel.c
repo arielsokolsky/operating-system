@@ -54,31 +54,27 @@ int main(multiboot_info* info)
     // write test
     loadFs();
 
-    fragmentHeader currentHeader;
     char data[] = "hello world ";
-    string result;
     string str = "omg I can continue a file";
+    string result;
     
-    currentHeader = addFragment(data);
+    uint32 address = addFragment(data);
+    
     println("");
-
-
-    readFragments(currentHeader, result);
+    readFragments(address, result);
     print("the result: ");
     print(result);
     println("");
 
-    
-    fragmentHeader* final;
-    findLastHeader(currentHeader, final);
-    //continueFile(final, str);
+    appendFragments(address, str);
+    println("");
 
     
-    readFragments(*final, result);
+    readFragments(address, result);
     print("the result: ");
     println(result);
     println("");
-
+    
     
     while(1){};    
     //end test

@@ -1,16 +1,19 @@
 #include "../include/fs.h"
 
-
-
-
-node writeFile(string fileName, string data)
+/*
+the function write a file
+param path: the file location and it's name
+param data: the file data
+return: the node (data about the file)
+*/
+node writeFile(string path, string data)
 {
     node file;
     uint32 address;
     
-    addFragment(data);
+    address = addFragment(data);
 
-    strcpy(file.name, fileName);
+    strcpy(file.name, path);
     file.address = address;
 
     return file;
@@ -21,10 +24,11 @@ the function craete a file
 param data: the data of the file
 return: the fragmentHeader of the file
 */
-fragmentHeader addFragment(string data)
+uint32 addFragment(string data)
 {
     fragmentHeader head;
     uint32 dataLen = strlen(data);
+    uint32 headerAddress;
 
     //set the struct
     head.dataLen = dataLen;
@@ -32,12 +36,13 @@ fragmentHeader addFragment(string data)
     head.nextAddress = 0; 
 
     write(freeAddress, sizeof(fragmentHeader), &head);
+    headerAddress = freeAddress;
     freeAddress += sizeof(fragmentHeader);
 
     write(freeAddress, dataLen, data);
     freeAddress += dataLen;
 
-    return head;
+    return headerAddress;
 }
 
 /*
@@ -57,8 +62,9 @@ param head: the head of the linked list (belong to the file)
 param data: where the info stored
 return: none
 */
-void readFragments(fragmentHeader head, char* data)
+void readFragments(uint32 address, char* data)
 {   
+    fragmentHeader head = getHeader(address);
     fragmentHeader* next; 
     while(1)
     {
@@ -103,15 +109,21 @@ void findNextHeader(fragmentHeader head, fragmentHeader* next)
 the function find the last node in the linked list
 param head: the head of the list
 param last: a pointer to the last node in the list
-return: none
+return: the last header address
 */
-void findLastHeader(fragmentHeader head, fragmentHeader* last)
+uint32 findLastHeader(uint32 address)
 {
+    fragmentHeader head = getHeader(address);
+    fragmentHeader* last;
+    uint32 lastAddress = 0;
     do
     {
+        lastAddress = head.nextAddress;
         findNextHeader(head, last);  
         head = *last;
     }while(head.nextAddress != 0);
+
+    return lastAddress;
 }
 
 /*
@@ -120,29 +132,45 @@ param head: a part of the linked list
 param address: where the last node will point to
 return: none
 */
-void addFooter(fragmentHeader* last, uint32 address)
+void addFooter(uint32 address, uint32 newAddress)
 {    
-    fragmentHeader var;
+    fragmentHeader last = getHeader(address); 
     
     //edit the last fragmentHeader 
-    last->nextAddress = address;
+    last.nextAddress = newAddress;
     
     //write it again to disk
-    write(last->address - sizeof(fragmentHeader), sizeof(fragmentHeader), last);
-    
-    //change the varable
-    //findLastHeader(var, last);
+    write(address, sizeof(fragmentHeader), &last);
 }
 
-void continueFile(fragmentHeader* last, string data)
+/*
+the function append fragment to linked list
+param address: address of header in linked list
+param data: the data of the new fragment
+return: none
+*/
+void appendFragments(uint32 address, string data)
 {
-    fragmentHeader currentHeader;
-    uint32 headAddr; 
-
-    //TO DO: FIND LAST HEADER
+    //get last header address
+    uint32 lastAddress = findLastHeader(address);
 
     //set the struct values
-    currentHeader = addFragment(data);
+    address = addFragment(data);
     
-    addFooter(last, currentHeader.address - sizeof(fragmentHeader));
+    //change last header
+    addFooter(lastAddress, address);
 }
+
+/*
+the function get header by address
+param address: the address of header
+return: the header
+*/
+fragmentHeader getHeader(uint32 address)
+{
+    fragmentHeader head;
+    read(&head, address, sizeof(fragmentHeader));
+    return head;
+}
+
+

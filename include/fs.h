@@ -14,23 +14,25 @@ typedef struct node
 
 typedef struct fragmentHeader
 {
-    uint32 address;//address of first fragmentHeader
+    uint32 address;
     uint32 dataLen;
     uint32 nextAddress; 
 }__attribute__((packed)) fragmentHeader;
 
 static uint32 freeAddress;
 
-fragmentHeader addFragment(string data);
-void readFragments(fragmentHeader head, char* data);
+fragmentHeader getHeader(uint32 address);
+
+uint32 addFragment(string data);
+void readFragments(uint32 address, char* data);
 
 node writeFile(string name, string data);
 
 void findNextHeader(fragmentHeader head, fragmentHeader* next);
-void findLastHeader(fragmentHeader head, fragmentHeader* last);
+uint32 findLastHeader(uint32 address);
 
-void addFooter(fragmentHeader* last, uint32 address);
-void continueFile(fragmentHeader* head, string data);
+void addFooter(uint32 address, uint32 newAddress);
+void appendFragments(uint32 address, string data);
 
 void createDir();
 void save();
