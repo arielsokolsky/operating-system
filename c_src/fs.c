@@ -6,11 +6,11 @@ the function craete a file
 param name: the name of the file
 param path: the path of the file
 param data: the data of the file
-return: the header of the file
+return: the fragmentHeader of the file
 */
-header addFragment(string fullPath, string data)
+fragmentHeader addFragment(string fullPath, string data)
 {
-    header head;
+    fragmentHeader head;
     uint32 dataLen = strlen(data);
     
     //add the path and the name
@@ -21,46 +21,17 @@ header addFragment(string fullPath, string data)
     //set the struct
     strcpy(head.name, fullPath);
     head.dataLen = dataLen;
-    head.address = freeAddress + sizeof(header);
+    head.address = freeAddress + sizeof(fragmentHeader);
     head.nextAddress = 0; 
 
-    write(freeAddress, sizeof(header), &head);
-    freeAddress += sizeof(header);
+    write(freeAddress, sizeof(fragmentHeader), &head);
+    freeAddress += sizeof(fragmentHeader);
 
     write(freeAddress, dataLen, data);
     freeAddress += dataLen;
 
 
-    /*
-    header nextHeader;
-    //set the next struct
-    string newData = "but still didn't finish";
-    strcpy(nextHeader.name, fullPath);
-    nextHeader.dataLen = strlen(newData);
-    nextHeader.address = 500 + sizeof(header);
-    nextHeader.nextAddress = 0; 
 
-    //write the header
-    write(500, sizeof(header), &nextHeader);
-
-    //write the data
-    write(nextHeader.address, nextHeader.dataLen, newData);
-
-    
-    header lastHeader;
-    //set the next struct
-    string dataNew = " unbelieveable it still continue";
-    strcpy(lastHeader.name, fullPath);
-    lastHeader.dataLen = strlen(dataNew);
-    lastHeader.address = 600 + sizeof(header);
-    lastHeader.nextAddress = 0; 
-
-    //write the header
-    write(600, sizeof(header), &lastHeader);
-
-    //write the data
-    write(lastHeader.address, lastHeader.dataLen, dataNew);
-    */
 
     return head;
 }
@@ -82,9 +53,9 @@ param head: the head of the linked list (belong to the file)
 param data: where the info stored
 return: none
 */
-void readFile(header head, char* data)
+void readFile(fragmentHeader head, char* data)
 {   
-    header* next; 
+    fragmentHeader* next; 
     while(1)
     {
         //get the data from the head
@@ -108,12 +79,12 @@ void readFile(header head, char* data)
 }
 
 /*
-the function get the header
+the function get the fragmentHeader
 param head: the head we find the next
-param next: the next header of head
+param next: the next fragmentHeader of head
 return: none
 */
-void findNextHeader(header head, header* next)
+void findNextHeader(fragmentHeader head, fragmentHeader* next)
 {   
     if(head.nextAddress == 0)
     {
@@ -121,7 +92,7 @@ void findNextHeader(header head, header* next)
         return;
     }
     
-    read(next, head.nextAddress, sizeof(header));
+    read(next, head.nextAddress, sizeof(fragmentHeader));
 }
 
 /*
@@ -130,7 +101,7 @@ param head: the head of the list
 param last: a pointer to the last node in the list
 return: none
 */
-void findLastHeader(header head, header* last)
+void findLastHeader(fragmentHeader head, fragmentHeader* last)
 {
     do
     {
@@ -145,23 +116,23 @@ param head: a part of the linked list
 param address: where the last node will point to
 return: none
 */
-void addFooter(header* last, uint32 address)
+void addFooter(fragmentHeader* last, uint32 address)
 {    
-    header var;
+    fragmentHeader var;
     
-    //edit the last header 
+    //edit the last fragmentHeader 
     last->nextAddress = address;
     
     //write it again to disk
-    write(last->address - sizeof(header), sizeof(header), last);
+    write(last->address - sizeof(fragmentHeader), sizeof(fragmentHeader), last);
     
     //change the varable
     //findLastHeader(var, last);
 }
 
-void continueFile(header* last, string data)
+void continueFile(fragmentHeader* last, string data)
 {
-    header currentHeader;
+    fragmentHeader currentHeader;
     string name = last->name;
     uint32 headAddr; 
 
@@ -170,5 +141,5 @@ void continueFile(header* last, string data)
     //set the struct values
     currentHeader = addFragment(name, data);
     
-    addFooter(last, currentHeader.address - sizeof(header));
+    addFooter(last, currentHeader.address - sizeof(fragmentHeader));
 }

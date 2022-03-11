@@ -5,23 +5,30 @@
 
 #define MAX_NAME_LEN 20
 
-//TO DO:create node(remove add the name)
 
-typedef struct header{
+typedef struct node
+{
     char name[MAX_NAME_LEN];
-    uint32 address;
+    uint32 address;//address of first fragmentHeader
+}node;
+
+//
+typedef struct fragmentHeader
+{
+    char name[MAX_NAME_LEN];
+    uint32 address;//address of first fragmentHeader
     uint32 dataLen;
     uint32 nextAddress; 
-}__attribute__((packed)) header;
+}__attribute__((packed)) fragmentHeader;
 
 static uint32 freeAddress;
 
-header addFragment(string fullPath, string data);
-void continueFile(header* head, string data);
-void readFile(header head, char* data);
-void addFooter(header* last, uint32 address);
-void findNextHeader(header head, header* next);
-void findLastHeader(header head, header* last);
+fragmentHeader addFragment(string fullPath, string data);
+void continueFile(fragmentHeader* head, string data);
+void readFile(fragmentHeader head, char* data);
+void addFooter(fragmentHeader* last, uint32 address);
+void findNextHeader(fragmentHeader head, fragmentHeader* next);
+void findLastHeader(fragmentHeader head, fragmentHeader* last);
 void createDir();
 void save();
 void loadFs();
