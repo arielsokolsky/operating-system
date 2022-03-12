@@ -56,29 +56,39 @@ int main(multiboot_info* info)
     
     string data = "this is start of a file2 ";
     string str = "this is part2";
-    string result;
-    string result2 = "";
-    int len =0;
+    string result = "", result2 = "";
+    int num = 31, myResult = 0;
+    uint32 myLen = sizeof(int), address = 0;
+
     
-    uint32 address = addFragment(data, strlen(data));
-    
+    //test: working with numbers
+    address = addFragment(&num, myLen);
+
+    readFragments(address, &myResult, 0);
+    print("the result: ");
+    printInt(myResult);
     println("");
-    readFragments(address, result, 3);
+    
+    /*
+    address = addFragment(data, strlen(data));
+    
+    //print the fragment
+    println("");
+    result = 0;
+    readFragments(address, result, 0);
     print("the result: ");
     print(result);
-    println("");
+    print("\n");
 
-    /*
     appendFragments(address, str, strlen(str));
     appendFragments(address, data, strlen(data));
     
-    result2 = "";
-    readFragments(address, result2, len);
+    result2 = 0;
+    readFragments(address, result2, 0);
     print("the result2: ");
-    println(result2);
-    //println("the end");
+    print(result2);
+    print("\n");
     */
-    
     
     while(1){};    
     //end test

@@ -26,7 +26,7 @@ node writeFile(string name, string data);
 
 //function's: add and remove fragments
 uint32 addFragment(void* data, int len);
-void readFragments(uint32 address, string data, uint32 dataLen);
+void readFragments(uint32 address, void* data, uint32 dataLen);
 
 //function's: find and move fragments
 void findNextHeader(fragmentHeader head, fragmentHeader* next);

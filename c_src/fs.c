@@ -66,7 +66,7 @@ param data: where the info stored
 param dataLen: the len which to read
 return: none
 */
-void readFragments(uint32 address, string data, uint32 dataLen)
+void readFragments(uint32 address, void* data, uint32 dataLen)
 {   
     uint32 currentAddress = address + sizeof(fragmentHeader);
     fragmentHeader head = getHeader(address);
@@ -96,7 +96,8 @@ void readFragments(uint32 address, string data, uint32 dataLen)
         if(head.nextAddress == 0)
         {
             //add the zero to the string
-            data[0] = 0;
+            char* ptr = (string*) data;
+            *ptr = 0;
             return;
         }
 
