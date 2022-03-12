@@ -11,7 +11,7 @@ node writeFile(string path, string data)
     node file;
     uint32 address;
     
-    address = addFragment(data);
+    //address = addFragment(data);
 
     strcpy(file.name, path);
     file.address = address;
@@ -24,24 +24,23 @@ the function craete a file
 param data: the data of the file
 return: the fragmentHeader of the file
 */
-uint32 addFragment(string data)
+uint32 addFragment(void* data, int len)
 {
     fragmentHeader head;
-    uint32 dataLen = strlen(data);
     uint32 headerAddress;
 
     //set the struct
-    head.dataLen = dataLen;
+    head.dataLen = len;
     head.nextAddress = 0; 
 
     write(freeAddress, sizeof(fragmentHeader), &head);
     headerAddress = freeAddress;
     freeAddress += sizeof(fragmentHeader);
 
-    if(dataLen > 0)
+    if(len > 0)
     {
-        write(freeAddress, dataLen, data);
-        freeAddress += dataLen;
+        write(freeAddress, len, data);
+        freeAddress += len;
     }
 
 
@@ -66,7 +65,7 @@ param head: the head of the linked list (belong to the file)
 param data: where the info stored
 return: none
 */
-void readFragments(uint32 address, string data)
+void readFragments(uint32 address, string data, uint32* len)
 {   
     uint32 currentAddress = address + sizeof(fragmentHeader);
     fragmentHeader head = getHeader(address);
@@ -79,6 +78,7 @@ void readFragments(uint32 address, string data)
 
         //move the array by len
         data += head.dataLen;
+        *len += head.dataLen;
         
         //there is no next
         if(head.nextAddress == 0)
@@ -163,10 +163,10 @@ param address: address of header in linked list
 param data: the data of the new fragment
 return: none
 */
-void appendFragments(uint32 address, string data)
+void appendFragments(uint32 address, void* data, int len)
 {
     //set the struct values
-    uint32 newAddress = addFragment(data);
+    uint32 newAddress = addFragment(data, len);
     //get last header address
     address = findLastHeader(address);
     //change last header

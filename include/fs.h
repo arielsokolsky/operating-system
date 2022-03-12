@@ -25,8 +25,8 @@ static uint32 freeAddress;
 node writeFile(string name, string data);
 
 //function's: add and remove fragments
-uint32 addFragment(string data);
-void readFragments(uint32 address, string data);
+uint32 addFragment(void* data, int len);
+void readFragments(uint32 address, string data, uint32* len);
 
 //function's: find and move fragments
 void findNextHeader(fragmentHeader head, fragmentHeader* next);
@@ -34,7 +34,7 @@ uint32 findLastHeader(uint32 address);
 
 //connection a new fragment
 void addFooter(uint32 address, uint32 newAddress);
-void appendFragments(uint32 address, string data);
+void appendFragments(uint32 address, void* data, int len);
 
 //function's: converts
 fragmentHeader getHeader(uint32 address);
