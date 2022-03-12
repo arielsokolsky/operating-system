@@ -66,32 +66,62 @@ param data: where the info stored
 param dataLen: the len which to read
 return: none
 */
-void readFragments(uint32 address, void* data, uint32 dataLen)
+void readFragments(uint32 address, void* data, uint32 lenToRead, uint32 startAddress)
 {   
     uint32 currentAddress = address + sizeof(fragmentHeader);
     fragmentHeader head = getHeader(address);
     fragmentHeader* next; 
     int len = 0;
+    uint32 leftToRead = 0;
 
     //if true then read all the file
-    bool readAll = (dataLen == 0 ? true : false);
+    bool readAll = (lenToRead == 0 ? true : false);
 
 
     while(true)
     {
         len = head.dataLen;
-        //check if got to max len
-        if(dataLen < len && readAll == false)
+
+        //if fragment len bigger then length remain read the length that remain
+        if(len > lenToRead && readAll == false)
         {
-            len = dataLen;
+            len = lenToRead;
         }
 
-        //get the data from the head
-        read(data, currentAddress, len);
+        //in case the start isn't in the first fragment
+        if(startAddress > head.dataLen)
+        {
+            startAddress -= head.dataLen;
 
-        //move the array by len
-        data += len;
-        dataLen -= len;
+            //start address cannot be nagtive
+            if(startAddress < 0)
+            {
+                startAddress = 0;
+            }
+        }
+        // in case we don't read from the start
+        else if(startAddress != 0)
+        {
+            //if try to read more that got
+            if(startAddress + len > head.dataLen)
+            {
+                len = head.dataLen - startAddress;
+            }
+            //get the data from the head
+            read(data, currentAddress + startAddress, len);
+            //move the array by len
+            data += len;
+            lenToRead -= len;
+            startAddress = 0;
+        }
+        else
+        {
+            //get the data from the head
+            read(data, currentAddress, len);
+            //move the array by len
+            data += len;
+            lenToRead -= len;
+        }
         //there is no next
         if(head.nextAddress == 0)
         {
