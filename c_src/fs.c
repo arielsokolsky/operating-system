@@ -255,7 +255,7 @@ uint32 findFragment(uint32 headAddress, int len)
 {
     fragmentHeader head = getHeader(headAddress);
     //if head doesn't have next
-    if(head.nextAddress == 0)
+    if(head.nextAddress == 0 || len < head.dataLen)
     {
         return headAddress;
     }

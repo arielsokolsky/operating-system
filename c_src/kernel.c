@@ -1,19 +1,4 @@
-#include "../include/string.h"
-#include "../include/types.h"
-#include "../include/screen.h"
-#include "../include/input.h"
-#include "../include/convert.h"
-#include "../include/shell.h"
-#include "../include/idt.h"
-#include "../include/gdt.h"
-#include "../include/paging.h"
-#include "../include/malloc.h"
-#include "../include/tss.h"
-#include "../include/task.h"
-#include "../include/vfs.h"
-#include "../include/ata.h"
-#include "../include/irq.h"
-#include "../include/fs.h"
+#include "../include/headers.h"
 
 
 int main(multiboot_info* info)
@@ -37,7 +22,7 @@ int main(multiboot_info* info)
     //remove the keyboard handler(because there is already handler)
     //setIrqEnery(1, keyboard_handler);
     //irq1();
-
+    //timer isn't needed
     //init_timer(100);
     
     print("\n");
@@ -47,8 +32,6 @@ int main(multiboot_info* info)
     initialize_paging(numFrames);
     task_install();
     println("install task\n");
-
-
 
     // write test
     loadFs();
@@ -77,9 +60,12 @@ int main(multiboot_info* info)
     pushFragments(address, stringTest, strlen(stringTest));
     //appendFragments(address, stringTest, strlen(stringTest));
     
+
+
+    uint32 findAddress = findFragment(address, 22);
     //read fragment again
     result2 = 0;
-    readFragments(address, result2, 0, 0);
+    readFragments(findAddress, result2, 0, 0);
     print("the result: ");
     print(result2);
     print("\n");
