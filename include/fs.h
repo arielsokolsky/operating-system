@@ -4,7 +4,7 @@
 #include "ata.h"
 
 #define MAX_NAME_LEN 20
-
+#define ROOT_ADDRESS 0
 
 typedef struct node
 {
@@ -31,10 +31,12 @@ void readFragments(uint32 address, void* data, uint32 dataLen, uint32 startAddre
 //function's: find and move fragments
 void findNextHeader(fragmentHeader head, fragmentHeader* next);
 uint32 findLastHeader(uint32 address);
+uint32 findFragment(uint32 headAddress, int len);
 
 //connection a new fragment
 void addFooter(uint32 address, uint32 newAddress);
 void appendFragments(uint32 address, void* data, int len);
+void pushFragments(uint32 currentHeaderAddress, void* data, int len);
 
 //function's: converts
 fragmentHeader getHeader(uint32 address);

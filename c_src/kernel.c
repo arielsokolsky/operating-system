@@ -52,47 +52,39 @@ int main(multiboot_info* info)
 
     // write test
     loadFs();
+
     
     
-    string data = "this is start of a file2 ";
-    string str = "this is part2";
-    string stringTest = "123456789";
-    string result = "", result2 = "";
-    int num = 31, myResult = 0;
+    string data = "this is start of a file2 ", str = "this is part2 ";
+    string result = "", result2 = "", stringTest = "123456789";
+    int num = 35, myResult = 0;
     uint32 myLen = sizeof(int), address = 0;
 
-    /*
-    //test: working with numbers
-    address = addFragment(&num, myLen);
-    
-    readFragments(address, &myResult, 0);
-    print("the result: ");
-    printInt(myResult);
-    println("");
-    */
-    
-    address = addFragment(stringTest, strlen(stringTest));
-    
-    /*
+    //create fragment
+    address = addFragment(data, strlen(data));
+
     //print the fragment
-    println("");
     result = 0;
-    readFragments(address, result, 2, 5);
+    readFragments(address, result, 0, 0);
     print("the result: ");
     print(result);
     print("\n");
-    */
     
-    appendFragments(address, stringTest, strlen(stringTest));
-    appendFragments(address, data, strlen(data));
+    //add to fragment
+    appendFragments(address, str, strlen(str));
+
+    //insert stringTest before str
+    pushFragments(address, stringTest, strlen(stringTest));
+    //appendFragments(address, stringTest, strlen(stringTest));
     
+    //read fragment again
     result2 = 0;
-    readFragments(address, result2, 3, 8);
-    print("the result2: ");
+    readFragments(address, result2, 0, 0);
+    print("the result: ");
     print(result2);
     print("\n");
+
     /**/
-    
     while(1){};    
     //end test
 

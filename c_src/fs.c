@@ -217,6 +217,29 @@ void appendFragments(uint32 address, void* data, int len)
 }
 
 /*
+the function pushes a new header in middle of linked list
+param currentHeaderAddress: the address of the header before
+param data: the data of the new header
+param len: the length of the data
+*/
+void pushFragments(uint32 currentHeaderAddress, void* data, int len)
+{
+    uint32 temp = 0;
+    fragmentHeader currentHead = getHeader(currentHeaderAddress);
+    //set the struct values
+    uint32 newAddress = addFragment(data, len);
+
+    //saving the next address before changing it
+    temp = currentHead.nextAddress;
+
+    //current point to new
+    addFooter(currentHeaderAddress, newAddress);  
+
+    //new point to current next
+    addFooter(newAddress, temp); 
+}
+
+/*
 the function get header by address
 param address: the address of header
 return: the header
@@ -226,6 +249,28 @@ fragmentHeader getHeader(uint32 address)
     fragmentHeader head;
     read(&head, address, sizeof(fragmentHeader));
     return head;
+}
+
+uint32 findFragment(uint32 headAddress, int len)
+{
+    fragmentHeader head = getHeader(headAddress);
+    //if head doesn't have next
+    if(head.nextAddress == 0)
+    {
+        return headAddress;
+    }
+
+    fragmentHeader* last;
+    uint32 lastAddress = 0;
+    do
+    {
+        len -= head.dataLen;
+        lastAddress = head.nextAddress;
+        findNextHeader(head, last);  
+        head = *last;
+    }while(len <= 0);
+
+    return lastAddress;
 }
 
 
