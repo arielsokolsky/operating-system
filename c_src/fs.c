@@ -61,25 +61,37 @@ void loadFs()
 
 /*
 the function read a fragment 
-param head: the head of the linked list (belong to the file)
+param address: the address of head of linked list
 param data: where the info stored
+param dataLen: the len which to read
 return: none
 */
-void readFragments(uint32 address, string data, uint32* len)
+void readFragments(uint32 address, string data, uint32 dataLen)
 {   
     uint32 currentAddress = address + sizeof(fragmentHeader);
     fragmentHeader head = getHeader(address);
     fragmentHeader* next; 
+    int len = 0;
+
+    //if true then read all the file
+    bool readAll = (dataLen == 0 ? true : false);
+
 
     while(true)
     {
+        len = head.dataLen;
+        //check if got to max len
+        if(dataLen < len && readAll == false)
+        {
+            len = dataLen;
+        }
+
         //get the data from the head
-        read(data, currentAddress, head.dataLen);
+        read(data, currentAddress, len);
 
         //move the array by len
-        data += head.dataLen;
-        *len += head.dataLen;
-        
+        data += len;
+        dataLen -= len;
         //there is no next
         if(head.nextAddress == 0)
         {

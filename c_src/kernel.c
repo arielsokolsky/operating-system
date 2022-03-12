@@ -54,7 +54,7 @@ int main(multiboot_info* info)
     loadFs();
     
     
-    string data = "this is start of a file ";
+    string data = "this is start of a file2 ";
     string str = "this is part2";
     string result;
     string result2 = "";
@@ -63,19 +63,21 @@ int main(multiboot_info* info)
     uint32 address = addFragment(data, strlen(data));
     
     println("");
-    readFragments(address, result, &len);
+    readFragments(address, result, 3);
     print("the result: ");
     print(result);
     println("");
 
+    /*
     appendFragments(address, str, strlen(str));
     appendFragments(address, data, strlen(data));
     
     result2 = "";
-    readFragments(address, result2, &len);
+    readFragments(address, result2, len);
     print("the result2: ");
     println(result2);
     //println("the end");
+    */
     
     
     while(1){};    
