@@ -24,21 +24,22 @@ static uint32 freeAddress;
 //function's: create and remove files
 node writeFile(string name, string data);
 
-//function's: add and remove fragments
-uint32 addFragment(void* data, int len);
+//function's: read from fragments
 void readFragments(uint32 address, void* data, uint32 dataLen, uint32 startAddress);
 
-//function's: find and move fragments
+//function's: find fragments
 void findNextHeader(fragmentHeader head, fragmentHeader* next);
 uint32 findLastHeader(uint32 address);
 uint32 findFragment(uint32 headAddress, int len);
 
-//connection a new fragment
+//function's: add a new fragment
+uint32 addFragment(void* data, int len);
 void addFooter(uint32 address, uint32 newAddress);
 void appendFragments(uint32 address, void* data, int len);
 void pushFragments(uint32 currentHeaderAddress, void* data, int len);
 
 //function's: converts
+uint32 replaceFragmentsData(uint32 address, void* data, uint32 len);
 fragmentHeader getHeader(uint32 address);
 
 //function's: store and save

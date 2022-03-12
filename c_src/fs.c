@@ -251,10 +251,17 @@ fragmentHeader getHeader(uint32 address)
     return head;
 }
 
+
+/*
+the function find a fragment by len of data
+param headAddress: the address of header
+param len: the len of data
+return: address of the header
+*/
 uint32 findFragment(uint32 headAddress, int len)
 {
     fragmentHeader head = getHeader(headAddress);
-    //if head doesn't have next
+    //if head doesn't have next or the len fit
     if(head.nextAddress == 0 || len < head.dataLen)
     {
         return headAddress;
@@ -273,4 +280,64 @@ uint32 findFragment(uint32 headAddress, int len)
     return lastAddress;
 }
 
+/*
+the function replace framents data with new one
+param address: the address of header
+param data: the new data
+param len: the data len
+return: address to header (the header point to memory that left)
+*/
+uint32 replaceFragmentsData(uint32 address, void* data, uint32 len)
+{
+    //if there is no data to write
+    if(len == 0)
+    {
+        return address;
+    }
+    fragmentHeader head = getHeader(address);
+    fragmentHeader* last;
+    uint32 freeMemoryAddress;
+    do
+    {
+        //finish and there still memory
+        if(head.dataLen - len > 0)
+        {
+            //if memory left smaller then fragmet header we can't save the memory
+            if(head.dataLen - len < sizeof(fragmentHeader))
+            {
+                return address;
+            }
+
+            //free address = headAddress + headLen + dataUsedLen
+            freeMemoryAddress = address + sizeof(fragmentHeader)+ len;
+            
+            //create empty fragment 
+            fragmentHeader newHeader;
+            newHeader.dataLen = head.dataLen - len - sizeof(fragmentHeader);
+            newHeader.nextAddress = head.nextAddress;
+
+            //write fragment header
+            write(freeMemoryAddress, sizeof(fragmentHeader), &newHeader);
+
+            return freeMemoryAddress;
+        } 
+
+        //change data
+        write(address, head.dataLen, data);
+        data += head.dataLen;
+
+        //save the previous address
+        address = head.nextAddress;
+
+        //change head to next
+        findNextHeader(head, last);  
+        head = *last;
+    }while(head.nextAddress != 0);
+
+    //alocate new memory for the data that left
+    appendFragments(address, data, len);
+
+    //no memory left
+    return 0;
+}
 
