@@ -10,7 +10,8 @@ void runTerminal()
     int result = 0, len = 0;
     int array[20];
     
-
+    
+    isInTerminal = true;
     while (true)
     {
         input = "";
@@ -97,6 +98,13 @@ void runTerminal()
             print("enter color number: ");
             input = readString();
             changeTextColor(stringToInt(input) - 1);
+        }
+        else if (strcmp(command, "background-color"))
+        {
+            printColors();
+            print("enter color number: ");
+            input = readString();
+            changeBackgoundColor(stringToInt(input) - 1);
         }
         else if (strcmp(command, "devide"))
         {   
