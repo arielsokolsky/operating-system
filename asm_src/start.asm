@@ -19,6 +19,8 @@ start:
 
 
 section .bss
+
+global stack_end
 stack_start:
 	resb 8*1024
 stack_end:

@@ -1,8 +1,9 @@
 #ifndef ISR_H
 #define ISR_h
 
-#include "../include/screen.h"
-#include "../include/idt.h"
+#include "screen.h"
+#include "idt.h"
+#include "irq.h"
 
 //for list of interrupt 
 void isr0();

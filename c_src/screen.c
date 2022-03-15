@@ -1,7 +1,6 @@
 #include "../include/screen.h"
 
-int curX = 0, curY = 0;
-const unsigned_int8 char_limit = 80, BACKSPACE_KEY = 0x08, bytes_in_char = 2; //the character limit in a line is 80
+const uint8 char_limit = 80, BACKSPACE_KEY = 0x08, bytes_in_char = 2; //the character limit in a line is 80
 
 /*
 the fuction print char
@@ -49,8 +48,8 @@ return: none
 */
 void print(string str)
 {
-    unsigned_int16 length = strlen(str);
-    for (unsigned_int16 i = 0; i < length; i++)
+    uint16 length = strlen(str);
+    for (uint16 i = 0; i < length; i++)
     {
         printch(str[i]);
     }
@@ -124,7 +123,7 @@ void printInt(int num)
 {
     int a = num;
     string str = intToString(a);
-    println(str);
+    print(str);
 }
 
 /*
@@ -167,8 +166,45 @@ void backSpace()
 }
 
 
+/*
+the function print the welcome screen
+param: none
+return: none
+*/
+void printWelcomeScreen()
+{
+    clearScreen();
+    changeTextColor(White);
+    print("welcome to our os \n");
+    print("the os is very effective with memory\n\n");
+}
 
-
+/*
+the function print the logo
+param: none
+return: none
+*/
+void printRhino()
+{
+    println("      __.--**\"\"\"**--...__..--**\"\"\"\"*-.           ");
+    println("    .'                                `-.               ");
+    println("  .'                         _           \\             ");
+    println(" /                         .'        .    \\   _._      ");
+    println(":                         :          :`*.  :-'.' ;      ");
+    println(";    `                    ;          `.) \\   /.-'      ");
+    println(":     `                             ; ' -*   ;          ");
+    println("       :.    \\           :       :  :        :         ");
+    println(" ;     ; `.   `.         ;     ` |  '                   ");
+    println(" |         `.            `. -*\"*\\; /        :         ");
+    println(" |    :     /`-.           `.    \\/`.'  _    `.        ");
+    println(" :    ;    :    `*-.__.-*\"\"\":`.   \\ ;  'o` `. /     ");
+    println("       ;   ;                ;  \\   ;:       ;:   ,/    ");
+    println("  |  | |                       /`  | ,      `*-*'/      ");
+    println("  `  : :  :                /  /    | : .    ._.-'       ");
+    println("   \\  \\ ,  \\              :   `.   :  \\ \\   .'     ");
+    println("    :  *:   ;             :    |`*-'   `*+-*            ");
+    println("    `**-*`\"\"               *---*                      ");   
+}
 
 
 

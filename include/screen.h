@@ -16,6 +16,9 @@ typedef struct commands_list{
     uint8 length;
 }command_list;
 
+static uint8 curX = 0;
+static uint8 curY = 0;
+
 void printch(char ch);
 void print(string str);
 void changeTextColor(int);
@@ -26,5 +29,8 @@ void printInt(int num);
 void printArr(int* arr, int len);
 void println(string str);
 void backSpace();
+
+void printRhino();
+void printWelcomeScreen();
 
 #endif
