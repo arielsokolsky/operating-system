@@ -51,6 +51,8 @@ string readString()
                 {
                     for (int j = 0; j < length; j++)
                     {
+                        printInt(j);
+                        printch('-');
                         print(commands[current_command]);
                         printch('\n');
                     } 
@@ -60,45 +62,46 @@ string readString()
             }
             else if(letterNum == 80 || letterNum == 72)
             {  
-                if(isInTerminal)
+            
+                /*if (((letterNum == 72) && (current_command > 0)) || ((letterNum == 80) && (current_command < length)))
                 {
-                    if (((letterNum == 72) && (current_command > 0)) || ((letterNum == 80) && (current_command < length)))
+                    for (int j = 0; j < i; j++)
                     {
-                        for (int j = 0; j < i; j++)
-                        {
-                            buffstr[j] = 0;
-                        }
-                        for (; i > 0; i--)
-                        {
-                            backSpace();
-                        }
-                        if(letterNum == 72)
-                        {
-                            current_command--;
-                        }
-                        else if (letterNum == 80)
-                        {
-                            current_command++;
-                        }
-                        print(commands[current_command]);
-                        i = strlen(commands[current_command]);
-                        
-                        for (int j = 0; j < i; j++)
-                        {
-                            buffstr[j] = commands[current_command][j];
-                        } 
+                        buffstr[j] = 0;
                     }
-                }
+                    for (; i > 0; i--)
+                    {
+                        backSpace();
+                    }
+                    if(letterNum == 72)
+                    {
+                        current_command--;
+                    }
+                    else if (letterNum == 80)
+                    {
+                        current_command++;
+                    }
+                    print(commands[current_command]);
+                    i = strlen(commands[current_command]);
+                    
+                    strcpy(buffstr, commands[current_command]);
+                    
+                }*/
+                    
+                
+                
             }
         }
     }
     buffstr[i] = 0;
-    
-    //commands[length] = (string)malloc(i);
-    for (int j = 0; j < i; j++)
+    for (int j = 0; j < 3; j++)
     {
-        commands[length][j] = buffstr[j];
-    }
+        printInt(j);
+        printch('-');
+        print(commands[current_command]);
+        printch('\n');
+    } 
+    strcpy(commands[length], buffstr);
     
     string str = buffstr;
     length++;
