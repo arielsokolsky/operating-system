@@ -9,12 +9,19 @@
 #define NUM_OF_RAWS 80
 
 enum COLORS{Black = 0, Blue, Green, Cyan, Red, Purple, Brown, Gray, Dark_gray, Light_blue, light_green, Light_cyan, Light_Red, light_purple, Yellow , White};
-static int currentColor = White;
+static int currentColor = White, currentBackground = Black;
+
+typedef struct commands_list{
+    string commands[255];
+    uint8 length;
+}command_list;
 
 void printch(char ch);
 void print(string str);
 void changeTextColor(int);
+void changeBackgoundColor(int colorNum);
 void clearScreen();
+void reprintBackground();
 void printInt(int num);
 void printArr(int* arr, int len);
 void println(string str);

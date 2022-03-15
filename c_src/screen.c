@@ -31,7 +31,7 @@ void printch(char ch)
             break;
         default:
             video_memory[((curY * char_limit) + curX)*bytes_in_char] = ch;
-            video_memory[((curY * char_limit) + curX)*bytes_in_char + 1] = currentColor;
+            video_memory[((curY * char_limit) + curX)*bytes_in_char + 1] = currentColor + currentBackground * 16;
             curX++;
             break;
     }
@@ -75,8 +75,13 @@ return: none
 void changeTextColor(int colorNum)
 {
     currentColor = colorNum;
+    reprintBackground();
 }
-
+void changeBackgoundColor(int colorNum)
+{
+    currentBackground = colorNum;
+    reprintBackground();
+}
 /*
 the fuction clear the screen
 param: none
@@ -94,7 +99,22 @@ void clearScreen()
     curY = 0;
 }
 
-
+void reprintBackground()
+{
+    string video_memory = (string) VIDEO_ADDRESS;
+    int x = 0;
+    for (int y = 0; y < NUM_OF_LINES; y++)
+    {
+        for (x = 0; x < char_limit; x++)
+        {
+            
+            video_memory[((y * char_limit) + x)*bytes_in_char + 1] = currentColor + currentBackground * 16;
+    
+        }
+    
+    
+    }
+}
 /*
 the function print a int
 param: int
