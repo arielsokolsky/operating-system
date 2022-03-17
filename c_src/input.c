@@ -2,12 +2,17 @@
 
 #define MAX_COMMAND_LEN 20
 #define MAX_COMMANDS 20
+
+#define MAX_PARAM_LEN 50
+#define MAX_PARAM 30
+
 #define UP_ARROW 72 
 #define DOWN_ARROW 80
 #define ENTER 28
 
 uint8 length = 0, currentCommand = 0;
 static char commandsList[MAX_COMMANDS][MAX_COMMAND_LEN] = {0};
+
 
 /*
 the function gets the user input
@@ -31,10 +36,33 @@ string readString()
         if(inputPort(CHECK_PORT) & 0x1) //checks if there is an input from the user
         {
             letterNum = inputPort(READ_PORT);
+
             
-            if (letterNum == ENTER || ((letterNum == UP_ARROW || letterNum == DOWN_ARROW) && length > 0))
+            if (letterNum == ENTER)
             {
                 is_reading = false;
+            }
+            else if(letterNum == UP_ARROW && length > 0)
+            {
+                deleteCommand(i);
+                if(currentCommand < length)
+                {
+                    currentCommand++;
+                }
+                print(commandsList[currentCommand]);
+                strcpy(buffstr, commandsList[currentCommand]);
+                i = strlen(buffstr); 
+            }
+            else if(letterNum == DOWN_ARROW && length > 0)
+            {
+                deleteCommand(i);
+                if(currentCommand > 0)
+                {
+                    currentCommand--;
+                }
+                print(commandsList[currentCommand]);
+                strcpy(buffstr, commandsList[currentCommand]);
+                i = strlen(buffstr);
             }
             else if(letterNum == 14)
             {
@@ -55,29 +83,7 @@ string readString()
     }
     buffstr[i] = 0;
 
-    //down arrow
-    if(letterNum == DOWN_ARROW)
-    {
-        deleteCommand(i);
-        if(currentCommand > 0)
-        {
-            currentCommand--;
-        }
-        print(commandsList[currentCommand]);
-        strcpy(buffstr, commandsList[currentCommand]);
-    }
-    //up arrow
-    else if(letterNum == UP_ARROW)
-    {
-        deleteCommand(i);
-        if(currentCommand < length)
-        {
-            currentCommand++;
-        }
-        print(commandsList[currentCommand]);
-        strcpy(buffstr, commandsList[currentCommand]);
-    }
-    else if(buffstr[0] != 0 && isCommand == 1)
+    if(buffstr[0] != 0 && isCommand == 1)
     {
         strcpy(commandsList[length], buffstr);  
         currentCommand = length; 
