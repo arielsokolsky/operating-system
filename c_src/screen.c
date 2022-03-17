@@ -76,6 +76,7 @@ void changeTextColor(int colorNum)
     currentColor = colorNum;
     reprintBackground();
 }
+
 void changeBackgoundColor(int colorNum)
 {
     currentBackground = colorNum;
@@ -116,7 +117,7 @@ void reprintBackground()
 }
 /*
 the function print a int
-param: int
+param int: the number to print
 return: none
 */
 void printInt(int num)
@@ -124,6 +125,17 @@ void printInt(int num)
     int a = num;
     string str = intToString(a);
     print(str);
+}
+
+/*
+the function print a int and go line down
+param int: the number to print
+return: none
+*/
+void printIntln(int num)
+{
+    printInt(num);
+    print("\n");
 }
 
 /*

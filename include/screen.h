@@ -26,6 +26,7 @@ void changeBackgoundColor(int colorNum);
 void clearScreen();
 void reprintBackground();
 void printInt(int num);
+void printIntln(int num);
 void printArr(int* arr, int len);
 void println(string str);
 void backSpace();

@@ -1,4 +1,6 @@
 #include "../include/shell.h"
+
+
 /*
 the funtion start a terminal that handle user resquest
 param: none
@@ -10,12 +12,13 @@ void runTerminal()
     int result = 0, len = 0;
     int array[20];
     
-    print("is in terminal true\n");
     while (true)
     {
         input = "";
         print(">> ");
+        isCommand = 1;
         string command = readString();
+        isCommand = 0;
 
         if (strcmp(command, "help"))
         {
@@ -67,6 +70,7 @@ void runTerminal()
             }
             result = sum(array, len);
             printInt(result);
+            print("\n");
         }
         else if (strcmp(command, "sub"))
         {
@@ -82,6 +86,7 @@ void runTerminal()
             }
             result = sub(array, len);
             printInt(result);
+            print("\n");
         }
         else if (strcmp(command, "fibonacci"))
         {
@@ -116,6 +121,7 @@ void runTerminal()
             }
             result = array[0] / array[1];
             printInt(result);
+            print("\n");
         }
         else if (strcmp(command, "exit"))
         {   

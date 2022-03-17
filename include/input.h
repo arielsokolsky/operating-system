@@ -10,7 +10,7 @@
 #define MAX_BUFFER_SIZE 200
 
 
-
+uint32 isCommand;
 
 string readString();
 void deleteCommand(int len);
