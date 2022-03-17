@@ -1,7 +1,14 @@
 #include "../include/input.h"
 
-string commands[200];
-uint8 length = 0;
+#define MAX_COMMAND_LEN 20
+#define MAX_COMMANDS 20
+#define UP_ARROW 72 
+#define DOWN_ARROW 80
+#define ENTER 28
+
+uint8 length = 0, currentCommand = 0;
+
+static char commandsList[MAX_COMMANDS][MAX_COMMAND_LEN] = {0};
 
 /*
 the function gets the user input
@@ -10,27 +17,22 @@ return: the user input
 */
 string readString()
 {
+    int letterNum = 0;
     char allLetters[] = {0, 0, '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 0, 0 \
     , 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', 0, 0 \
     , 'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\'', 0, 0, 0 \
     , 'z', 'x', 'c', 'v', 'b', 'n', 'm', ',', '.', '/', '.', '/', 0, ' '};
-    char buffstr[200]; 
-    /*if(length > 3)
-    {
-        print(commands[3]); 
-    }*/
+    char buffstr[200] = {0}; 
     
-    //printInt(length);
-    int i = 0, current_command = length; //the last place in the string
+    int i = 0; //the last place in the string
     bool is_reading = true; // if the system is reading input, it is 1, and if it stops, its 0
     while (is_reading)
     {
         if(inputPort(CHECK_PORT) & 0x1) //checks if there is an input from the user
         {
-            int letterNum = inputPort(READ_PORT) ;
-            //printInt(letterNum);
+            letterNum = inputPort(READ_PORT) ;
             
-            if (letterNum == 28)
+            if (letterNum == ENTER || ((letterNum == UP_ARROW || letterNum == DOWN_ARROW) && length > 0))
             {
                 is_reading = false;
             }
@@ -43,68 +45,60 @@ string readString()
                 backSpace();
                 }
             }
-            
             else if(allLetters[letterNum] && letterNum < 65)
             {  
                 printch(allLetters[letterNum]);
-                if (allLetters[letterNum] == 'p')
-                {
-                    for (int j = 0; j < length; j++)
-                    {
-                        printInt(j);
-                        printch('-');
-                        print(commands[current_command]);
-                        printch('\n');
-                    } 
-                }
                 buffstr[i] = allLetters[letterNum];
                 i++;
-            }
-            else if(letterNum == 80 || letterNum == 72)
-            {  
-            
-                /*if (((letterNum == 72) && (current_command > 0)) || ((letterNum == 80) && (current_command < length)))
-                {
-                    for (int j = 0; j < i; j++)
-                    {
-                        buffstr[j] = 0;
-                    }
-                    for (; i > 0; i--)
-                    {
-                        backSpace();
-                    }
-                    if(letterNum == 72)
-                    {
-                        current_command--;
-                    }
-                    else if (letterNum == 80)
-                    {
-                        current_command++;
-                    }
-                    print(commands[current_command]);
-                    i = strlen(commands[current_command]);
-                    
-                    strcpy(buffstr, commands[current_command]);
-                    
-                }*/
-                    
-                
-                
             }
         }
     }
     buffstr[i] = 0;
-    for (int j = 0; j < 3; j++)
+
+    //down arrow
+    if(letterNum == DOWN_ARROW)
     {
-        printInt(j);
-        printch('-');
-        print(commands[current_command]);
-        printch('\n');
-    } 
-    strcpy(commands[length], buffstr);
+        deleteCommand(i);
+        if(currentCommand > 0)
+        {
+            currentCommand--;
+        }
+        print(commandsList[currentCommand]);
+        strcpy(buffstr, commandsList[currentCommand]);
+    }
+    //up arrow
+    else if(letterNum == UP_ARROW)
+    {
+        deleteCommand(i);
+
+        if(currentCommand < length)
+        {
+            currentCommand++;
+        }
+        print(commandsList[currentCommand]);
+        strcpy(buffstr, commandsList[currentCommand]);
+    }
+    else if(buffstr[0] != 0)
+    {
+        strcpy(commandsList[length], buffstr);  
+        currentCommand = length; 
+        length++;
+    }
     
     string str = buffstr;
-    length++;
     print("\n");
     return str;
 }
+
+
+void deleteCommand(int len)
+{
+    for (int i = 0; i < len; i++)
+    {
+        backSpace();
+    }
+    
+}
+
+
+

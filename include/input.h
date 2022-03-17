@@ -9,10 +9,12 @@
 #define READ_PORT 0x60
 #define MAX_BUFFER_SIZE 200
 
-static bool isInTerminal = false;
+
 
 
 string readString();
+void deleteCommand(int len);
+void changeCommand(string* newCommand, int len);
 
 
 #endif

@@ -10,8 +10,7 @@ void runTerminal()
     int result = 0, len = 0;
     int array[20];
     
-    
-    isInTerminal = true;
+    print("is in terminal true\n");
     while (true)
     {
         input = "";
@@ -121,7 +120,11 @@ void runTerminal()
         else if (strcmp(command, "exit"))
         {   
             return;
-        }  
+        } 
+        else if(strcmp(command, ""))
+        {
+            //does nothing
+        } 
         else
         {
             println("error: command not found");
