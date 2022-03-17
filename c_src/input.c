@@ -14,7 +14,7 @@ uint8 numOfCommands = 0, currentCommand = 0;
 static char commandsList[MAX_COMMANDS][MAX_COMMAND_LEN] = {0};
 
 uint8 numOfParams = 0, currentParam = 0;
-static char paramList[MAX_PARAM][MAX_PARAM_LEN] = {0};
+static char paramsList[MAX_PARAM][MAX_PARAM_LEN] = {0};
 
 /*
 the function gets the user input
@@ -60,34 +60,66 @@ string readString()
                 buffstr[i] = allLetters[letterNum];
                 i++;
             }
-            else if(letterNum == UP_ARROW && numOfCommands > 0 && isCommand)
+
+            if(isCommand)
             {
-                isNewCommand = false;
-                deleteCommand(i);
-
-                if(currentCommand < numOfCommands - 1)
+                if(letterNum == UP_ARROW && numOfCommands > 0)
                 {
-                    currentCommand++;
-                }
+                    isNewCommand = false;
+                    deleteCommand(i);
 
-                print(commandsList[currentCommand]);
-                strcpy(buffstr, commandsList[currentCommand]);
-                i = strlen(buffstr); 
+                    if(currentCommand < numOfCommands - 1)
+                    {
+                        currentCommand++;
+                    }
+
+                    print(commandsList[currentCommand]);
+                    strcpy(buffstr, commandsList[currentCommand]);
+                    i = strlen(buffstr); 
+                }
+                if(letterNum == DOWN_ARROW && numOfCommands > 0) 
+                {
+                    isNewCommand = false;
+                    deleteCommand(i);
+                    
+                    if(currentCommand > 0)
+                    {
+                        currentCommand--;
+                    }
+
+                    print(commandsList[currentCommand]);
+                    strcpy(buffstr, commandsList[currentCommand]);
+                    i = strlen(buffstr);
+                }
             }
-            else if(letterNum == DOWN_ARROW && numOfCommands > 0 && isCommand) 
+            else
             {
-                isNewCommand = false;
-                deleteCommand(i);
-                
-                if(currentCommand > 0)
+                if(letterNum == UP_ARROW && numOfParams > 0)
                 {
-                    currentCommand--;
+                    isNewCommand = false;
+                    deleteCommand(i);
+                    if(currentParam < numOfParams - 1)
+                    {
+                        currentParam++;
+                    }
+
+                    print(paramsList[currentParam]);
+                    strcpy(buffstr, paramsList[currentParam]);
+                    i = strlen(buffstr); 
                 }
+                if(letterNum == DOWN_ARROW && numOfParams > 0) 
+                {
+                    isNewCommand = false;
+                    deleteCommand(i);
+                    if(currentParam > 0)
+                    {
+                        currentParam--;
+                    }
 
-                print(commandsList[currentCommand]);
-                strcpy(buffstr, commandsList[currentCommand]);
-
-                i = strlen(buffstr);
+                    print(paramsList[currentParam]);
+                    strcpy(buffstr, paramsList[currentParam]);
+                    i = strlen(buffstr); 
+                }
             }
 
         }
@@ -107,12 +139,10 @@ string readString()
         }
         else
         {
-            //add to the list of params
-            strcpy(paramList[numOfParams], buffstr);  
+            strcpy(paramsList[numOfParams], buffstr);  
             currentParam = numOfParams; 
             numOfParams++;
         }
-
     }
     
     string str = buffstr;
