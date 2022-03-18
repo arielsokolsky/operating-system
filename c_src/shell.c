@@ -122,6 +122,11 @@ void runTerminal()
     
 }
 
+/*
+the function prints all of the avalible commands
+param: none
+return: none
+*/
 void help()
 {
     println("command list:");
@@ -137,7 +142,11 @@ void help()
     println("devide -  deviding two numbers");
     println("exit - stop running");
 }
-
+/*
+the function prints all of the colors and their values
+param: none
+return: none
+*/
 void printColors()
 {
     println("1.Black"); 

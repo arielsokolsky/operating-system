@@ -142,7 +142,11 @@ page *make_page(unsigned_int32 address, page_directory *dir)
     return myPage;
 }
 
-
+/*
+the function clears a page
+param: a page address
+return: none
+*/
 void clear_page(uint32 address)
 {
     page *p = get_page(address, false, kernel_directory);

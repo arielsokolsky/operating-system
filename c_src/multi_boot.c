@@ -2,6 +2,11 @@
 #include "../include/screen.h"
 #include "../include/multi_boot.h"
 
+/*
+the function gets the multiboot information and it prints it
+param: information about the computer from the multiboot
+return: the amounts of frames in the system
+*/
 int printMultiBootInfo(multiboot_info* info)
 {
     int total_frames = 0;
