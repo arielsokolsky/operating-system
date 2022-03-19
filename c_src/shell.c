@@ -96,12 +96,16 @@ void runTerminal()
             result = fibonacci(stringToInt(input));   
             println(intToString(result));  
         } 
-        else if (strcmp(command, "text-color"))
+        else if (strcmp(command, "color"))
         {
             printColors();
-            print("enter color number: ");
+            print("enter color number for the text: ");
             input = readString();
-            changeTextColor(stringToInt(input) - 1);
+            result = stringToInt(input) - 1;
+            print("enter color number for the backgrond: ");
+            input = readString();
+            changeTextColor(result);
+            changeBackgoundColor(stringToInt(input) - 1);
         }
         else if (strcmp(command, "background-color"))
         {
@@ -150,7 +154,7 @@ void help()
     println("sum - add n of numbers");
     println("sub - substruct n of numbers");
     println("fibonacci - find n number entery in the fibonacci serious");
-    println("text-color - change text color");
+    println("color - change text and background color");
     println("devide -  deviding two numbers");
     println("exit - stop running");
 }
