@@ -1,17 +1,21 @@
 include makefile.cfg
 
-all: build link run create_img clear
+all: clean build link run create_img clean
 .PHONEY = all
 
-OBJECTS_C = $(patsubst $(SRC)/%.c, $(OBJ)/%.o, $(wildcard $(SRC)/*.c))
-OBJECTS_ASM  = $(patsubst $(SRC)/%.asm, $(OBJ)/%.o, $(wildcard $(SRC)/*.asm))
+OBJECTS_C = $(patsubst $(C_SRC)/%.c, $(OBJ)/%.o, $(wildcard $(C_SRC)/*.c))
+OBJECTS_ASM  = $(patsubst $(ASM_SRC)/%.asm, $(OBJ)/%.o, $(wildcard $(ASM_SRC)/*.asm))
 
 
-$(OBJ)/%.o: $(SRC)/%.c
+$(OBJ)/%.o: $(C_SRC)/%.c
 	@$(COMPILER) $(C_FLAGS) $< -o $@
 
-$(OBJ)/%.o: $(SRC)/%.asm
+$(OBJ)/%.o: $(ASM_SRC)/%.asm
 	@$(ASSEMBLER) $(A_FLAGS) $< -o $@
+
+create_disk:
+	dd if=/dev/zero of=f32.disk bs=1M count=100
+	mkfs.fat -F32 f32.disk -s 1
 	
 build:$(OBJECTS_C) $(OBJECTS_ASM)
 	@echo "build"
@@ -22,10 +26,10 @@ link:
 
 run:
 	@echo "run"
-	@$(EMULATOR) $(EMULATOR_FLAGS) $(OUTPUT)
+	@$(EMULATOR) $(EMULATOR_FLAGS) $(OUTPUT) -drive file=f32.disk,format=raw -m size=4096
 
-clear:
-	@echo "clear"
+clean:
+	@echo "clean"
 	@rm -f obj/*.o
 	@rm -f obj/kernel/*.bin
 
