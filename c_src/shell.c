@@ -1,4 +1,6 @@
 #include "../include/shell.h"
+
+
 /*
 the funtion start a terminal that handle user resquest
 param: none
@@ -10,12 +12,13 @@ void runTerminal()
     int result = 0, len = 0;
     int array[20];
     
-
     while (true)
     {
         input = "";
         print(">> ");
+        isCommand = 1;
         string command = readString();
+        isCommand = 0;
 
         if (strcmp(command, "help"))
         {
@@ -67,6 +70,7 @@ void runTerminal()
             }
             result = sum(array, len);
             printInt(result);
+            print("\n");
         }
         else if (strcmp(command, "sub"))
         {
@@ -82,6 +86,7 @@ void runTerminal()
             }
             result = sub(array, len);
             printInt(result);
+            print("\n");
         }
         else if (strcmp(command, "fibonacci"))
         {
@@ -91,12 +96,23 @@ void runTerminal()
             result = fibonacci(stringToInt(input));   
             println(intToString(result));  
         } 
-        else if (strcmp(command, "text-color"))
+        else if (strcmp(command, "color"))
+        {
+            printColors();
+            print("enter color number for the text: ");
+            input = readString();
+            result = stringToInt(input) - 1;
+            print("enter color number for the backgrond: ");
+            input = readString();
+            changeTextColor(result);
+            changeBackgoundColor(stringToInt(input) - 1);
+        }
+        else if (strcmp(command, "background-color"))
         {
             printColors();
             print("enter color number: ");
             input = readString();
-            changeTextColor(stringToInt(input) - 1);
+            changeBackgoundColor(stringToInt(input) - 1);
         }
         else if (strcmp(command, "devide"))
         {   
@@ -109,11 +125,16 @@ void runTerminal()
             }
             result = array[0] / array[1];
             printInt(result);
+            print("\n");
         }
         else if (strcmp(command, "exit"))
         {   
             return;
-        }  
+        } 
+        else if(strcmp(command, ""))
+        {
+            //does nothing
+        } 
         else
         {
             println("error: command not found");
@@ -133,7 +154,7 @@ void help()
     println("sum - add n of numbers");
     println("sub - substruct n of numbers");
     println("fibonacci - find n number entery in the fibonacci serious");
-    println("text-color - change text color");
+    println("color - change text and background color");
     println("devide -  deviding two numbers");
     println("exit - stop running");
 }

@@ -17,6 +17,7 @@
 
 int main(multiboot_info* info)
 {  
+
     int numFrames;
     printWelcomeScreen();
     
