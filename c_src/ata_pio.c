@@ -1,4 +1,4 @@
-#include "../include/ata.h"
+#include "../include/ata_pio.h"
 
 /*
  BSY: a 1 means that the controller is busy executing a command. No register should be accessed (except the digital output register) while this bit is set.

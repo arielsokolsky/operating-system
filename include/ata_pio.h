@@ -1,5 +1,5 @@
-#ifndef ATA_H 
-#define ATA_H
+#ifndef ATA_PIO_H 
+#define ATA_PIO_H
 
 #include "types.h"
 #include "system.h"
