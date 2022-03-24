@@ -36,7 +36,7 @@ typedef struct idtPointer
 } __attribute__((packed)) idtPointer;
 
 
-idtEntery idt[NUM_OF_IDT_ENTRIES];
+static idtEntery idt[NUM_OF_IDT_ENTRIES];
 idtPointer _lidt;
 
 //the function setupt the idtPionter and clear entries

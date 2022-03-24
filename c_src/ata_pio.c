@@ -75,7 +75,7 @@ static void ATA_wait_DRQ()  //Wait fot drq to be 1
 	while(!(inputPort(0x1F7)&STATUS_RDY));
 }
 
-uint8 identify() 
+uint8 identify_pio() 
 {
     //puts 0 on the sector count and in the linear block address
     inputPort(ATA_PRIMARY_COMM_REGSTAT);
@@ -140,7 +140,7 @@ uint8 identify()
 
 
 
-bool test()
+bool test_pio()
 {
 	bool working = true;
 	int i = 0;

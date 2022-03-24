@@ -6,7 +6,7 @@
 fat32 *installFilesystem(char *fatSystem)
 {
     fat32 *fs = malloc(sizeof (fat32));
-    if (!identify())
+    if (!identify_pio())
     {
         print("not exist");
         return 0;
