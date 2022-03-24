@@ -1,18 +1,18 @@
 #include "../include/vfs.h"
-#include "../include/ata.h"
+#include "../include/ata_pio.h"
 #include "../include/screen.h"
 
 
 fat32 *installFilesystem(char *fatSystem)
 {
     fat32 *fs = malloc(sizeof (fat32));
-    if (!identify())
+    if (!identify_pio())
     {
-        print("erorr: there is no disk file");
-        asm("hlt");
+        print("not exist");
+        return 0;
     }
 
-    //read_bpb(fs, &fs->bpb);
+    read_bpb(fs, &fs->bpb);
     
 
 
@@ -43,9 +43,9 @@ static uint32 readi32(uint8 *buff, uint32 offset) {
         (ubuff[0] & 0x000000FF);
 }
 
-static void read_bpb(fat32 *fs, struct bios_parameter_block *bpb) {
+void read_bpb(fat32 *fs, struct bios_parameter_block *bpb) {
     uint8 sector0[512];
-    readBasic(sector0, 0, 1);
+    read_sectors_ATA_PIO((uint32)&sector0, 0, 1);
 
     bpb->bytes_per_sector = readi16(sector0, 11);;
     bpb->sectors_per_cluster = sector0[13];
