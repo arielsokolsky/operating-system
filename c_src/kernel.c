@@ -32,7 +32,7 @@ int main(multiboot_info* info)
     setupIdt();
     install_gdt();
 
-    installFilesystem(0);
+    fat32 *fs = installFilesystem(0);
     
     //remove the keyboard handler(because there is already handler)
     //setIrqEnery(1, keyboard_handler);
@@ -40,6 +40,7 @@ int main(multiboot_info* info)
 
     //init_timer(100);
     
+    //printInt(fs->bpb.FAT_version);
     print("\n");
     numFrames = printMultiBootInfo(info);
     println("");
